@@ -246,6 +246,80 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 .sticky-cta a{display:block;background:var(--btn);color:#fff;text-align:center;text-decoration:none;font-family:'Oswald',sans-serif;font-weight:600;font-size:14.5px;letter-spacing:.03em;text-transform:uppercase;padding:14px 16px;border-radius:5px}
 .toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold-light);color:#fff;padding:12px 16px;border-radius:6px;font-size:13px;font-weight:500;max-width:calc(100% - 32px);width:max-content;z-index:1000}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sticky-cta{transition:none}}
+
+/* ===== Computador (a partir de 900px). O celular não usa nada daqui. ===== */
+@media (min-width:900px){
+  body{max-width:1160px;padding-left:40px;padding-right:40px;padding-bottom:40px}
+  .announce{margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);font-size:14px;padding:11px 10px}
+  .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:72px;align-items:center;align-content:center;text-align:left;padding:56px 0 64px;background:radial-gradient(50% 70% at 75% 40%,rgba(185,123,69,.14),transparent 70%)}
+  .hero>*{grid-column:1}
+  .hero .hero-photo{grid-column:2;grid-row:1 / span 6;margin-bottom:0}
+  .hero h1{font-size:56px;line-height:1.04;margin-bottom:18px}
+  .hero-sub{font-size:18px;max-width:440px;margin:0 0 28px}
+  .price-strip{justify-content:flex-start;margin-bottom:24px}
+  .price-strip .now{font-size:40px}.price-strip .old{font-size:16px}.price-strip .pix{font-size:14px}
+  .hero .btn-primary{width:auto;max-width:360px;font-size:17px;padding:18px 28px}
+  .hero .trust-line{justify-content:flex-start;font-size:13px}
+  .gift-bubble{width:140px;height:140px;top:18px;right:18px}
+  .gift-bubble b{font-size:44px}.gift-bubble small{font-size:12px}.gift-bubble i{font-size:23px}
+  .btn-primary{transition:background .2s,transform .2s}
+  .btn-primary:hover:not(:disabled){background:#7f4a22;transform:translateY(-1px)}
+  .badges{max-width:760px;margin:0 auto;gap:16px;padding:8px 0}
+  .badge{padding:18px 10px}.badge svg{width:26px;height:26px}.badge span{font-size:12px}
+  section{padding:0}
+  .cross-divider{margin:64px 0 40px}
+  .section-title{font-size:36px;margin-bottom:14px}
+  .section-lead{font-size:16.5px;max-width:640px;margin-bottom:34px}
+  .deal-box{max-width:760px;margin:0 auto;padding:36px 40px}
+  .deal-box h3{font-size:28px}.deal-box p{font-size:15.5px;max-width:520px}
+  #colecao .carousel{max-width:640px;margin:0 auto}
+  #colecao .car-cap,#colecao .dots{max-width:640px;margin-left:auto;margin-right:auto}
+  .feat-grid{flex-direction:row;gap:20px}
+  .feat-card{flex:1;flex-direction:column;align-items:center;text-align:center;padding:30px 24px;gap:16px}
+  .feat-icon{width:54px;height:54px}.feat-icon svg{width:24px;height:24px}
+  .feat-card h3{font-size:17px}.feat-card p{font-size:14.5px}
+  .steps{flex-direction:row;gap:20px}
+  .steps li{flex:1;padding:26px 24px}
+  .steps h3{font-size:17px}.steps p{font-size:14.5px}
+  .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .gallery figcaption{font-size:15px}
+  .tablewrap{max-width:760px;margin:0 auto}
+  .size-table{font-size:15px}.size-table th,.size-table td{padding:16px 12px}.size-table th{font-size:13px}
+  .size-note{font-size:13.5px}
+  #viewHome section:has(.faq-item){max-width:780px;margin-left:auto;margin-right:auto}
+  .faq-item summary{font-size:16px;padding:20px 4px}.faq-item p{font-size:15px}
+  .ship-box{max-width:780px;margin:0 auto;padding:24px 28px}
+  .ship-box h3{font-size:16px}.ship-box p{font-size:14.5px}
+  footer{padding:48px 0 28px}
+  footer p{max-width:560px;font-size:13px}
+  footer .secure{width:340px}
+  /* telas internas */
+  .topbar{padding-top:14px}
+  .pick-head{padding:12px 0 6px}
+  .cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin:34px 0 30px}
+  .mcard:hover{border-color:var(--gold);box-shadow:0 18px 36px -18px rgba(20,18,17,.35);transform:translateY(-3px)}
+  .mcard{transition:border-color .2s,box-shadow .2s,transform .2s}
+  .mcard .nm{font-size:20px}.mcard .pr{font-size:13.5px}.mcard .pr b{font-size:16px}
+  .vercol{font-size:14.5px;padding:12px 8px}
+  #viewColl{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);column-gap:56px;align-items:start;padding-bottom:30px}
+  #viewColl>.topbar,#viewColl>.pick-head{grid-column:1 / -1}
+  .coll-left{grid-column:1}
+  .coll-right{grid-column:2;position:sticky;top:24px;padding-top:6px}
+  .coll-right .opt-label:first-child{margin-top:4px}
+  .thumbs{flex-wrap:wrap;overflow:visible}
+  .thumbs button{flex:0 0 72px;height:72px}
+  .chip{font-size:15px;padding:12px 20px}
+  .opt-total .value{font-size:36px}
+  #viewCart{max-width:760px;margin:0 auto;padding-bottom:30px}
+  .citem{padding:16px;gap:18px}.citem img{width:104px;height:104px}.citem h4{font-size:20px}
+  .sheet{align-items:center}
+  .sheet-card{max-width:440px;border-radius:16px;padding:34px 30px}
+  .sticky-cta{max-width:none}
+  .sticky-cta a{max-width:380px;margin:0 auto}
+}
+@media (min-width:1280px){
+  .hero h1{font-size:62px}
+}
 </style>
 </head>
 <body>
@@ -374,6 +448,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
     <div class="eyebrow">Coleção</div>
     <h2 class="section-title" style="margin-top:6px" id="collTitle">Flara</h2>
   </section>
+  <div class="coll-left">
   <div class="carousel coll-track">
     <div class="track" id="ctrack"></div>
     <button type="button" class="car-btn prev" id="cprev" aria-label="Foto anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg></button>
@@ -381,6 +456,8 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   </div>
   <div class="car-cap" id="ccap"></div>
   <div class="thumbs" id="cthumbs"></div>
+  </div>
+  <div class="coll-right">
   <div class="opt-label">Cor <b id="optColorName"></b></div>
   <div class="chips" id="optColors" role="group" aria-label="Cor"></div>
   <div class="opt-label">Tamanho do sofá <b id="optSizeName"></b></div>
@@ -388,6 +465,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   <div class="opt-total"><span class="label"><s id="optOld"></s></span><div><span class="value" id="optTotal"></span><span class="pix" id="optPix"></span></div></div>
   <button type="button" id="addCart" class="btn-primary" style="margin-top:16px">Adicionar ao carrinho</button>
   <div class="trust-line" style="margin-bottom:8px">Brinde: 2 almofadas · Pix ou cartão</div>
+  </div>
 </div>
 
 <div id="viewCart" hidden>
@@ -418,7 +496,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 
 <footer>
   <div class="logo">Navell Enxovais</div>
-  <p>Compra 100% segura, com dados protegidos e checkout criptografado. Envio para todo o Brasil com rastreamento.</p>
+  <p>Dados protegidos e checkout criptografado. Envio para todo o Brasil com rastreamento.</p>
   <img class="secure" alt="Compra 100% segura. Seus dados estão protegidos" src="img/selo-compra-segura.png">
   <p class="warn">Desconfie de preços muito baixos fora deste site. Este é o canal oficial de vendas da Navell Enxovais.</p>
   <div class="pay-icons"><span>Pix</span><span>Cartão</span><span>Boleto</span></div>
