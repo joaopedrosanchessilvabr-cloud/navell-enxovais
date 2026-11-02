@@ -191,6 +191,9 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 .back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--gold-light);font:600 12px 'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none;padding:16px 4px 4px}
 .back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .pick-head{text-align:center;padding:6px 4px 4px}
+.infobtn{display:block;margin:16px auto 0;max-width:340px;padding:12px 16px;background:none;border:1.5px solid var(--btn);color:var(--btn);border-radius:4px;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-align:center;text-decoration:none;line-height:1.35}
+.sizes-blk{margin:30px 0 10px}
+.sizes-blk .section-title{text-align:center}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0 22px}
 .cards .mcard:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 6px)}
 .mcard{position:relative;display:flex;flex-direction:column;background:var(--bg-panel);border:1.5px solid var(--line);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
@@ -324,7 +327,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   .mcard .nm{font-size:20px}.mcard .pr{font-size:13.5px}.mcard .pr b{font-size:16px}
   .vercol{font-size:14.5px;padding:12px 8px}
   #viewColl{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);column-gap:56px;align-items:start;padding-bottom:30px}
-  #viewColl>.topbar,#viewColl>.pick-head{grid-column:1 / -1}
+  #viewColl>.topbar,#viewColl>.pick-head,#viewColl>.sizes-blk{grid-column:1 / -1}
   .coll-left{grid-column:1}
   .coll-right{grid-column:2;position:sticky;top:24px;padding-top:6px}
   .coll-right .opt-label:first-child{margin-top:4px}
@@ -347,9 +350,9 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 </head>
 <body>
 
-<div class="announce">Pré Black Friday &nbsp;•&nbsp; 50% OFF</div>
+<div class="announce" hidden>Pré Black Friday &nbsp;•&nbsp; 50% OFF</div>
 
-<div id="viewHome">
+<div id="viewHome" hidden>
 <div class="hero" id="hero">
   <h1>Seu sofá renovado<em>em poucos minutos</em></h1>
   <p class="hero-sub">Capas de sofá em algodão e poliéster, com encaixe sem costura.</p>
@@ -473,12 +476,13 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 
 </div>
 
-<div id="viewModels" hidden>
-  <div class="topbar"><a class="back" href="#"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg>Voltar</a><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
+<div id="viewModels">
+  <div class="topbar"><span></span><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
   <section class="pick-head">
     <div class="eyebrow">Coleções</div>
     <h2 class="section-title" style="margin-top:6px">Escolha o seu <span>modelo</span></h2>
     <p class="section-lead" style="margin-bottom:0">Entre na coleção, escolha a cor e adicione ao carrinho.</p>
+    <a href="#sobre" class="infobtn">Clique aqui para mais informações e especificações</a>
   </section>
   <div class="cards" id="cards">
     <div class="mcard" data-m="flara"><button type="button" class="pick" aria-label="Abrir coleção Flara"><img alt="Capa de sofá Flara" src="img/capa-flara-cartao.webp"><span class="info"><span class="nm">Flara</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="flara">Ver coleção</button></div>
@@ -486,6 +490,11 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
     <div class="mcard" data-m="melina"><button type="button" class="pick" aria-label="Abrir coleção Melina"><img alt="Capa de sofá Melina" src="img/capa-melina-cartao.webp"><span class="info"><span class="nm">Melina</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="melina">Ver coleção</button></div>
     <div class="mcard" data-m="dalia"><button type="button" class="pick" aria-label="Abrir coleção Dália"><img alt="Capa de sofá Dália" src="img/capa-dalia-cartao.webp"><span class="info"><span class="nm">Dália</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="dalia">Ver coleção</button></div><div class="mcard" data-m="ayla"><button type="button" class="pick" aria-label="Abrir coleção Ayla"><img alt="Capa de sofá Ayla" loading="lazy" src="img/ayla-capa2.webp"><span class="info"><span class="nm">Ayla</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="ayla">Ver coleção</button></div><div class="mcard" data-m="alina"><button type="button" class="pick" aria-label="Abrir coleção Alina"><img alt="Capa de sofá Alina" loading="lazy" src="img/alina-capa2.webp"><span class="info"><span class="nm">Alina</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="alina">Ver coleção</button></div><div class="mcard" data-m="celina"><button type="button" class="pick" aria-label="Abrir coleção Celina"><img alt="Capa de sofá Celina" loading="lazy" src="img/celina-capa2.webp"><span class="info"><span class="nm">Celina</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="celina">Ver coleção</button></div><div class="mcard" data-m="aurora"><button type="button" class="pick" aria-label="Abrir coleção Aurora"><img alt="Capa de sofá Aurora" loading="lazy" src="img/aurora-capa2.webp"><span class="info"><span class="nm">Aurora</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="aurora">Ver coleção</button></div><div class="mcard" data-m="lumira"><button type="button" class="pick" aria-label="Abrir coleção Lumira"><img alt="Capa de sofá Lumira" loading="lazy" src="img/lumira-capa2.webp"><span class="info"><span class="nm">Lumira</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="lumira">Ver coleção</button></div><div class="mcard" data-m="magna"><button type="button" class="pick" aria-label="Abrir coleção Magna"><img alt="Capa de sofá Magna" loading="lazy" src="img/magna-capa2.webp"><span class="info"><span class="nm">Magna</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="magna">Ver coleção</button></div><div class="mcard" data-m="renovare"><button type="button" class="pick" aria-label="Abrir coleção Renovare"><img alt="Capa de sofá Renovare" loading="lazy" src="img/renovare-capa2.webp"><span class="info"><span class="nm">Renovare</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="renovare">Ver coleção</button></div><div class="mcard" data-m="lana"><button type="button" class="pick" aria-label="Abrir coleção Lana"><img alt="Capa de sofá Lana" loading="lazy" src="img/lana-capa2.webp"><span class="info"><span class="nm">Lana</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="lana">Ver coleção</button></div><div class="mcard" data-m="luma"><button type="button" class="pick" aria-label="Abrir coleção Luma"><img alt="Capa de sofá Luma" loading="lazy" src="img/luma-capa2.webp"><span class="info"><span class="nm">Luma</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="luma">Ver coleção</button></div><div class="mcard" data-m="mila"><button type="button" class="pick" aria-label="Abrir coleção Mila"><img alt="Capa de sofá Mila" loading="lazy" src="img/mila-capa2.webp"><span class="info"><span class="nm">Mila</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="mila">Ver coleção</button></div><div class="mcard" data-m="cloe"><button type="button" class="pick" aria-label="Abrir coleção Cloe"><img alt="Capa de sofá Cloe" loading="lazy" src="img/cloe-capa2.webp"><span class="info"><span class="nm">Cloe</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="cloe">Ver coleção</button></div>
   </div>
+  <section class="sizes-blk">
+    <h2 class="section-title">Qual <span>tamanho</span> escolher</h2>
+    <div class="tablewrap"><table class="size-table"><tbody class="sizeTbl"></tbody></table></div>
+    <p class="size-note">Medidas aproximadas do sofá. Em caso de dúvida, fale com a gente antes de comprar.</p>
+  </section>
 </div>
 
 <div id="viewColl" hidden>
@@ -512,6 +521,11 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   <button type="button" id="addCart" class="btn-primary" style="margin-top:16px">Adicionar ao carrinho</button>
   <div class="trust-line" style="margin-bottom:8px">Brinde: 2 almofadas · Pix ou cartão</div>
   </div>
+  <section class="sizes-blk">
+    <h2 class="section-title">Qual <span>tamanho</span> escolher</h2>
+    <div class="tablewrap"><table class="size-table"><tbody class="sizeTbl"></tbody></table></div>
+    <p class="size-note">Medidas aproximadas do sofá. Em caso de dúvida, fale com a gente antes de comprar.</p>
+  </section>
 </div>
 
 <div id="viewCart" hidden>
@@ -590,6 +604,7 @@ $("nextBtn").onclick=function(){track.scrollBy({left:track.clientWidth,behavior:
 track.addEventListener("scroll",function(){clearTimeout(carSync.t);carSync.t=setTimeout(carSync,40)});
 window.addEventListener("resize",carSync);carSync();
 $("gallery").innerHTML=[1,2,3].map(function(i){return'<figure>'+photo(i)+'<figcaption>'+CONFIG.photoLabels[i]+'</figcaption></figure>'}).join("");
+Array.prototype.forEach.call(document.querySelectorAll(".sizeTbl"),function(t){t.innerHTML='<tr><th>Tamanho</th><th>Largura</th><th>Sofá</th><th>Preço</th></tr>'+CONFIG.sizes.map(function(s){return'<tr><td>'+s.n+'</td><td>'+s.w+'</td><td>'+s.use+'</td><td>'+brl(s.price)+'</td></tr>'}).join("")});
 $("sizeTable").innerHTML='<tr><th>Tamanho</th><th>Largura</th><th>Preço</th></tr>'+CONFIG.sizes.map(function(s){return'<tr><td>'+s.n+'</td><td>'+s.w+'</td><td>'+brl(s.price)+'</td></tr>'}).join("");
 var s0=CONFIG.sizes[0];
 $("heroOld").textContent=brl(s0.old);$("heroPrice").textContent=brl(s0.price);
@@ -610,7 +625,7 @@ function show(v){
   refresh();window.scrollTo(0,0);
 }
 function setHash(h){try{if(h){location.hash=h}else if(location.hash){history.replaceState(null,"",location.pathname+location.search)}}catch(e){}}
-function go(v){if(v==="carrinho")renderCart();setHash(v==="home"?"":v);show(v)}
+function go(v){if(v==="carrinho")renderCart();setHash(v==="home"?"sobre":(v==="modelos"?"":v));show(v)}
 /* carrinho */
 var CART=[];
 try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i){return KEYS.indexOf(i.k)>-1&&COLORS[i.k].indexOf(i.color)>-1&&CONFIG.sizes[i.s]&&i.qty>0})}catch(e){CART=[]}
@@ -705,17 +720,19 @@ document.addEventListener("click",function(e){
   var a=t.closest("a[href]");if(!a)return;
   var h=a.getAttribute("href");
   if(h==="#modelos"){e.preventDefault();go("modelos")}
+  else if(h==="#sobre"){e.preventDefault();go("home")}
   else if(h==="#"&&a.classList.contains("back")){e.preventDefault();go("home")}
 });
 window.addEventListener("hashchange",function(){
   var h=location.hash;
-  if(h==="#modelos")show("modelos");
+  if(h==="#sobre")show("home");
   else if(h==="#carrinho"){renderCart();show("carrinho")}
-  else if(h===""||h==="#")show("home");
+  else if(h===""||h==="#"||h==="#modelos")show("modelos");
 });
 badge();
-if(location.hash==="#modelos")show("modelos");
+if(location.hash==="#sobre")show("home");
 else if(location.hash==="#carrinho"){renderCart();show("carrinho")}
+else show("modelos");
 </script>
 
 </body>
