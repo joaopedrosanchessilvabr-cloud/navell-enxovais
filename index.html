@@ -67,6 +67,8 @@ h1,h2,h3{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing
 .price-strip .now{font-family:'Oswald',sans-serif;font-size:30px;color:var(--gold-light);font-weight:600;font-variant-numeric:tabular-nums}
 .price-strip .pix{font-size:12.5px;color:var(--ink-dim)}
 .price-strip .pix b{color:var(--gold)}
+.price-from{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);margin-bottom:2px}
+.price-note{font-size:11.5px;line-height:1.45;color:var(--ink-dim);margin:-8px auto 16px;max-width:300px}
 .btn-primary{display:block;width:100%;background:var(--btn);color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;text-transform:uppercase;text-align:center;text-decoration:none;padding:16px 18px;border-radius:4px;border:none;cursor:pointer;box-shadow:0 10px 26px -10px rgba(150,89,42,.35)}
 .btn-primary:focus-visible,.size-opt:focus-visible,.color-opt:focus-visible,summary:focus-visible{outline:3px solid var(--gold-light);outline-offset:2px}
 .trust-line{margin-top:12px;font-size:11.5px;color:var(--ink-dim);display:flex;align-items:center;justify-content:center;gap:6px}
@@ -257,6 +259,8 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   .hero h1{font-size:56px;line-height:1.04;margin-bottom:18px}
   .hero-sub{font-size:18px;max-width:440px;margin:0 0 28px}
   .price-strip{justify-content:flex-start;margin-bottom:24px}
+  .price-from{font-size:12px}
+  .price-note{font-size:13px;margin:-10px 0 20px;max-width:none}
   .price-strip .now{font-size:40px}.price-strip .old{font-size:16px}.price-strip .pix{font-size:14px}
   .hero .btn-primary{width:auto;max-width:360px;font-size:17px;padding:18px 28px}
   .hero .trust-line{justify-content:flex-start;font-size:13px}
@@ -331,11 +335,13 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   <h1>Seu sofá renovado<em>em poucos minutos</em></h1>
   <p class="hero-sub">Capas de sofá em algodão e poliéster, com encaixe sem costura.</p>
   <div class="hero-photo"><div class="hero-img-wrap" id="heroImg"></div><div class="gift-bubble"><small>Brinde</small><b>2</b><i>almofadas</i></div></div>
+  <div class="price-from">A partir de</div>
   <div class="price-strip">
     <span class="old" id="heroOld"></span>
     <span class="now" id="heroPrice"></span>
     <span class="pix" id="heroPix"></span>
   </div>
+  <p class="price-note">O valor varia conforme o tamanho do sofá. Confira a tabela de tamanhos abaixo.</p>
   <a href="#modelos" class="btn-primary">Quero minha capa</a>
   <div class="trust-line">Escolha os modelos</div>
 </div>
