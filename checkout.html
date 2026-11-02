@@ -314,11 +314,13 @@ $("finalCta").addEventListener("click",function(){
 var PAID=["paid","approved","completed","confirmed"],DEAD=["cancelled","canceled","expired","failed"];
 function poll(id,info){
   if(!id)return;$("wait").hidden=false;var t0=Date.now();
-  var timer=setInterval(function(){
+  var timer=null,fin=false;
+  function tick(){
+    if(fin)return;
     if(Date.now()-t0>15*60*1000){clearInterval(timer);$("wait").hidden=true;return}
     fetch("/api/check-pix-status?id="+encodeURIComponent(id)).then(function(r){return r.ok?r.json():null}).then(function(d){
       if(!d)return;var s=(d.status||"").toLowerCase();
-      if(PAID.indexOf(s)>-1){clearInterval(timer);
+      if(PAID.indexOf(s)>-1){fin=true;clearInterval(timer);
         try{localStorage.setItem("navell_last_order",JSON.stringify({order:info.order,total:info.total,sub:sub,disc:Math.round((sub-prod)*100)/100,ship:{n:SHIP[shipKey].n,p:SHIP[shipKey].p,d:SHIP[shipKey].d},name:v("name"),email:v("email"),
           addr:v("address")+", "+v("number")+(v("complement")?" - "+v("complement"):"")+" · "+v("neighborhood")+" · "+v("city")+"/"+v("state").toUpperCase()+" · CEP "+v("cep"),
           items:CART.map(function(i){return{n:NAMES[i.k],color:i.color,size:SIZES[i.s].n,qty:i.qty,price:SIZES[i.s].price*i.qty,img:THUMB[i.k]}})}))}catch(e){}
@@ -326,7 +328,11 @@ function poll(id,info){
         location.href="obrigado.html?"+new URLSearchParams({total:info.total,order:info.order}).toString()}
       else if(DEAD.indexOf(s)>-1){clearInterval(timer);$("wait").hidden=true;$("pixError").textContent="Este Pix não foi confirmado (cancelado ou expirado). Atualize a página para gerar um novo código."}
     }).catch(function(){});
-  },4000);
+  }
+  timer=setInterval(tick,4000);
+  /* ao voltar do app do banco, confere o pagamento na hora (o navegador do celular pausa a página em segundo plano) */
+  document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")tick()});
+  window.addEventListener("pageshow",tick);window.addEventListener("focus",tick);
 }
 $("copyBtn").addEventListener("click",function(){var b=this,txt=$("pixCode").textContent;
   var ok=function(){b.textContent="Código copiado!";setTimeout(function(){b.textContent="Copiar código"},2200)};
