@@ -106,6 +106,7 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
   #step3 .sum{display:none}
 }
 </style>
+<script src="fb.js"></script>
 </head>
 <body>
 <header class="head">
@@ -216,6 +217,7 @@ var SHIP={sedex:{n:"SEDEX",p:29.90,d:"3 a 7 dias úteis"},jadlog:{n:"Jadlog",p:2
 var shipKey="loggi";
 var prod=Math.round(sub*(1-PIX)*100)/100;
 var total=prod+SHIP[shipKey].p;
+if(CART.length&&window.navellTrack)navellTrack("InitiateCheckout",{content_ids:CART.map(function(i){return i.k}),content_type:"product",contents:CART.map(function(i){return{id:i.k,quantity:i.qty}}),num_items:CART.reduce(function(a,i){return a+i.qty},0),value:sub,currency:"BRL"});
 $("cart").innerHTML=CART.map(function(i){var z=SIZES[i.s];
   return'<div class="cit"><img alt="" src="'+THUMB[i.k]+'"><div class="i"><strong>CAPA DE SOFÁ '+NAMES[i.k].toUpperCase()+'</strong><small>'+i.color+' · '+z.n+' · Qtd: '+i.qty+'</small></div><b>'+brl(z.price*i.qty)+'</b></div>'}).join("");
 var shipShown=false;
@@ -299,6 +301,7 @@ $("finalCta").addEventListener("click",function(){
     $("pixCode").textContent=d.qrcode;$("pixCode").hidden=false;$("copyBtn").hidden=false;$("backBtn").hidden=true;
     $("pixHelp").textContent="Escaneie o QR code com o app do seu banco ou copie o código abaixo. Assim que o pagamento for aprovado, esta página avança sozinha.";
     btn.textContent="Pix gerado ✓";done=true;
+    window.navellTrack&&navellTrack("AddPaymentInfo",{value:total,currency:"BRL",content_type:"product",content_ids:CART.map(function(i){return i.k})});
     poll(d.internal_id,{total:total,order:d.order||d.external_id||d.internal_id||""});
   }).catch(function(){err.textContent="Erro ao conectar com o gateway de pagamento. Verifique sua internet e tente novamente.";btn.disabled=false;btn.textContent="Gerar Pix"});
 });

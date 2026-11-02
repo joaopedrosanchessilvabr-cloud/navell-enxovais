@@ -325,6 +325,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   .hero h1{font-size:62px}
 }
 </style>
+<script src="fb.js"></script>
 </head>
 <body>
 
@@ -631,6 +632,7 @@ function openColl(k){
   $("cthumbs").innerHTML=list.map(function(u,i){return'<button type="button" data-i="'+i+'" aria-label="Ver foto '+(i+1)+'"><img alt="" src="'+u+'"></button>'}).join("");
   t.scrollLeft=0;renderOpts();
   setHash(k);show("coll");t.scrollLeft=0;collSync();
+  window.navellTrack&&navellTrack("ViewContent",{content_ids:[k],content_name:"Capa de sofá "+nameOf(k),content_type:"product",value:CONFIG.sizes[0].price,currency:"BRL"});
 }
 function collSync(){
   var t=$("ctrack"),n=t.children.length,i=n?Math.max(0,Math.min(n-1,Math.round(t.scrollLeft/(t.clientWidth||1)))):0;
@@ -647,6 +649,7 @@ $("addCart").onclick=function(){
   var color=COLORS[cur.k][cur.c],hit=CART.filter(function(i){return i.k===cur.k&&i.color===color&&i.s===cur.s})[0];
   if(hit){if(hit.qty<10)hit.qty++}else CART.push({k:cur.k,color:color,s:cur.s,qty:1});
   saveCart();badge();
+  window.navellTrack&&navellTrack("AddToCart",{content_ids:[cur.k],content_name:"Capa de sofá "+nameOf(cur.k),content_type:"product",contents:[{id:cur.k,quantity:1}],value:CONFIG.sizes[cur.s].price,currency:"BRL"});
   $("sheetTxt").textContent=nameOf(cur.k)+" · "+color+" · "+CONFIG.sizes[cur.s].n;
   $("sheet").hidden=false;
 };

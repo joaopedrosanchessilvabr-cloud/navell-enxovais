@@ -46,6 +46,7 @@ h1{font:600 30px/1.1 'Oswald',sans-serif;text-transform:uppercase;margin:8px 0 1
   .hero{padding:56px 0 16px}h1{font-size:42px}.lead{font-size:16px;max-width:520px}
 }
 </style>
+<script src="fb.js"></script>
 </head>
 <body>
 <div class="bar">Navell Enxovais</div>
@@ -98,6 +99,16 @@ var o=null;try{o=JSON.parse(localStorage.getItem("navell_last_order")||"null")}c
 if(o&&oid&&o.order!==oid)o=null;   /* resumo só se for o mesmo pedido */   /* só mostra o resumo se for o mesmo pedido */
 if(!oid&&o&&o.order)oid=o.order;
 if(oid){$("oid").textContent=oid;$("orderPill").hidden=false}
+/* Pixel: registra a compra uma única vez por pedido (evita duplicar ao atualizar a página) */
+(function(){
+  var val=(o&&o.total!=null)?Number(o.total):(isNaN(tot)?null:tot);
+  if(!oid||val==null||isNaN(val))return;
+  var key="navell_pixel_purchase_"+oid;
+  try{if(localStorage.getItem(key))return}catch(e){}
+  var items=(o&&o.items)||[];
+  if(window.navellTrack)navellTrack("Purchase",{value:val,currency:"BRL",content_type:"product",num_items:items.reduce(function(a,i){return a+(+i.qty||1)},0)||1,order_id:oid},"purchase_"+oid);
+  try{localStorage.setItem(key,"1")}catch(e){}
+})();
 if(o){
   var first=(o.name||"").trim().split(/\s+/)[0];
   if(first)$("lead").textContent=first+", recebemos o seu pagamento via Pix. Obrigado por comprar na Navell Enxovais.";
