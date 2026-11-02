@@ -148,12 +148,13 @@ section{padding:0 4px}
 .empty-rev{border:1px dashed var(--gold-dim);border-radius:8px;padding:26px 18px;text-align:center;color:var(--ink-dim);font-size:13px;line-height:1.55}
 .empty-rev b{display:block;font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:500;color:var(--ink);font-size:16px;margin-bottom:4px;letter-spacing:.02em}
 
-.rev{background:var(--bg-panel);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;margin-bottom:12px;position:relative}
-.rev::before{content:'\201C';position:absolute;top:2px;left:12px;font:700 46px/1 'Cormorant Garamond',Georgia,serif;color:var(--gold-dim)}
-.rev p{font-size:14px;line-height:1.6;padding-left:26px;color:var(--ink)}
-.rev footer{padding:10px 0 0 26px;text-align:left;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-dim)}
-.rev footer strong{color:var(--gold-light);font-weight:600}
-.rev-note{font-size:11.5px;color:var(--ink-dim);text-align:center;margin-top:4px}
+.revgrid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
+.rev{background:var(--bg-panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.rev p{font-size:14px;line-height:1.65;color:var(--ink-dim);margin:0}
+.rev footer{padding:0;text-align:left;margin-top:auto;font-size:12px;color:var(--ink-dim)}
+.rev footer strong{display:block;font:600 14px 'Inter',system-ui,sans-serif;color:var(--ink);margin-bottom:1px}
+.rev-note{font-size:11.5px;color:var(--ink-dim);text-align:center;margin-top:12px}
+@media (min-width:900px){.revgrid{grid-template-columns:repeat(3,1fr)}}
 .faq-item{border-bottom:1px solid var(--line)}
 .faq-item summary{list-style:none;cursor:pointer;padding:16px 4px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;font-weight:500}
 .faq-item summary::-webkit-details-marker{display:none}
@@ -422,19 +423,21 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 
 <div class="cross-divider"><span></span></div>
 <section id="avaliacoes">
-  <h2 class="section-title">O que nossas <span>clientes dizem</span></h2>
-  <blockquote class="rev">
-    <p>Nossa loja muito boa!!! Comprei tem 1 semana e chegou tudo certinho! Adorei</p>
-    <footer><strong>Maria C.</strong> · cliente Navell</footer>
-  </blockquote>
-  <blockquote class="rev">
-    <p>Comprei com zero expectativas e quando chegou aqui em casa eu achei o máximo, bom acabamento, boa qualidade e uma ótima textura</p>
-    <footer><strong>Ana Julia S.</strong> · cliente Navell</footer>
-  </blockquote>
-  <blockquote class="rev">
-    <p>Estava procurando isso há 3 meses e adorei os conjuntos, por isso comprei logo 2 e semana que vem vou comprar mais 2!!! Fica ótimo na sala recomendo demais</p>
-    <footer><strong>Fernanda F.</strong> · cliente Navell</footer>
-  </blockquote>
+  <h2 class="section-title">Quem comprou, <span>aprovou</span></h2>
+  <div class="revgrid">
+    <blockquote class="rev">
+      <p>Nossa loja muito boa!!! Comprei tem 1 semana e chegou tudo certinho! Adorei</p>
+      <footer><strong>Maria C.</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Comprei com zero expectativas e quando chegou aqui em casa eu achei o máximo, bom acabamento, boa qualidade e uma ótima textura</p>
+      <footer><strong>Ana Julia S.</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Estava procurando isso há 3 meses e adorei os conjuntos, por isso comprei logo 2 e semana que vem vou comprar mais 2!!! Fica ótimo na sala recomendo demais</p>
+      <footer><strong>Fernanda F.</strong>Cliente Navell</footer>
+    </blockquote>
+  </div>
   <p class="rev-note">Mensagens enviadas por clientes pelo WhatsApp.</p>
 </section>
 
