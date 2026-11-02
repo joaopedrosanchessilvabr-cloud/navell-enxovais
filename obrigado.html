@@ -19,8 +19,9 @@ body{background:var(--bg);color:var(--ink);font:14px/1.5 'Inter',system-ui,sans-
 .eyebrow{font:12px 'Cinzel',serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 h1{font:600 30px/1.1 'Oswald',sans-serif;text-transform:uppercase;margin:8px 0 12px}
 .lead{color:var(--ink-dim);line-height:1.6;max-width:440px;margin:0 auto}
-.order{display:inline-flex;gap:8px;align-items:center;margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:30px;padding:8px 16px;font-size:12.5px;color:var(--ink-dim)}
-.order b{color:var(--ink);letter-spacing:.03em;word-break:break-all}
+.order{display:inline-block;margin-top:20px;background:var(--panel);border:1px solid var(--gold-dim);border-radius:12px;padding:12px 26px;text-align:center}
+.order span{display:block;font:11px 'Cinzel',serif;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim)}
+.order b{display:block;font:600 28px 'Oswald',sans-serif;letter-spacing:.08em;color:var(--gold-light);font-variant-numeric:tabular-nums;word-break:break-all}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 16px;margin-top:22px}
 .card h2{font:600 13px 'Oswald',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-light);padding:14px 0 6px}
 .it{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
@@ -54,7 +55,7 @@ h1{font:600 30px/1.1 'Oswald',sans-serif;text-transform:uppercase;margin:8px 0 1
   <p class="eyebrow">Pix aprovado</p>
   <h1>Pagamento confirmado!</h1>
   <p class="lead" id="lead">Recebemos o seu pagamento. Obrigado por comprar na Navell Enxovais.</p>
-  <div class="order" id="orderPill" hidden><span>Pedido</span><b id="oid"></b></div>
+  <div class="order" id="orderPill" hidden><span>Número do pedido</span><b id="oid"></b></div>
 </header>
 
 <div class="grid">
@@ -94,7 +95,8 @@ function brl(v){return Number(v).toLocaleString("pt-BR",{style:"currency",curren
 function esc(t){var d=document.createElement("div");d.textContent=t==null?"":String(t);return d.innerHTML}
 var q=new URLSearchParams(location.search),oid=q.get("order"),tot=parseFloat(q.get("total"));
 var o=null;try{o=JSON.parse(localStorage.getItem("navell_last_order")||"null")}catch(e){}
-if(o&&oid&&o.order!==oid)o=null;   /* só mostra o resumo se for o mesmo pedido */
+if(o&&oid&&o.order!==oid)o=null;   /* resumo só se for o mesmo pedido */   /* só mostra o resumo se for o mesmo pedido */
+if(!oid&&o&&o.order)oid=o.order;
 if(oid){$("oid").textContent=oid;$("orderPill").hidden=false}
 if(o){
   var first=(o.name||"").trim().split(/\s+/)[0];
