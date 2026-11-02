@@ -1,11 +1,22 @@
 // Catálogo e preços — usado pelo servidor para validar carrinhos e recalcular valores.
-export const KEYS = ['flara', 'stella', 'melina', 'dalia'];
-export const NAMES = { flara: 'Flara', stella: 'Stella', melina: 'Melina', dalia: 'Dália' };
+export const KEYS = ['flara', 'stella', 'melina', 'dalia', 'ayla', 'alina', 'celina', 'aurora', 'lumira', 'magna', 'renovare', 'lana', 'luma', 'mila', 'cloe'];
+export const NAMES = { flara: 'Flara', stella: 'Stella', melina: 'Melina', dalia: 'Dália', ayla: 'Ayla', alina: 'Alina', celina: 'Celina', aurora: 'Aurora', lumira: 'Lumira', magna: 'Magna', renovare: 'Renovare', lana: 'Lana', luma: 'Luma', mila: 'Mila', cloe: 'Cloe' };
 export const COLORS = {
   flara: ['Azul', 'Preto', 'Rosa', 'Bege'],
   stella: ['Preto', 'Bege', 'Cinza', 'Vermelho', 'Verde'],
   melina: ['Preto', 'Marrom', 'Azul', 'Cinza'],
   dalia: ['Preto', 'Marrom', 'Bege', 'Azul', 'Verde'],
+  ayla: ['Preto', 'Bege', 'Cinza', 'Laranja', 'Grafite'],
+  alina: ['Marrom', 'Preto', 'Cinza', 'Bege', 'Grafite'],
+  celina: ['Cinza', 'Marrom', 'Bege', 'Branco', 'Preto'],
+  aurora: ['Branco', 'Marrom', 'Cinza', 'Grafite', 'Preto'],
+  lumira: ['Cinza', 'Verde', 'Marrom', 'Preto', 'Branco'],
+  magna: ['Bege', 'Marrom', 'Preto', 'Branco', 'Verde'],
+  renovare: ['Verde', 'Marrom', 'Preto e Branco', 'Misto'],
+  lana: ['Bege', 'Preto', 'Cinza', 'Marrom', 'Verde'],
+  luma: ['Marrom', 'Preto', 'Bege', 'Café', 'Verde'],
+  mila: ['Branco', 'Marrom', 'Preto', 'Laranja', 'Bege'],
+  cloe: ['Marrom', 'Preto', 'Bege', 'Verde'],
 };
 export const SIZES = [
   { n: '2 lugares', price: 69.9 },
