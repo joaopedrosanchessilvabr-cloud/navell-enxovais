@@ -27,3 +27,7 @@ window.navellVid=function(){
     }catch(e){}
   };
 })();
+
+/* Modo de teste temporário: guarda o código do link (?t=...) durante a visita */
+try{var _t=new URLSearchParams(location.search).get("t");if(_t)sessionStorage.setItem("navell_t",_t)}catch(e){}
+window.navellTeste=function(){try{return sessionStorage.getItem("navell_t")||""}catch(e){return""}};
