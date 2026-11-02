@@ -5,38 +5,112 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#6E3F1D">
-<title>Pedido confirmado — Navell Enxovais</title>
+<title>Pagamento confirmado — Navell Enxovais</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Cinzel:wght@500;600;700&display=swap">
 <style>
-:root{--bg:#FCFAF7;--panel:#fff;--panel2:#F4EEE8;--btn:#96592A;--gold:#B97B45;--gold-light:#96592A;--ink:#141211;--ink-dim:#6B625B;--line:#E8DED4;color-scheme:light}
+:root{--bg:#FCFAF7;--panel:#fff;--panel2:#F4EEE8;--btn:#96592A;--gold:#B97B45;--gold-light:#96592A;--gold-dim:#E3CDB8;--ink:#141211;--ink-dim:#6B625B;--line:#E8DED4;color-scheme:light}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font:14px/1.5 'Inter',system-ui,sans-serif;max-width:480px;margin:0 auto;padding:48px max(20px,env(safe-area-inset-right,0px)) 40px max(20px,env(safe-area-inset-left,0px));text-align:center}
-.ok{width:64px;height:64px;border-radius:50%;background:var(--btn);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
-.eyebrow{font:12px 'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-h1{font:600 26px 'Oswald',sans-serif;text-transform:uppercase;margin:8px 0 10px}
-p{color:var(--ink-dim);line-height:1.6;margin-bottom:18px}
-.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 16px;margin:22px 0;text-align:left}
-.r{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
-.r:last-child{border-bottom:0}.r span{color:var(--ink-dim)}.r strong{word-break:break-all;text-align:right}
-.gift{font:600 11px 'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-light);background:var(--panel2);border:1px dashed #E3CDB8;border-radius:8px;padding:9px}
-.btn{display:block;margin-top:22px;background:var(--btn);color:#fff;font:600 14.5px 'Oswald',sans-serif;letter-spacing:.03em;text-transform:uppercase;text-decoration:none;padding:15px;border-radius:6px}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 'Inter',system-ui,sans-serif;max-width:560px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.bar{background:#6E3F1D;color:#fff;text-align:center;font:600 12.5px 'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:10px;margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px))) 0 calc(-1*max(16px,env(safe-area-inset-right,0px)))}
+.hero{text-align:center;padding:40px 0 8px}
+.ok{width:72px;height:72px;border-radius:50%;background:var(--btn);margin:0 auto 20px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 7px var(--gold-dim)}
+.ok svg{width:34px;height:34px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.eyebrow{font:12px 'Cinzel',serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+h1{font:600 30px/1.1 'Oswald',sans-serif;text-transform:uppercase;margin:8px 0 12px}
+.lead{color:var(--ink-dim);line-height:1.6;max-width:440px;margin:0 auto}
+.order{display:inline-flex;gap:8px;align-items:center;margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:30px;padding:8px 16px;font-size:12.5px;color:var(--ink-dim)}
+.order b{color:var(--ink);letter-spacing:.03em;word-break:break-all}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 16px;margin-top:22px}
+.card h2{font:600 13px 'Oswald',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-light);padding:14px 0 6px}
+.it{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.it img{width:56px;height:56px;border-radius:6px;object-fit:cover;border:1px solid var(--line);flex:none}
+.it .i{flex:1;min-width:0}.it strong{display:block;font-size:13px}.it small{display:block;font-size:11.5px;color:var(--ink-dim)}
+.it b{font:600 15px 'Oswald',sans-serif;color:var(--gold-light)}
+.r{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:13px;color:var(--ink-dim)}
+.r strong{color:var(--ink);font-weight:500;text-align:right}
+.r.g strong{color:var(--gold-light)}
+.r.t{border-top:1px solid var(--line);margin-top:2px;padding:14px 0 12px}.r.t span{color:var(--ink);font-weight:600;font-size:14px}.r.t strong{font:600 22px 'Oswald',sans-serif;color:var(--gold-light)}
+.addr{padding:4px 0 14px;font-size:13px;color:var(--ink-dim);line-height:1.6}
+.gift{margin-top:14px;text-align:center;font:600 12px 'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-light);background:var(--panel2);border:1px dashed var(--gold);border-radius:8px;padding:11px}
+.steps{list-style:none;counter-reset:s;padding:2px 0 10px}
+.steps li{counter-increment:s;display:flex;gap:14px;align-items:flex-start;padding:10px 0}
+.steps li::before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;background:var(--panel2);border:1px solid var(--gold-dim);color:var(--gold-light);font:600 13px 'Oswald',sans-serif;display:flex;align-items:center;justify-content:center}
+.steps strong{display:block;font-size:13.5px}.steps small{display:block;font-size:12.5px;color:var(--ink-dim);line-height:1.5}
+.btn{display:block;margin-top:24px;background:var(--btn);color:#fff;text-align:center;text-decoration:none;font:600 15px 'Oswald',sans-serif;letter-spacing:.03em;text-transform:uppercase;padding:16px;border-radius:6px}
+.fine{text-align:center;font-size:11.5px;color:var(--ink-dim);margin-top:16px}
+@media (min-width:900px){
+  body{max-width:880px}
+  .bar{margin:0 calc(50% - 50vw)}
+  .hero{padding:56px 0 16px}h1{font-size:44px}.lead{font-size:16px;max-width:520px}
+  .grid{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:start}
+  .grid .card{margin-top:22px}
+  .btn{max-width:360px;margin-left:auto;margin-right:auto}
+}
 </style>
 </head>
 <body>
-<div class="ok">✓</div>
-<p class="eyebrow" style="margin:0">Pagamento aprovado</p>
-<h1>Obrigada pela compra!</h1>
-<p>Recebemos o seu pedido e já estamos separando tudo com carinho. Em breve entraremos em contato com as informações de envio.</p>
-<div class="box">
-  <div class="r"><span>Pedido</span><strong id="oid">—</strong></div>
-  <div class="r"><span>Total pago</span><strong id="otot">—</strong></div>
+<div class="bar">Navell Enxovais</div>
+
+<header class="hero">
+  <div class="ok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></div>
+  <p class="eyebrow">Pix aprovado</p>
+  <h1>Pagamento confirmado!</h1>
+  <p class="lead" id="lead">Recebemos o seu pagamento. Obrigado por comprar na Navell Enxovais.</p>
+  <div class="order" id="orderPill" hidden><span>Pedido</span><b id="oid"></b></div>
+</header>
+
+<div class="grid">
+  <div>
+    <section class="card" id="resumo" hidden>
+      <h2>Resumo do pedido</h2>
+      <div id="itens"></div>
+      <div class="r"><span>Subtotal</span><strong id="rSub"></strong></div>
+      <div class="r g"><span>Desconto Pix (5%)</span><strong id="rDisc"></strong></div>
+      <div class="r"><span>Frete <small id="rShipN"></small></span><strong id="rShip"></strong></div>
+      <div class="r t"><span>Total pago</span><strong id="rTot"></strong></div>
+    </section>
+    <section class="card" id="entrega" hidden>
+      <h2>Entrega</h2>
+      <p class="addr" id="addr"></p>
+    </section>
+    <div class="gift">Brinde: 2 almofadas a cada coleção</div>
+  </div>
+  <div>
+    <section class="card">
+      <h2>Próximos passos</h2>
+      <ol class="steps">
+        <li><div><strong>Pedido recebido</strong><small>O seu pagamento foi aprovado e o pedido já está registrado.</small></div></li>
+        <li><div><strong>Separação e envio</strong><small>Vamos preparar o seu pedido e despachar pela transportadora escolhida.</small></div></li>
+        <li><div><strong>Entre em contato com você</strong><small>Enviaremos as informações de envio e o código de rastreio pelo e-mail e celular informados na compra.</small></div></li>
+      </ol>
+    </section>
+  </div>
 </div>
-<div class="gift">Brinde: 2 almofadas a cada coleção</div>
+
 <a class="btn" href="index.html">Voltar para a loja</a>
+<p class="fine">Guarde o número do pedido para qualquer dúvida.</p>
+
 <script>
-var q=new URLSearchParams(location.search),t=parseFloat(q.get("total")),o=q.get("order");
-if(!isNaN(t))document.getElementById("otot").textContent=t.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});else document.getElementById("otot").closest(".r").hidden=true;
-if(o)document.getElementById("oid").textContent=o;else document.getElementById("oid").closest(".r").hidden=true;
+var $=function(id){return document.getElementById(id)};
+function brl(v){return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function esc(t){var d=document.createElement("div");d.textContent=t==null?"":String(t);return d.innerHTML}
+var q=new URLSearchParams(location.search),oid=q.get("order"),tot=parseFloat(q.get("total"));
+var o=null;try{o=JSON.parse(localStorage.getItem("navell_last_order")||"null")}catch(e){}
+if(o&&oid&&o.order!==oid)o=null;   /* só mostra o resumo se for o mesmo pedido */
+if(oid){$("oid").textContent=oid;$("orderPill").hidden=false}
+if(o){
+  var first=(o.name||"").trim().split(/\s+/)[0];
+  if(first)$("lead").textContent=first+", recebemos o seu pagamento via Pix. Obrigado por comprar na Navell Enxovais.";
+  $("itens").innerHTML=(o.items||[]).map(function(i){return'<div class="it"><img alt="" src="'+esc(i.img)+'"><div class="i"><strong>CAPA DE SOFÁ '+esc(String(i.n).toUpperCase())+'</strong><small>'+esc(i.color)+' · '+esc(i.size)+' · Qtd: '+esc(i.qty)+'</small></div><b>'+brl(i.price)+'</b></div>'}).join("");
+  $("rSub").textContent=brl(o.sub);$("rDisc").textContent="− "+brl(o.disc);
+  $("rShipN").textContent=o.ship?"("+o.ship.n+(o.ship.d?" · "+o.ship.d:"")+")":"";$("rShip").textContent=o.ship?brl(o.ship.p):"";
+  $("rTot").textContent=brl(o.total);$("resumo").hidden=false;
+  if(o.addr){$("addr").textContent=o.addr;$("entrega").hidden=false}
+}else if(!isNaN(tot)){
+  $("rTot").textContent=brl(tot);
+  $("itens").innerHTML="";$("rSub").closest(".r").hidden=true;$("rDisc").closest(".r").hidden=true;$("rShip").closest(".r").hidden=true;$("resumo").hidden=false;
+}
 </script>
 </body>
 </html>

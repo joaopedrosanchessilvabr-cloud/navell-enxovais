@@ -62,6 +62,14 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 .pay{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--gold);border-radius:8px;padding:13px 14px;margin-bottom:18px}
 .ship .t,.pay .t{flex:1}.ship strong,.pay strong{display:block;font-size:13.5px}.ship small,.pay small{display:block;font-size:11.5px;color:var(--ink-dim)}
 .ship b,.pay b{font:600 14px 'Oswald',sans-serif;color:var(--gold-light)}
+.payopt{display:flex;align-items:center;gap:12px;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:13px 14px;margin-bottom:8px;text-align:left;font:inherit;color:inherit}
+.payopt.sel{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.payopt.off{opacity:.62;cursor:pointer}
+.payopt .t{flex:1;min-width:0}.payopt strong{display:block;font-size:13.5px}.payopt small{display:block;font-size:11.5px;color:var(--ink-dim)}
+.payopt b{font:600 14px 'Oswald',sans-serif;color:var(--gold-light);white-space:nowrap}
+.soon{flex:none;font:600 9.5px 'Oswald',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-dim);border:1px solid var(--line);border-radius:20px;padding:3px 9px;background:var(--panel2)}
+.cardnote{display:none;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:6px;padding:12px 14px;margin:2px 0 14px;font-size:12.5px;color:var(--ink-dim);line-height:1.55}
+.cardnote.show{display:block}.cardnote strong{color:var(--gold-light)}
 .pixbox{text-align:center;background:var(--panel);border:1px solid var(--gold-dim);border-radius:10px;padding:22px 18px;margin-bottom:18px}
 .qr{width:180px;height:180px;margin:0 auto 14px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ink-dim);padding:8px}
 .qr canvas,.qr img{width:100%!important;height:100%!important}.qr #qrc{width:100%;height:100%}
@@ -165,7 +173,12 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 <form class="card" id="step3" novalidate hidden>
   <p class="eyebrow">Etapa 3 de 3</p><h1>Pagamento</h1>
   <p class="intro">Um QR code Pix será gerado aqui mesmo, sem sair desta página.</p>
-  <div class="pay"><div class="t"><strong>Pix</strong><small>Aprovação rápida · 5% OFF</small></div><b id="pixLabel"></b></div>
+  <div id="payOpts">
+    <button type="button" class="payopt sel" data-m="pix"><span class="t"><strong>Pix</strong><small>Aprovação rápida · 5% OFF</small></span><b id="pixLabel"></b></button>
+    <button type="button" class="payopt off" data-m="credito" aria-disabled="true"><span class="t"><strong>Cartão de crédito</strong><small>Indisponível no momento</small></span><span class="soon">Em manutenção</span></button>
+    <button type="button" class="payopt off" data-m="debito" aria-disabled="true"><span class="t"><strong>Cartão de débito</strong><small>Indisponível no momento</small></span><span class="soon">Em manutenção</span></button>
+  </div>
+  <div class="cardnote" id="cardNote"><strong>Pagamento por cartão em manutenção.</strong> No momento só aceitamos Pix, que é aprovado na hora, é 100% seguro e ainda tem <strong>5% de desconto</strong>.</div>
   <div class="pixbox">
     <div class="qr" id="qrWrap"><span>Seu QR code vai aparecer aqui</span></div>
     <p id="pixHelp">Clique em "Gerar Pix" para criar seu código de pagamento.</p>
@@ -199,7 +212,7 @@ try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i
 if(!CART.length){$("empty").hidden=false}else{$("main").hidden=false}
 
 var sub=CART.reduce(function(a,i){return a+SIZES[i.s].price*i.qty},0);
-var SHIP={sedex:{n:"SEDEX",p:29.90},jadlog:{n:"Jadlog",p:23.90},loggi:{n:"Loggi",p:14.90}};
+var SHIP={sedex:{n:"SEDEX",p:29.90,d:"3 a 7 dias úteis"},jadlog:{n:"Jadlog",p:23.90,d:"5 a 9 dias úteis"},loggi:{n:"Loggi",p:14.90,d:"10 a 15 dias úteis"}};
 var shipKey="loggi";
 var prod=Math.round(sub*(1-PIX)*100)/100;
 var total=prod+SHIP[shipKey].p;
@@ -267,6 +280,7 @@ $("step2").addEventListener("submit",function(e){e.preventDefault();var ok=true;
   ok=bad("state",v("state").length!==2?"UF inválida.":"")&&ok;
   if(ok)goTo(3);else{var f=this.querySelector(".invalid");if(f)f.focus()}});
 
+Array.prototype.forEach.call(document.querySelectorAll("#payOpts .payopt.off"),function(b){b.addEventListener("click",function(){$("cardNote").classList.add("show")})});
 var done=false;
 $("finalCta").addEventListener("click",function(){
   if(done)return;
@@ -296,7 +310,11 @@ function poll(id,info){
     if(Date.now()-t0>15*60*1000){clearInterval(timer);$("wait").hidden=true;return}
     fetch("/api/check-pix-status?id="+encodeURIComponent(id)).then(function(r){return r.ok?r.json():null}).then(function(d){
       if(!d)return;var s=(d.status||"").toLowerCase();
-      if(PAID.indexOf(s)>-1){clearInterval(timer);try{localStorage.removeItem("navell_cart")}catch(e){}
+      if(PAID.indexOf(s)>-1){clearInterval(timer);
+        try{localStorage.setItem("navell_last_order",JSON.stringify({order:info.order,total:info.total,sub:sub,disc:Math.round((sub-prod)*100)/100,ship:{n:SHIP[shipKey].n,p:SHIP[shipKey].p,d:SHIP[shipKey].d},name:v("name"),email:v("email"),
+          addr:v("address")+", "+v("number")+(v("complement")?" - "+v("complement"):"")+" · "+v("neighborhood")+" · "+v("city")+"/"+v("state").toUpperCase()+" · CEP "+v("cep"),
+          items:CART.map(function(i){return{n:NAMES[i.k],color:i.color,size:SIZES[i.s].n,qty:i.qty,price:SIZES[i.s].price*i.qty,img:THUMB[i.k]}})}))}catch(e){}
+        try{localStorage.removeItem("navell_cart")}catch(e){}
         location.href="obrigado.html?"+new URLSearchParams({total:info.total,order:info.order}).toString()}
       else if(DEAD.indexOf(s)>-1){clearInterval(timer);$("wait").hidden=true;$("pixError").textContent="Este Pix não foi confirmado (cancelado ou expirado). Atualize a página para gerar um novo código."}
     }).catch(function(){});
