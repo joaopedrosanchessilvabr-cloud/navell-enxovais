@@ -2,7 +2,7 @@
 export const KEYS = ['flara', 'stella', 'melina', 'dalia', 'ayla', 'alina', 'celina', 'aurora', 'lumira', 'magna', 'renovare', 'lana', 'luma', 'mila', 'cloe'];
 export const NAMES = { flara: 'Flara', stella: 'Stella', melina: 'Melina', dalia: 'Dália', ayla: 'Ayla', alina: 'Alina', celina: 'Celina', aurora: 'Aurora', lumira: 'Lumira', magna: 'Magna', renovare: 'Renovare', lana: 'Lana', luma: 'Luma', mila: 'Mila', cloe: 'Cloe' };
 export const COLORS = {
-  flara: ['Azul', 'Preto', 'Rosa', 'Bege'],
+  flara: ['Azul', 'Preto', 'Rosa', 'Lilás', 'Bege'],
   stella: ['Preto', 'Bege', 'Cinza', 'Vermelho', 'Verde'],
   melina: ['Preto', 'Marrom', 'Azul', 'Cinza'],
   dalia: ['Preto', 'Marrom', 'Bege', 'Azul', 'Verde'],
