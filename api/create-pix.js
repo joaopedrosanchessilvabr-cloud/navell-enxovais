@@ -19,6 +19,11 @@ const SIZES = [
   { n: '4 lugares', price: 99.9 },
 ];
 const PIX_DISCOUNT = 0.05;
+const SHIPPING = {
+  sedex: { n: 'SEDEX', price: 29.9 },
+  jadlog: { n: 'Jadlog', price: 23.9 },
+  loggi: { n: 'Loggi', price: 14.9 },
+};
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -26,11 +31,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
-  const { items, payer, address } = req.body || {};
+  const { items, payer, address, shipping } = req.body || {};
 
   if (!payer || !payer.name || !payer.email || !payer.document || !payer.phone ||
       !address || !address.cep || !address.street || !address.number || !address.city || !address.state ||
-      !Array.isArray(items) || !items.length || items.length > 20) {
+      !Array.isArray(items) || !items.length || items.length > 20 || !SHIPPING[shipping]) {
     return res.status(422).json({ error: 'Dados incompletos para gerar o Pix.' });
   }
 
@@ -46,7 +51,7 @@ export default async function handler(req, res) {
     subtotal += sz.price * qty;
     resumo.push(`${qty}x ${NAMES[it.k]} ${it.color} ${sz.n}`);
   }
-  const amount = Math.round(subtotal * (1 - PIX_DISCOUNT) * 100) / 100;
+  const amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + SHIPPING[shipping].price) * 100) / 100;
 
   const clientId = process.env.SIMPLIFY_CLIENT_ID;
   const clientSecret = process.env.SIMPLIFY_CLIENT_SECRET;
@@ -80,6 +85,7 @@ export default async function handler(req, res) {
     // Registro do pedido (visível em Vercel → Logs) para a loja saber o que enviar e para onde.
     console.log('[PEDIDO]', JSON.stringify({
       pedido: data.external_id || external_id, id: data.internal_id, valor: amount,
+      frete: SHIPPING[shipping].n,
       itens: resumo, cliente: payer, entrega: address,
     }));
 
