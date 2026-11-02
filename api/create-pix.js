@@ -6,20 +6,8 @@
 // itens do carrinho, para ninguém conseguir pagar menos alterando a página.
 
 import { salvarNaPlanilha } from './_planilha.js';
+import { resumirItens } from './_catalogo.js';
 
-const KEYS = ['flara', 'stella', 'melina', 'dalia'];
-const NAMES = { flara: 'Flara', stella: 'Stella', melina: 'Melina', dalia: 'Dália' };
-const COLORS = {
-  flara: ['Azul', 'Preto', 'Rosa', 'Bege'],
-  stella: ['Preto', 'Bege', 'Cinza', 'Vermelho', 'Verde'],
-  melina: ['Preto', 'Marrom', 'Azul', 'Cinza'],
-  dalia: ['Preto', 'Marrom', 'Bege', 'Azul', 'Verde'],
-};
-const SIZES = [
-  { n: '2 lugares', price: 69.9 },
-  { n: '3 lugares', price: 84.9 },
-  { n: '4 lugares', price: 99.9 },
-];
 const PIX_DISCOUNT = 0.05;
 const SHIPPING = {
   sedex: { n: 'SEDEX', price: 29.9 },
@@ -51,7 +39,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
-  const { items, payer, address, shipping } = req.body || {};
+  const { items, payer, address, shipping, vid } = req.body || {};
 
   if (!payer || !payer.name || !payer.email || !payer.document || !payer.phone ||
       !address || !address.cep || !address.street || !address.number || !address.city || !address.state ||
@@ -59,18 +47,10 @@ export default async function handler(req, res) {
     return res.status(422).json({ error: 'Dados incompletos para gerar o Pix.' });
   }
 
-  let subtotal = 0;
-  const resumo = [];
-  for (const it of items) {
-    const sz = SIZES[it && it.s];
-    const qty = Number(it && it.qty);
-    if (!it || !KEYS.includes(it.k) || !COLORS[it.k].includes(it.color) || !sz ||
-        !Number.isInteger(qty) || qty < 1 || qty > 10) {
-      return res.status(422).json({ error: 'Carrinho inválido. Volte e confira os itens.' });
-    }
-    subtotal += sz.price * qty;
-    resumo.push(`${qty}x ${NAMES[it.k]} ${it.color} ${sz.n}`);
-  }
+  const r0 = resumirItens(items);
+  if (!r0 || !r0.resumo.length) return res.status(422).json({ error: 'Carrinho inválido. Volte e confira os itens.' });
+  const subtotal = r0.subtotal;
+  const resumo = r0.resumo;
   const amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + SHIPPING[shipping].price) * 100) / 100;
 
   const clientId = process.env.SIMPLIFY_CLIENT_ID;
@@ -110,7 +90,8 @@ export default async function handler(req, res) {
     }));
 
     await salvarNaPlanilha({
-      pedido: data.external_id || external_id, status: 'Pix gerado', idPix: data.internal_id,
+      acao: 'pedido', vid: String(vid || '').replace(/[^\w-]/g, '').slice(0, 40),
+      pedido: data.external_id || external_id, status: 'Pendente', idPix: data.internal_id,
       valor: amount, frete: SHIPPING[shipping].n, itens: resumo, cliente: payer, entrega: address,
     });
 

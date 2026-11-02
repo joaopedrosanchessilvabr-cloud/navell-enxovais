@@ -1,11 +1,22 @@
-// Navell Enxovais — recebe os pedidos do site e grava na planilha.
-// Cole este código em Extensões → Apps Script da sua planilha do Google.
+// Navell Enxovais — recebe os passos dos clientes e organiza em 3 abas da planilha:
+//   1 - Carrinho : quem adicionou algo ao carrinho
+//   2 - Dados    : quem preencheu nome/contato/endereço no checkout
+//   3 - Pedidos  : quem gerou o Pix (Pendente → Pago)
 
-var SEGREDO = 'TROQUE-POR-UMA-SENHA-SUA'; // a mesma senha vai em SHEETS_SECRET na Vercel
-var ABA = 'Pedidos';
-var CABECALHO = ['Pedido', 'Data/hora', 'Status', 'Nome', 'E-mail', 'CPF', 'Telefone',
-  'CEP', 'Endereço', 'Número', 'Complemento', 'Bairro', 'Cidade', 'UF',
-  'Itens', 'Frete', 'Valor (R$)', 'ID Pix'];
+var SEGREDO = 'TROQUE-POR-UMA-SENHA-SUA'; // a mesma senha que está em SHEETS_SECRET na Vercel
+
+var ABAS = {
+  carrinho: { nome: '1 - Carrinho', chave: 'Visitante',
+    cab: ['Visitante', 'Primeiro acesso', 'Atualizado', 'Status', 'Itens no carrinho', 'Subtotal (R$)'] },
+  dados: { nome: '2 - Dados', chave: 'Visitante',
+    cab: ['Visitante', 'Primeiro acesso', 'Atualizado', 'Status', 'Nome', 'E-mail', 'CPF', 'Telefone',
+          'CEP', 'Endereço', 'Número', 'Complemento', 'Bairro', 'Cidade', 'UF', 'Itens no carrinho', 'Subtotal (R$)'] },
+  pedido: { nome: '3 - Pedidos', chave: 'Pedido',
+    cab: ['Pedido', 'Criado em', 'Atualizado', 'Status', 'Nome', 'E-mail', 'CPF', 'Telefone',
+          'CEP', 'Endereço', 'Número', 'Complemento', 'Bairro', 'Cidade', 'UF',
+          'Itens', 'Frete', 'Valor (R$)', 'ID Pix', 'Visitante'] }
+};
+var TEXTO = ['Visitante', 'Pedido', 'CPF', 'Telefone', 'CEP', 'Número', 'ID Pix'];
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -13,38 +24,39 @@ function doPost(e) {
     lock.waitLock(20000);
     var d = JSON.parse(e.postData.contents);
     if (d.secret !== SEGREDO) return resposta({ ok: false, erro: 'senha' });
-
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sh = ss.getSheetByName(ABA) || ss.insertSheet(ABA);
-    if (sh.getLastRow() === 0) {
-      sh.appendRow(CABECALHO);
-      sh.getRange(1, 1, 1, CABECALHO.length).setFontWeight('bold').setBackground('#f3e6df');
-      sh.setFrozenRows(1);
-    }
-
-    // CPF, telefone, CEP e pedido como texto (para não perder zeros à esquerda)
-    var pedido = String(d.pedido || '');
-    var linha = procurar(sh, pedido);
-
-    if (d.acao === 'status') {              // só atualiza o status (ex.: Pago)
-      if (linha) sh.getRange(linha, 3).setValue(d.status || '');
-      return resposta({ ok: true, atualizado: !!linha });
-    }
-
     var c = d.cliente || {}, a = d.entrega || {};
-    var valores = [pedido, new Date(), d.status || 'Pix gerado', c.name, c.email, c.document, c.phone,
-      a.cep, a.street, a.number, a.complement, a.neighborhood, a.city, a.state,
-      (d.itens || []).join(' | '), d.frete, d.valor, d.idPix];
+    var itens = (d.itens || []).join(' | ');
 
-    if (!linha) {
-      linha = sh.getLastRow() + 1;
-      sh.getRange(linha, 1, 1, 1).setNumberFormat('@');
-      sh.getRange(linha, 6, 1, 3).setNumberFormat('@');   // CPF, telefone, CEP
-      sh.getRange(linha, 8, 1, 1).setNumberFormat('@');
-      sh.getRange(linha, 2).setNumberFormat('dd/mm/yyyy hh:mm');
-      sh.getRange(linha, 17).setNumberFormat('R$ #,##0.00');
+    if (d.acao === 'carrinho') {
+      gravar('carrinho', d.vid, { 'Status': d.status, 'Itens no carrinho': itens, 'Subtotal (R$)': d.valor });
+
+    } else if (d.acao === 'dados') {
+      var dados = { 'Status': d.status, 'Nome': c.name, 'E-mail': c.email, 'CPF': c.document, 'Telefone': c.phone,
+        'Itens no carrinho': itens, 'Subtotal (R$)': d.valor };
+      if (d.entrega) {
+        dados['CEP'] = a.cep; dados['Endereço'] = a.street; dados['Número'] = a.number;
+        dados['Complemento'] = a.complement; dados['Bairro'] = a.neighborhood; dados['Cidade'] = a.city; dados['UF'] = a.state;
+      }
+      gravar('dados', d.vid, dados);
+      gravar('carrinho', d.vid, { 'Status': 'Foi para o checkout' });
+
+    } else if (d.acao === 'pedido') {
+      gravar('pedido', d.pedido, { 'Status': d.status || 'Pendente', 'Nome': c.name, 'E-mail': c.email,
+        'CPF': c.document, 'Telefone': c.phone, 'CEP': a.cep, 'Endereço': a.street, 'Número': a.number,
+        'Complemento': a.complement, 'Bairro': a.neighborhood, 'Cidade': a.city, 'UF': a.state,
+        'Itens': itens, 'Frete': d.frete, 'Valor (R$)': d.valor, 'ID Pix': d.idPix, 'Visitante': d.vid });
+      if (d.vid) {
+        gravar('carrinho', d.vid, { 'Status': 'Gerou Pix #' + d.pedido });
+        gravar('dados', d.vid, { 'Status': 'Gerou Pix #' + d.pedido });
+      }
+
+    } else if (d.acao === 'status') {
+      var vid = gravar('pedido', d.pedido, { 'Status': d.status }, true);
+      if (vid) {
+        gravar('carrinho', vid, { 'Status': d.status + ' #' + d.pedido }, true);
+        gravar('dados', vid, { 'Status': d.status + ' #' + d.pedido }, true);
+      }
     }
-    sh.getRange(linha, 1, 1, valores.length).setValues([valores]);
     return resposta({ ok: true });
   } catch (err) {
     return resposta({ ok: false, erro: String(err) });
@@ -53,11 +65,45 @@ function doPost(e) {
   }
 }
 
-function procurar(sh, pedido) {
-  if (!pedido || sh.getLastRow() < 2) return 0;
-  var col = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getDisplayValues();
-  for (var i = col.length - 1; i >= 0; i--) if (col[i][0] === pedido) return i + 2;
-  return 0;
+// Cria ou atualiza a linha identificada pela chave. Só altera os campos enviados.
+// Com soAtualizar = true, não cria linha nova. Devolve o "Visitante" da linha (se houver).
+function gravar(tipo, chave, campos, soAtualizar) {
+  chave = String(chave || '');
+  if (!chave) return '';
+  var cfg = ABAS[tipo], cab = cfg.cab;
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(cfg.nome);
+  if (!sh) {
+    sh = ss.insertSheet(cfg.nome);
+    sh.appendRow(cab);
+    sh.getRange(1, 1, 1, cab.length).setFontWeight('bold').setBackground('#f3e6df');
+    sh.setFrozenRows(1);
+    cab.forEach(function (h, i) { if (TEXTO.indexOf(h) > -1) sh.getRange(2, i + 1, sh.getMaxRows() - 1, 1).setNumberFormat('@'); });
+    sh.getRange(2, 2, sh.getMaxRows() - 1, 2).setNumberFormat('dd/mm/yyyy hh:mm');
+    sh.setColumnWidth(cab.indexOf('Status') + 1, 170);
+  }
+  var linha = 0, n = sh.getLastRow();
+  if (n >= 2) {
+    var col = sh.getRange(2, 1, n - 1, 1).getDisplayValues();
+    for (var i = col.length - 1; i >= 0; i--) if (col[i][0] === chave) { linha = i + 2; break; }
+  }
+  if (!linha && soAtualizar) return '';
+  var agora = new Date(), atual;
+  if (linha) {
+    atual = sh.getRange(linha, 1, 1, cab.length).getValues()[0];
+  } else {
+    linha = n + 1;
+    atual = cab.map(function () { return ''; });
+    atual[0] = chave; atual[1] = agora;
+  }
+  atual[2] = agora;
+  cab.forEach(function (h, i) {
+    var v = campos[h];
+    if (v !== undefined && v !== null && v !== '') atual[i] = v;
+  });
+  sh.getRange(linha, 1, 1, cab.length).setValues([atual]);
+  var iv = cab.indexOf('Visitante');
+  return iv > -1 && tipo === 'pedido' ? String(atual[iv] || '') : '';
 }
 
 function resposta(o) {

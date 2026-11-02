@@ -574,7 +574,7 @@ function go(v){if(v==="carrinho")renderCart();setHash(v==="home"?"":v);show(v)}
 /* carrinho */
 var CART=[];
 try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i){return KEYS.indexOf(i.k)>-1&&COLORS[i.k].indexOf(i.color)>-1&&CONFIG.sizes[i.s]&&i.qty>0})}catch(e){CART=[]}
-function saveCart(){try{localStorage.setItem("navell_cart",JSON.stringify(CART))}catch(e){}}
+function saveCart(){try{localStorage.setItem("navell_cart",JSON.stringify(CART))}catch(e){}window.navellLead&&navellLead("carrinho")}
 function cardImg(k){return document.querySelector('.mcard[data-m="'+k+'"] img').src}
 function nameOf(k){return NAMES[KEYS.indexOf(k)]}
 function badge(){

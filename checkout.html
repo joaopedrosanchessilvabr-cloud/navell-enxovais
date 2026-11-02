@@ -259,7 +259,7 @@ $("step1").addEventListener("submit",function(e){e.preventDefault();var ok=true;
   ok=bad("email",!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("email"))?"Digite um e-mail válido.":"")&&ok;
   ok=bad("phone",v("phone").replace(/\D/g,"").length<10?"Digite um celular válido com DDD.":"")&&ok;
   ok=bad("cpf",!cpfOk(v("cpf").replace(/\D/g,""))?"Digite um CPF válido.":"")&&ok;
-  if(ok)goTo(2);else{var f=this.querySelector(".invalid");if(f)f.focus()}});
+  if(ok){window.navellLead&&navellLead("dados",{payer:{name:v("name"),email:v("email"),document:v("cpf").replace(/\D/g,""),phone:v("phone").replace(/\D/g,"")}});goTo(2)}else{var f=this.querySelector(".invalid");if(f)f.focus()}});
 
 var lastCep="";
 $("f-cep").addEventListener("input",function(){var d=this.value.replace(/\D/g,"").slice(0,8);this.value=d.length>5?d.slice(0,5)+"-"+d.slice(5):d;
@@ -280,7 +280,7 @@ $("step2").addEventListener("submit",function(e){e.preventDefault();var ok=true;
   ok=bad("neighborhood",!v("neighborhood")?"Preencha o bairro.":"")&&ok;
   ok=bad("city",!v("city")?"Preencha a cidade.":"")&&ok;
   ok=bad("state",v("state").length!==2?"UF inválida.":"")&&ok;
-  if(ok)goTo(3);else{var f=this.querySelector(".invalid");if(f)f.focus()}});
+  if(ok){window.navellLead&&navellLead("dados",{payer:{name:v("name"),email:v("email"),document:v("cpf").replace(/\D/g,""),phone:v("phone").replace(/\D/g,"")},address:{cep:v("cep").replace(/\D/g,""),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}});goTo(3)}else{var f=this.querySelector(".invalid");if(f)f.focus()}});
 
 Array.prototype.forEach.call(document.querySelectorAll("#payOpts .payopt.off"),function(b){b.addEventListener("click",function(){$("cardNote").classList.add("show")})});
 var done=false;
@@ -289,7 +289,7 @@ $("finalCta").addEventListener("click",function(){
   var btn=this,err=$("pixError");err.textContent="";btn.disabled=true;btn.textContent="Gerando...";
   var dg=function(s){return s.replace(/\D/g,"")};
   fetch("/api/create-pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-    shipping:shipKey,
+    shipping:shipKey,vid:window.navellVid?navellVid():"",
     items:CART.map(function(i){return{k:i.k,color:i.color,s:i.s,qty:i.qty}}),
     payer:{name:v("name"),email:v("email"),document:dg(v("cpf")),phone:dg(v("phone"))},
     address:{cep:dg(v("cep")),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}
