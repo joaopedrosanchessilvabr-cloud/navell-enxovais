@@ -102,7 +102,7 @@ if(oid){$("oid").textContent=oid;$("orderPill").hidden=false}
 /* Pixel: registra a compra uma única vez por pedido (evita duplicar ao atualizar a página) */
 (function(){
   var val=(o&&o.total!=null)?Number(o.total):(isNaN(tot)?null:tot);
-  if(!oid||val==null||isNaN(val))return;
+  if(!oid||val==null||isNaN(val)||val<1)return; /* pedidos de teste (R$ 0,01) não vão para o Pixel */
   var key="navell_pixel_purchase_"+oid;
   try{if(localStorage.getItem(key))return}catch(e){}
   var items=(o&&o.items)||[];

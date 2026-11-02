@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
-  const { items, payer, address, shipping, vid } = req.body || {};
+  const { items, payer, address, shipping, vid, teste } = req.body || {};
 
   if (!payer || !payer.name || !payer.email || !payer.document || !payer.phone ||
       !address || !address.cep || !address.street || !address.number || !address.city || !address.state ||
@@ -51,7 +51,10 @@ export default async function handler(req, res) {
   if (!r0 || !r0.resumo.length) return res.status(422).json({ error: 'Carrinho inválido. Volte e confira os itens.' });
   const subtotal = r0.subtotal;
   const resumo = r0.resumo;
-  const amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + SHIPPING[shipping].price) * 100) / 100;
+  let amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + SHIPPING[shipping].price) * 100) / 100;
+  // MODO TESTE TEMPORÁRIO (remover após o teste): código secreto gera um Pix de R$ 0,01.
+  const modoTeste = teste === 'dd52d6ae29b931f41460';
+  if (modoTeste) amount = 0.01;
 
   const clientId = process.env.SIMPLIFY_CLIENT_ID;
   const clientSecret = process.env.SIMPLIFY_CLIENT_SECRET;
