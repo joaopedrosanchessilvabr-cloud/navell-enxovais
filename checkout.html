@@ -299,7 +299,7 @@ $("finalCta").addEventListener("click",function(){
     $("pixCode").textContent=d.qrcode;$("pixCode").hidden=false;$("copyBtn").hidden=false;$("backBtn").hidden=true;
     $("pixHelp").textContent="Escaneie o QR code com o app do seu banco ou copie o código abaixo. Assim que o pagamento for aprovado, esta página avança sozinha.";
     btn.textContent="Pix gerado ✓";done=true;
-    poll(d.internal_id,{total:total,order:d.external_id||d.internal_id||""});
+    poll(d.internal_id,{total:total,order:d.order||d.external_id||d.internal_id||""});
   }).catch(function(){err.textContent="Erro ao conectar com o gateway de pagamento. Verifique sua internet e tente novamente.";btn.disabled=false;btn.textContent="Gerar Pix"});
 });
 

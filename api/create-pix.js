@@ -25,6 +25,24 @@ const SHIPPING = {
   loggi: { n: 'Loggi', price: 14.9 },
 };
 
+// Número do pedido: contador sequencial de 9 dígitos (000000001, 000000002...).
+// Fica guardado num Redis (Upstash) ligado ao projeto na Vercel, com INCR, que é
+// atômico: dois pedidos ao mesmo tempo nunca recebem o mesmo número.
+async function nextOrderNumber() {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (url && token) {
+    const r = await fetch(`${url}/incr/navell:pedido`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && Number.isInteger(j.result) && j.result > 0) return String(j.result).padStart(9, '0');
+    console.error('[pedido] Falha ao incrementar o contador:', r.status, j);
+  } else {
+    console.error('[pedido] Banco do contador não configurado (KV_REST_API_URL / KV_REST_API_TOKEN). Usando número provisório.');
+  }
+  // Plano B para não perder venda: número provisório de 9 dígitos baseado no horário.
+  return String(Math.floor(Date.now() / 1000) % 1000000000).padStart(9, '0');
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -60,7 +78,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Pagamento por Pix está temporariamente indisponível. Tente novamente em instantes.' });
   }
 
-  const external_id = 'NAVELL-' + Date.now();
+  const external_id = await nextOrderNumber();
 
   try {
     const payload = {
@@ -91,6 +109,7 @@ export default async function handler(req, res) {
 
     return res.status(201).json({
       internal_id: data.internal_id,
+      order: external_id,
       external_id: data.external_id || external_id,
       status: data.status,
       qrcode: data.qrcode,

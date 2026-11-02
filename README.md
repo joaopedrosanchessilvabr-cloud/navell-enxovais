@@ -14,6 +14,8 @@ Loja de capas de sofá (HTML/CSS/JS + funções serverless na Vercel).
 - `SIMPLIFY_CLIENT_ID` e `SIMPLIFY_CLIENT_SECRET` (simplifybr.com → Integrações → API)
 - `SIMPLIFY_WEBHOOK_URL` (opcional): `https://SEU-DOMINIO/api/simplify-webhook`
 
+- Contador de pedidos (números 000000001, 000000002…): Vercel → Storage → Upstash Redis, conectado ao projeto (cria `KV_REST_API_URL` e `KV_REST_API_TOKEN` sozinho).
+
 Nunca coloque essas chaves no código nem no repositório.
 
 Cada pedido gerado aparece nos Logs da Vercel com a marca `[PEDIDO]` (itens, cliente e endereço).
