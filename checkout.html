@@ -289,7 +289,7 @@ $("finalCta").addEventListener("click",function(){
   var btn=this,err=$("pixError");err.textContent="";btn.disabled=true;btn.textContent="Gerando...";
   var dg=function(s){return s.replace(/\D/g,"")};
   fetch("/api/create-pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-    shipping:shipKey,teste:(window.navellTeste?navellTeste():"")||new URLSearchParams(location.search).get("t")||"",vid:window.navellVid?navellVid():"",
+    shipping:shipKey,vid:window.navellVid?navellVid():"",
     items:CART.map(function(i){return{k:i.k,color:i.color,s:i.s,qty:i.qty}}),
     payer:{name:v("name"),email:v("email"),document:dg(v("cpf")),phone:dg(v("phone"))},
     address:{cep:dg(v("cep")),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}
@@ -302,7 +302,6 @@ $("finalCta").addEventListener("click",function(){
     $("pixHelp").textContent="Escaneie o QR code com o app do seu banco ou copie o código abaixo. Assim que o pagamento for aprovado, esta página avança sozinha.";
     btn.textContent="Pix gerado ✓";done=true;try{localStorage.removeItem("navell_vid")}catch(e){}
     window.navellTrack&&navellTrack("AddPaymentInfo",{value:total,currency:"BRL",content_type:"product",content_ids:CART.map(function(i){return i.k})});
-    if(d.amount&&d.amount<=1){total=d.amount;$("pixHelp").textContent="MODO TESTE (R$ 1,00). "+$("pixHelp").textContent}
     poll(d.internal_id,{total:total,order:d.order||d.external_id||d.internal_id||""});
   }).catch(function(){err.textContent="Erro ao conectar com o gateway de pagamento. Verifique sua internet e tente novamente.";btn.disabled=false;btn.textContent="Gerar Pix"});
 });
