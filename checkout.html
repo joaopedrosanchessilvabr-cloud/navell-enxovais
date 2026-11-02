@@ -289,19 +289,18 @@ $("step2").addEventListener("submit",function(e){e.preventDefault();var ok=true;
 
 Array.prototype.forEach.call(document.querySelectorAll("#payOpts .payopt.off"),function(b){b.addEventListener("click",function(){$("cardNote").classList.add("show")})});
 var done=false;
-var TT="";try{var _q=new URLSearchParams(location.search).get("t");if(_q)sessionStorage.setItem("navell_tt",_q);TT=sessionStorage.getItem("navell_tt")||""}catch(e){}
 $("finalCta").addEventListener("click",function(){
   if(done)return;
   var btn=this,err=$("pixError");err.textContent="";btn.disabled=true;btn.textContent="Gerando...";
   var dg=function(s){return s.replace(/\D/g,"")};
   fetch("/api/create-pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-    shipping:shipKey,vid:window.navellVid?navellVid():"",t:TT,
+    shipping:shipKey,vid:window.navellVid?navellVid():"",
     items:CART.map(function(i){return{k:i.k,color:i.color,s:i.s,qty:i.qty}}),
     payer:{name:v("name"),email:v("email"),document:dg(v("cpf")),phone:dg(v("phone"))},
     address:{cep:dg(v("cep")),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}
   })}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(x){
     if(!x.ok){err.textContent=x.j.error||"Não foi possível gerar o Pix agora. Tente novamente.";btn.disabled=false;btn.textContent="Gerar Pix";return}
-    var d=x.j,w=$("qrWrap");if(d.teste)total=1;w.innerHTML='<div id="qrc"></div>';
+    var d=x.j,w=$("qrWrap");w.innerHTML='<div id="qrc"></div>';
     try{new QRCode($("qrc"),{text:d.qrcode,width:164,height:164,colorDark:"#141211",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M})}
     catch(e){w.innerHTML="<span>Não foi possível desenhar o QR — use o código abaixo</span>"}
     $("pixCode").textContent=d.qrcode;$("pixCode").hidden=false;$("copyBtn").hidden=false;$("backBtn").hidden=true;
