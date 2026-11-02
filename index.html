@@ -536,12 +536,12 @@ $("heroImg").innerHTML=photo(0);
 var NAMES=["Flara","Stella","Melina","Dália"];
 var COLL={flara:["img/74afdfc194.webp","img/088bf71e91.webp","img/40144bf9f9.webp","img/c3050f1c08.webp","img/2ac2ca9252.webp","img/f4d54efb6f.webp","img/c223bce29a.webp","img/cf7865a8ae.webp","img/83b5221b17.webp","img/122393a3fe.webp","img/c94321e3af.webp","img/74dd7a03bc.webp","img/a9e36838f6.webp"],stella:["img/7343b5bcd1.webp","img/376c941bf1.webp","img/f408f8045d.webp","img/9c14574d8b.webp","img/29abbbdcc6.webp","img/d098301980.webp","img/ef46c10833.webp","img/741d36c71a.webp","img/95dbb430c1.webp","img/a98a2b7fe5.webp","img/bdfd6662e9.webp","img/4a2158bc8e.webp","img/f4d1e042bf.webp","img/542c66dc3a.webp"],melina:["img/b4272b3291.webp","img/5e1b3631fa.webp","img/4e5b3172ed.webp","img/daabdc5748.webp","img/b16cc61e1b.webp","img/56eef720d9.webp","img/6fa94df508.webp","img/98eec1dc78.webp","img/e55dbb0f71.webp","img/89cea0755d.webp","img/783c6cfafb.webp"],dalia:["img/579b022df1.webp","img/7306c11b7d.webp","img/64c1be9833.webp","img/26acf1bbd1.webp","img/f48b020096.webp","img/b2d85750be.webp","img/c5aa53b5b9.webp","img/3ed223db07.webp","img/e647bd7d05.webp","img/312795501f.webp","img/978fd4ab4e.webp","img/42682ea8f7.webp","img/598e2e201a.webp","img/e4ae1d353c.webp"]};
 var track=$("track"),dots=$("dots");
-track.innerHTML=CONFIG.models.map(function(u,i){return'<figure class="slide"><img alt="Capa de lençol '+NAMES[Math.floor(i/2)]+', foto '+(i%2+1)+'" src="'+u+'"'+(i?' loading="lazy"':'')+'></figure>'}).join("");
+track.innerHTML=CONFIG.models.map(function(u,i){return'<figure class="slide"><img alt="Capa de sofá '+NAMES[Math.floor(i/2)]+', foto '+(i%2+1)+'" src="'+u+'"'+(i?' loading="lazy"':'')+'></figure>'}).join("");
 dots.innerHTML=CONFIG.models.map(function(){return"<i></i>"}).join("");
 function carSync(){
   var n=CONFIG.models.length,i=Math.round(track.scrollLeft/track.clientWidth);i=Math.max(0,Math.min(n-1,i));
   Array.prototype.forEach.call(dots.children,function(d,k){d.classList.toggle("on",k===i)});
-  $("carCap").textContent="Capa de lençol "+NAMES[Math.floor(i/2)]+" · "+(i%2+1)+"/2";
+  $("carCap").textContent="Capa de sofá "+NAMES[Math.floor(i/2)]+" · "+(i%2+1)+"/2";
   $("prevBtn").disabled=i===0;$("nextBtn").disabled=i===n-1;
 }
 $("prevBtn").onclick=function(){track.scrollBy({left:-track.clientWidth,behavior:"smooth"})};
