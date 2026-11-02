@@ -52,9 +52,9 @@ export default async function handler(req, res) {
   const subtotal = r0.subtotal;
   const resumo = r0.resumo;
   let amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + SHIPPING[shipping].price) * 100) / 100;
-  // MODO TESTE TEMPORÁRIO (remover após o teste): código secreto gera um Pix de R$ 0,01.
+  // MODO TESTE TEMPORÁRIO (remover após o teste): código secreto gera um Pix de R$ 1,00 (mínimo do gateway).
   const modoTeste = teste === 'dd52d6ae29b931f41460';
-  if (modoTeste) amount = 0.01;
+  if (modoTeste) amount = 1.0;
 
   const clientId = process.env.SIMPLIFY_CLIENT_ID;
   const clientSecret = process.env.SIMPLIFY_CLIENT_SECRET;
