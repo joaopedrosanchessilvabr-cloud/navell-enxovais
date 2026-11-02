@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Capas de sofá em algodão e poliéster, com encaixe sem costura. Comprando hoje, ganhe 2 almofadas de brinde.">
+<meta name="theme-color" content="#6E3F1D">
+<title>Navell Enxovais</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@1,600;1,700&display=swap">
+<style>
+/* Layout: coluna única de até 480px, escura com dourado, no molde do site Camisa UV. */
+:root{
+  --bg:#FCFAF7; --bg-panel:#FFFFFF; --bg-panel-2:#F4EEE8; --btn:#96592A;
+  --gold:#B97B45; --gold-light:#96592A; --gold-dim:#E3CDB8;
+  --ink:#141211; --ink-dim:#6B625B; --line:#E8DED4;
+  color-scheme:light;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 'Inter',system-ui,sans-serif;
+  max-width:480px;margin:0 auto;overflow-x:hidden;padding-bottom:78px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+img{width:100%;display:block}
+.eyebrow{font-family:'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--gold)}
+h1,h2,h3{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.cross-divider{display:flex;align-items:center;justify-content:center;gap:10px;margin:34px 0 22px}
+.cross-divider::before,.cross-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+.cross-divider span{width:9px;height:9px;position:relative;flex:none}
+.cross-divider span::before,.cross-divider span::after{content:'';position:absolute;background:var(--gold-dim)}
+.cross-divider span::before{width:9px;height:2px;top:3.5px;left:0}
+.cross-divider span::after{width:2px;height:9px;left:3.5px;top:0}
+
+.announce{background:#6E3F1D;color:#fff;text-align:center;font-family:'Oswald',sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.03em;padding:9px 10px;text-transform:uppercase;
+  margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)))}
+
+.hero{padding:26px 4px 30px;text-align:center;background:radial-gradient(60% 50% at 50% 0%,rgba(185,123,69,.13),transparent 70%)}
+.hero .eyebrow{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.hero .eyebrow svg{width:14px;height:14px;fill:var(--gold)}
+.hero h1{font-size:30px;line-height:1.08;margin-bottom:14px}
+.hero h1 em{font-style:normal;color:var(--gold-light);display:block}
+.hero-sub{font-size:14.5px;color:var(--ink-dim);line-height:1.55;max-width:360px;margin:0 auto 22px}
+#colecao{scroll-margin-top:12px}
+.carousel{position:relative;margin-top:18px}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:10px;border:1px solid var(--line);background:var(--bg-panel)}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:center;margin:0}
+.slide img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--btn);box-shadow:0 6px 16px -4px rgba(20,18,17,.35);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.car-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.car-btn.prev{left:10px}.car-btn.next{right:10px}
+.car-btn:disabled{opacity:.35;cursor:default}
+.car-cap{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-light);text-align:center;margin-top:12px}
+.dots{display:flex;justify-content:center;gap:7px;margin-top:10px}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--gold-dim);transition:.2s}
+.dots i.on{background:var(--btn);width:20px;border-radius:4px}
+.hero-photo{position:relative;margin-bottom:20px}
+.hero-photo .hero-img-wrap{margin-bottom:0}
+.gift-bubble{position:absolute;top:12px;right:12px;width:116px;height:116px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#B26C38,var(--btn) 70%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transform:rotate(-8deg);box-shadow:0 10px 24px -6px rgba(20,18,17,.5);border:2px solid #fff;outline:1px dashed rgba(255,255,255,.7);outline-offset:-7px;line-height:1}
+.gift-bubble small{font-family:'Cinzel',serif;font-weight:600;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#F1D9C2;padding-left:.2em}
+.gift-bubble b{font-family:'Cinzel',serif;font-weight:700;font-size:36px;margin:2px 0 0;line-height:1}
+.gift-bubble i{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;font-size:19px;letter-spacing:.01em;margin-top:1px}
+.hero-img-wrap{border-radius:6px;overflow:hidden;border:1px solid var(--line);margin-bottom:20px;box-shadow:0 20px 50px -20px rgba(20,18,17,.2)}
+.ph{aspect-ratio:1/1;max-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:24px;background:var(--bg-panel);color:var(--ink-dim);font-size:12.5px}
+.ph b{font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:500;font-size:16px;color:var(--gold-light);letter-spacing:.03em}
+.price-strip{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.price-strip .old{font-size:14px;color:var(--ink-dim);text-decoration:line-through}
+.price-strip .now{font-family:'Oswald',sans-serif;font-size:30px;color:var(--gold-light);font-weight:600;font-variant-numeric:tabular-nums}
+.price-strip .pix{font-size:12.5px;color:var(--ink-dim)}
+.price-strip .pix b{color:var(--gold)}
+.btn-primary{display:block;width:100%;background:var(--btn);color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;text-transform:uppercase;text-align:center;text-decoration:none;padding:16px 18px;border-radius:4px;border:none;cursor:pointer;box-shadow:0 10px 26px -10px rgba(150,89,42,.35)}
+.btn-primary:focus-visible,.size-opt:focus-visible,.color-opt:focus-visible,summary:focus-visible{outline:3px solid var(--gold-light);outline-offset:2px}
+.trust-line{margin-top:12px;font-size:11.5px;color:var(--ink-dim);display:flex;align-items:center;justify-content:center;gap:6px}
+
+.badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:16px 0 4px}
+.badge{background:var(--bg-panel);border:1px solid var(--line);border-radius:6px;padding:12px 6px;text-align:center}
+.badge svg{width:20px;height:20px;fill:var(--gold);margin-bottom:6px}
+.badge span{display:block;font-size:9.5px;color:var(--ink-dim);line-height:1.3;text-transform:uppercase;letter-spacing:.02em}
+
+section{padding:0 4px}
+.section-title{font-size:22px;text-align:center;margin-bottom:10px;line-height:1.2}
+.section-title span{color:var(--gold-light)}
+.section-lead{text-align:center;color:var(--ink-dim);font-size:14px;line-height:1.6;max-width:360px;margin:0 auto 22px}
+
+.deal-box{background:linear-gradient(180deg,#fff,var(--bg-panel-2));border:1px dashed var(--gold);border-radius:10px;padding:22px 20px;text-align:center}
+.deal-icon{width:46px;height:46px;border-radius:50%;background:var(--btn);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px var(--gold-dim)}
+.deal-icon svg{width:22px;height:22px;fill:#fff}
+.deal-eyebrow{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.deal-box h3{font-family:'Oswald',sans-serif;font-weight:600;font-size:21px;text-transform:uppercase;letter-spacing:.02em;color:var(--ink);margin:6px 0 8px;line-height:1.2}
+.deal-box p{font-size:13.5px;color:var(--ink-dim);line-height:1.6;max-width:300px;margin:0 auto}
+
+.feat-grid{display:flex;flex-direction:column;gap:10px}
+.feat-card{background:var(--bg-panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;gap:14px;align-items:flex-start}
+.feat-icon{flex:none;width:38px;height:38px;border-radius:50%;background:rgba(185,123,69,.12);border:1px solid var(--gold-dim);display:flex;align-items:center;justify-content:center}
+.feat-icon svg{width:18px;height:18px;fill:var(--gold)}
+.feat-card>div:last-child{min-width:0}
+.feat-card h3{font-family:'Inter',sans-serif;text-transform:none;font-size:14.5px;font-weight:600;margin-bottom:4px;letter-spacing:0}
+.feat-card p{font-size:13px;color:var(--ink-dim);line-height:1.5}
+
+.steps{display:flex;flex-direction:column;gap:10px;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;background:var(--bg-panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.steps li::before{content:"Passo " counter(s);display:block;font-family:'Cinzel',serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.steps h3{font-family:'Inter',sans-serif;text-transform:none;font-size:14.5px;font-weight:600;letter-spacing:0;margin-bottom:2px}
+.steps p{font-size:13px;color:var(--ink-dim)}
+
+.gallery{display:flex;flex-direction:column;gap:14px}
+.gallery figure{border-radius:6px;overflow:hidden;border:1px solid var(--line);position:relative}
+.gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:14px 16px 12px;background:linear-gradient(0deg,rgba(20,18,17,.82),transparent);color:#fff;font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.03em;text-transform:uppercase}
+.gallery figcaption em{display:block;font-family:'Inter',sans-serif;text-transform:none;font-style:normal;font-size:11.5px;color:#F1D9C2;margin-top:2px;letter-spacing:0}
+
+.tablewrap{overflow-x:auto;max-width:100%;border:1px solid var(--line);border-radius:8px}
+.size-table{width:100%;border-collapse:collapse;background:var(--bg-panel);font-size:12.5px}
+.size-table th,.size-table td{padding:11px 8px;text-align:center;border-bottom:1px solid var(--line);color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.size-table th{font-family:'Oswald',sans-serif;color:var(--gold);text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;background:var(--bg-panel-2);font-weight:500}
+.size-table tr:last-child td{border-bottom:none}
+.size-table td:first-child{color:var(--ink);font-weight:600}
+.size-note{font-size:12px;color:var(--ink-dim);text-align:center;margin-top:10px;line-height:1.5}
+
+.buy-box{background:var(--bg-panel);border:1px solid var(--gold-dim);border-radius:10px;padding:22px 18px}
+.buy-head{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+.buy-head .thumb{flex:none;width:64px;height:64px;border-radius:6px;border:1px dashed var(--gold-dim);background:var(--bg-panel-2);display:flex;align-items:center;justify-content:center;color:var(--gold-dim);font-size:10px;text-align:center}
+.buy-head h3{font-family:'Inter',sans-serif;text-transform:none;font-size:14.5px;line-height:1.35;font-weight:600;letter-spacing:0}
+.buy-head span{display:block;font-size:11.5px;color:var(--ink-dim);margin-top:3px;font-weight:400}
+.field-label{font-family:'Oswald',sans-serif;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:8px;display:flex;justify-content:space-between;gap:8px}
+.field-label b{color:var(--gold-light);font-weight:500}
+.color-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:18px}
+.color-opt{background:var(--bg-panel-2);border:1px solid var(--line);border-radius:5px;padding:9px 0 8px;text-align:center;font-size:11.5px;color:var(--ink);cursor:pointer;font-family:inherit}
+.color-opt i{display:block;width:20px;height:20px;border-radius:50%;margin:0 auto 5px;border:1px solid rgba(0,0,0,.15)}
+.color-opt[aria-pressed="true"]{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.size-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:18px}
+.size-opt{background:var(--bg-panel-2);border:1px solid var(--line);border-radius:5px;padding:10px 0;text-align:center;font-family:'Oswald',sans-serif;font-size:13px;color:var(--ink);cursor:pointer}
+.size-opt small{display:block;font-family:'Inter',sans-serif;font-size:11px;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.size-opt[aria-pressed="true"]{background:var(--btn);border-color:var(--btn);color:#fff;font-weight:600}
+.size-opt[aria-pressed="true"] small{color:#fff}
+.qty-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:5px;background:var(--bg-panel-2)}
+.qty button{width:40px;height:40px;border:0;background:none;color:var(--ink);font-size:20px;cursor:pointer}
+.qty output{min-width:30px;text-align:center;font-family:'Oswald',sans-serif;font-variant-numeric:tabular-nums}
+.total-row{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px;margin-bottom:16px}
+.total-row .label{font-size:12.5px;color:var(--ink-dim)}
+.total-row .value{font-family:'Oswald',sans-serif;font-size:24px;color:var(--gold-light);font-weight:600;font-variant-numeric:tabular-nums}
+.total-row .pixval{display:block;font-size:11px;color:var(--ink-dim);text-align:right;margin-top:2px}
+.mini-trust{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.mini-trust div{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-dim)}
+.mini-trust svg{width:14px;height:14px;fill:var(--gold);flex:none}
+
+.empty-rev{border:1px dashed var(--gold-dim);border-radius:8px;padding:26px 18px;text-align:center;color:var(--ink-dim);font-size:13px;line-height:1.55}
+.empty-rev b{display:block;font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:500;color:var(--ink);font-size:16px;margin-bottom:4px;letter-spacing:.02em}
+
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item summary{list-style:none;cursor:pointer;padding:16px 4px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;font-weight:500}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'+';flex:none;font-size:20px;color:var(--gold);font-weight:300;line-height:1}
+.faq-item[open] summary::after{content:'−'}
+.faq-item p{padding:0 4px 16px;font-size:13px;color:var(--ink-dim);line-height:1.6}
+
+.ship-box{background:var(--bg-panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.ship-box svg{width:22px;height:22px;fill:var(--gold);flex:none;margin-top:2px}
+.ship-box h3{font-family:'Inter',sans-serif;text-transform:none;font-size:14px;margin-bottom:4px;letter-spacing:0;font-weight:600}
+.ship-box p{font-size:12.5px;color:var(--ink-dim);line-height:1.5}
+
+footer{padding:34px 4px 24px;text-align:center}
+footer .foot-cross{width:16px;height:16px;margin:0 auto 14px;position:relative}
+footer .foot-cross::before,footer .foot-cross::after{content:'';position:absolute;background:var(--gold-dim)}
+footer .foot-cross::before{width:16px;height:2px;top:7px;left:0}
+footer .foot-cross::after{width:2px;height:16px;left:7px;top:0}
+footer p{font-size:11.5px;color:var(--ink-dim);line-height:1.7;max-width:340px;margin:0 auto 10px}
+footer.mini{padding-top:18px}
+footer.mini .logo,footer.mini p:not(.copy),footer.mini .secure,footer.mini .pay-icons{display:none}
+footer .secure{display:block;width:268px;max-width:100%;height:auto;margin:16px auto;border-radius:10px}
+footer .warn{color:var(--gold-light)}
+footer .pay-icons{display:flex;justify-content:center;gap:8px;margin:16px 0;flex-wrap:wrap}
+footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(--line);border-radius:4px;padding:4px 8px}
+.logo{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:18px;color:var(--gold-light);margin-bottom:8px}
+
+.back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--gold-light);font:600 12px 'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none;padding:16px 4px 4px}
+.back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.pick-head{text-align:center;padding:6px 4px 4px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0 22px}
+.mcard{position:relative;display:flex;flex-direction:column;background:var(--bg-panel);border:1.5px solid var(--line);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.mcard .pick{display:flex;flex-direction:column;text-align:left;padding:0;background:none;border:0;cursor:pointer;font:inherit;color:inherit;position:relative}
+.mcard img{display:block;flex:none;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
+.mcard .info{padding:11px 12px 10px;display:flex;flex-direction:column;gap:3px}
+.mcard .nm{font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.mcard .pr{font-size:12px;color:var(--ink-dim)}
+.mcard .pr b{color:var(--gold-light);font-size:14px}
+.mcard .tick{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:var(--btn);display:none;align-items:center;justify-content:center;box-shadow:0 0 0 3px #fff}
+.mcard .tick svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.mcard.sel{border-color:var(--btn);box-shadow:0 10px 26px -12px rgba(150,89,42,.6)}
+.mcard.sel .tick{display:flex}
+.mcard .pick:focus-visible,.vercol:focus-visible{outline:3px solid var(--gold-light);outline-offset:-3px}
+.vercol{margin:0 10px 12px;padding:10px 8px;background:none;border:1.5px solid var(--btn);color:var(--btn);border-radius:4px;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.vercol:hover{background:var(--btn);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:5px;padding:10px 16px;font:500 14px 'Inter',sans-serif;cursor:pointer;transition:.15s}
+.chip small{display:block;font-size:11px;color:var(--ink-dim);margin-top:2px}
+.chip[aria-pressed="true"]{background:var(--btn);border-color:var(--btn);color:#fff}
+.chip[aria-pressed="true"] small{color:#F1D9C2}
+.chip:focus-visible{outline:3px solid var(--gold-light);outline-offset:2px}
+.opt-label{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);margin:22px 0 10px;display:flex;justify-content:space-between}
+.opt-label b{color:var(--gold-light);font-weight:600}
+.opt-head{display:flex;gap:14px;align-items:center;background:var(--bg-panel);border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:16px}
+.opt-head img{width:84px;height:84px;border-radius:6px;object-fit:cover;flex:none}
+.opt-head h3{font-family:'Oswald',sans-serif;font-weight:600;font-size:20px;letter-spacing:.04em;text-transform:uppercase}
+.opt-head p{font-size:12.5px;color:var(--ink-dim);margin-top:2px}
+.opt-total{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--line);margin-top:22px;padding-top:16px}
+.opt-total .label{font-size:13px;color:var(--ink-dim)}
+.opt-total .value{font-family:'Oswald',sans-serif;font-weight:600;font-size:30px;color:var(--gold-light);display:block;text-align:right;line-height:1}
+.opt-total .pix{font-size:12px;color:var(--ink-dim);display:block;text-align:right;margin-top:4px}
+[hidden]{display:none!important}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding-top:4px}
+.cartbtn{position:relative;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--btn);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;margin-top:10px}
+.cartbtn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cartcount{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;border-radius:10px;background:var(--btn);color:#fff;font:700 11px 'Inter',sans-serif;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.btn-ghost{display:block;width:100%;background:none;border:1.5px solid var(--btn);color:var(--btn);font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;letter-spacing:.03em;text-transform:uppercase;padding:14px 18px;border-radius:4px;margin-top:10px;cursor:pointer}
+.sheet{position:fixed;inset:0;background:rgba(20,18,17,.5);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.sheet-card{background:#fff;width:100%;max-width:480px;border-radius:16px 16px 0 0;padding:26px 20px calc(22px + env(safe-area-inset-bottom,0px));text-align:center}
+.sheet-ok{width:46px;height:46px;border-radius:50%;background:var(--btn);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px var(--gold-dim)}
+.sheet-ok svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.sheet-card h3{font-family:'Oswald',sans-serif;font-weight:600;font-size:21px;text-transform:uppercase;letter-spacing:.03em}
+.sheet-card p{font-size:13.5px;color:var(--ink-dim);margin:6px 0 18px}
+.cart-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.citem{display:flex;gap:12px;background:var(--bg-panel);border:1px solid var(--line);border-radius:10px;padding:10px}
+.citem img{width:78px;height:78px;border-radius:6px;object-fit:cover;flex:none}
+.citem .ci{flex:1;min-width:0}
+.citem h4{font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:.04em;text-transform:uppercase}
+.citem .sub{font-size:12.5px;color:var(--ink-dim);margin-top:2px}
+.citem .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.citem .price{font-weight:700;color:var(--gold-light);font-size:15px}
+.qs{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:6px;background:#fff}
+.qs button{width:32px;height:32px;border:0;background:none;font-size:18px;cursor:pointer;color:var(--ink)}
+.qs span{min-width:24px;text-align:center;font-size:14px}
+.rm{background:none;border:0;color:var(--ink-dim);font-size:12px;text-decoration:underline;cursor:pointer;padding:6px 0 0}
+.empty-cart{text-align:center;color:var(--ink-dim);padding:40px 0}
+.gift-note{text-align:center;font-size:13px;letter-spacing:.04em;font-weight:600;color:var(--gold-light);background:var(--bg-panel-2);border:1px dashed var(--gold);border-radius:8px;padding:10px;margin-top:16px}
+.back{padding:14px 4px 4px}
+.coll-track{margin-top:16px}
+.thumbs{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 4px;scrollbar-width:none}
+.thumbs::-webkit-scrollbar{display:none}
+.thumbs button{flex:0 0 58px;height:58px;padding:0;border:2px solid transparent;border-radius:6px;overflow:hidden;background:none;cursor:pointer;opacity:.65}
+.thumbs button.on{border-color:var(--btn);opacity:1}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed}
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;background:rgba(252,250,247,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line);
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:999;transition:transform .25s ease,opacity .25s ease}
+.sticky-cta.hidden{transform:translateY(120%);opacity:0;pointer-events:none}
+.sticky-cta a{display:block;background:var(--btn);color:#fff;text-align:center;text-decoration:none;font-family:'Oswald',sans-serif;font-weight:600;font-size:14.5px;letter-spacing:.03em;text-transform:uppercase;padding:14px 16px;border-radius:5px}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold-light);color:#fff;padding:12px 16px;border-radius:6px;font-size:13px;font-weight:500;max-width:calc(100% - 32px);width:max-content;z-index:1000}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sticky-cta{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="announce">Pré Black Friday &nbsp;•&nbsp; 50% OFF</div>
+
+<div id="viewHome">
+<div class="hero" id="hero">
+  <h1>Seu sofá renovado<em>em poucos minutos</em></h1>
+  <p class="hero-sub">Capas de sofá em algodão e poliéster, com encaixe sem costura.</p>
+  <div class="hero-photo"><div class="hero-img-wrap" id="heroImg"></div><div class="gift-bubble"><small>Brinde</small><b>2</b><i>almofadas</i></div></div>
+  <div class="price-strip">
+    <span class="old" id="heroOld"></span>
+    <span class="now" id="heroPrice"></span>
+    <span class="pix" id="heroPix"></span>
+  </div>
+  <a href="#modelos" class="btn-primary">Quero minha capa</a>
+  <div class="trust-line">Escolha os modelos</div>
+</div>
+
+<div class="badges">
+  <div class="badge"><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"></path></svg><span>Tecido macio</span></div>
+  <div class="badge"><svg viewBox="0 0 24 24"><path d="M12 3c-4 4-7 7.5-7 11a7 7 0 0 0 14 0c0-3.5-3-7-7-11z"></path></svg><span>Algodão e poliéster</span></div>
+  <div class="badge"><svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 0 1 5.2 9l1.5 1.5A8 8 0 0 0 12 4zm-5.2 3.5L5.3 6A8 8 0 0 0 12 20v3l4-4-4-4v3a6 6 0 0 1-5.2-9z"></path></svg><span>Lavável em máquina</span></div>
+</div>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Sofá desgastado?<br><span>A troca leva minutos.</span></h2>
+  <p class="section-lead">Todos nós sabemos que o desgaste do tempo deixa o sofá com aparência velha e tira a beleza da sala. Por isso, escolha um dos nossos modelos e renove o ambiente sem precisar trocar o sofá, deixando o ambiente mais charmoso e agradável.</p>
+  <div class="deal-box">
+    <div class="deal-icon"><svg viewBox="0 0 24 24"><path d="M20 7h-2.2A3 3 0 0 0 12 4.8 3 3 0 0 0 6.2 7H4a1 1 0 0 0-1 1v3h18V8a1 1 0 0 0-1-1zM9 7a1 1 0 1 1 2 0H9zm4 0a1 1 0 1 1 2 0h-2zM4 13v6a2 2 0 0 0 2 2h5v-8H4zm9 0v8h5a2 2 0 0 0 2-2v-6h-7z"></path></svg></div>
+    <div class="deal-eyebrow">Presente especial</div>
+    <h3>Ganhe 2 almofadas de brinde</h3>
+    <p>Comprando hoje, as almofadas vão de presente para deixar a sua sala ainda mais aconchegante.</p>
+  </div>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section id="colecao">
+  <h2 class="section-title">Conheça nossos <span>modelos</span></h2>
+  <p class="section-lead">Estampas e cores para todos os gostos. Escolha o estilo que mais combina com a sua sala.</p>
+  <div class="carousel">
+    <div class="track" id="track"></div>
+    <button type="button" class="car-btn prev" id="prevBtn" aria-label="Foto anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg></button>
+    <button type="button" class="car-btn next" id="nextBtn" aria-label="Próxima foto"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
+  </div>
+  <div class="car-cap" id="carCap"></div>
+  <div class="dots" id="dots"></div>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Feito para mudar <span>o visual da sua sala</span></h2>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 3c-4 4-7 7.5-7 11a7 7 0 0 0 14 0c0-3.5-3-7-7-11z"></path></svg></div>
+      <div><h3>Algodão e poliéster</h3><p>Toque macio e resistência para o uso diário da família.</p></div></div>
+    <div class="feat-card"><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm-1 15-4-4 1.4-1.4L11 14.2l6.6-6.6L19 9l-8 8z"></path></svg></div>
+      <div><h3>Lavagem simples</h3><p>Tire, lave na máquina e coloque de volta.</p></div></div>
+    <div class="feat-card"><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M10 2H14V9H21V14H14V22H10V14H3V9H10V2Z"></path></svg></div>
+      <div><h3>Variedade de cores e tamanhos</h3><p>Opções para combinar com a sua sala e com o seu sofá.</p></div></div>
+  </div>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Como <span>colocar</span></h2>
+  <ol class="steps">
+    <li><h3>Abra e posicione</h3><p>Estenda a capa sobre o assento, com o encosto virado para cima.</p></li>
+    <li><h3>Ajuste os cantos</h3><p>Puxe o lençol por trás do encosto e nos braços, alisando o tecido.</p></li>
+    <li><h3>Finalize</h3><p>Prenda as laterais, ajuste as dobras e coloque as almofadas.</p></li>
+  </ol>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Veja nos <span>detalhes</span></h2>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Qual <span>tamanho</span> escolher</h2>
+  <div class="tablewrap"><table class="size-table"><tbody id="sizeTable"></tbody></table></div>
+  <p class="size-note">Medidas aproximadas do sofá. Em caso de dúvida, fale com a gente antes de comprar.</p>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Perguntas <span>frequentes</span></h2>
+  <details class="faq-item"><summary>Qual tamanho eu escolho?</summary><p>Consulte a tabela de medidas acima e meça o seu sofá, tendo em vista se ele é 2, 3 ou 4 lugares.</p></details>
+  <details class="faq-item"><summary>Serve em sofá retrátil ou com chaise?</summary><p>Serve em sofás de assento reto, retrátil ou chaise.</p></details>
+  <details class="faq-item"><summary>Como lavar?</summary><p>Lave à máquina em ciclo delicado, com água fria, e seque à sombra. Evite alvejante.</p></details>
+  <details class="faq-item"><summary>Qual o prazo de entrega?</summary><p>O prazo depende do seu CEP e aparece no carrinho antes de finalizar o pedido.</p></details>
+  <details class="faq-item"><summary>Posso trocar se não servir?</summary><p>Sim. A política de trocas e devoluções segue o Código de Defesa do Consumidor.</p></details>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section style="padding-bottom:6px">
+  <div class="ship-box">
+    <svg viewBox="0 0 24 24"><path d="M3 13h13V6H3v7zm18-5h-2.5l2 5H21v3h-2.05a2.5 2.5 0 0 1-4.9 0h-4.1a2.5 2.5 0 0 1-4.9 0H3v-2h13V8h5z"></path></svg>
+    <div><h3>Entrega para todo o Brasil</h3><p>Prazo e valor do frete calculados no carrinho pelo seu CEP. Você recebe o código de rastreio quando o pedido for despachado.</p></div>
+  </div>
+</section>
+
+</div>
+
+<div id="viewModels" hidden>
+  <div class="topbar"><a class="back" href="#"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg>Voltar</a><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
+  <section class="pick-head">
+    <div class="eyebrow">Coleções</div>
+    <h2 class="section-title" style="margin-top:6px">Escolha o seu <span>modelo</span></h2>
+    <p class="section-lead" style="margin-bottom:0">Entre na coleção, escolha a cor e adicione ao carrinho.</p>
+  </section>
+  <div class="cards" id="cards">
+    <div class="mcard" data-m="flara"><button type="button" class="pick" aria-label="Abrir coleção Flara"><img alt="Capa de sofá Flara" src="img/dfa50185a2.webp"><span class="info"><span class="nm">Flara</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="flara">Ver coleção</button></div>
+    <div class="mcard" data-m="stella"><button type="button" class="pick" aria-label="Abrir coleção Stella"><img alt="Capa de sofá Stella" src="img/f9a9c8cf60.webp"><span class="info"><span class="nm">Stella</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="stella">Ver coleção</button></div>
+    <div class="mcard" data-m="melina"><button type="button" class="pick" aria-label="Abrir coleção Melina"><img alt="Capa de sofá Melina" src="img/de84698761.webp"><span class="info"><span class="nm">Melina</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="melina">Ver coleção</button></div>
+    <div class="mcard" data-m="dalia"><button type="button" class="pick" aria-label="Abrir coleção Dália"><img alt="Capa de sofá Dália" src="img/04f669ff18.webp"><span class="info"><span class="nm">Dália</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="dalia">Ver coleção</button></div>
+  </div>
+</div>
+
+<div id="viewColl" hidden>
+  <div class="topbar"><a class="back" href="#modelos"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg>Modelos</a><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
+  <section class="pick-head">
+    <div class="eyebrow">Coleção</div>
+    <h2 class="section-title" style="margin-top:6px" id="collTitle">Flara</h2>
+  </section>
+  <div class="carousel coll-track">
+    <div class="track" id="ctrack"></div>
+    <button type="button" class="car-btn prev" id="cprev" aria-label="Foto anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg></button>
+    <button type="button" class="car-btn next" id="cnext" aria-label="Próxima foto"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
+  </div>
+  <div class="car-cap" id="ccap"></div>
+  <div class="thumbs" id="cthumbs"></div>
+  <div class="opt-label">Cor <b id="optColorName"></b></div>
+  <div class="chips" id="optColors" role="group" aria-label="Cor"></div>
+  <div class="opt-label">Tamanho do sofá <b id="optSizeName"></b></div>
+  <div class="chips" id="optSizes" role="group" aria-label="Tamanho"></div>
+  <div class="opt-total"><span class="label"><s id="optOld"></s></span><div><span class="value" id="optTotal"></span><span class="pix" id="optPix"></span></div></div>
+  <button type="button" id="addCart" class="btn-primary" style="margin-top:16px">Adicionar ao carrinho</button>
+  <div class="trust-line" style="margin-bottom:8px">Brinde: 2 almofadas · Pix ou cartão</div>
+</div>
+
+<div id="viewCart" hidden>
+  <div class="topbar"><a class="back" href="#modelos"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg>Continuar comprando</a></div>
+  <section class="pick-head">
+    <div class="eyebrow">Checkout</div>
+    <h2 class="section-title" style="margin-top:6px">Seu <span>carrinho</span></h2>
+  </section>
+  <div id="cartList" class="cart-list"></div>
+  <div id="cartEmpty" class="empty-cart" hidden>Seu carrinho está vazio.<a href="#modelos" class="btn-primary" style="margin-top:16px">Escolher modelos</a></div>
+  <div id="cartFoot" hidden>
+    <div class="gift-note">BRINDE: 2 ALMOFADAS A CADA COLEÇÃO</div>
+    <div class="opt-total"><span class="label">Total</span><div><span class="value" id="cartTotal"></span><span class="pix" id="cartPix"></span></div></div>
+    <button type="button" id="payBtn" class="btn-primary" style="margin-top:16px">Finalizar compra</button>
+    <div class="trust-line" style="margin-bottom:8px">Pagamento por Pix ou cartão</div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Adicionado ao carrinho">
+  <div class="sheet-card">
+    <div class="sheet-ok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></div>
+    <h3>Adicionado ao carrinho</h3>
+    <p id="sheetTxt"></p>
+    <button type="button" id="sheetGo" class="btn-primary">Ir para o checkout</button>
+    <button type="button" id="sheetMore" class="btn-ghost">Continuar comprando</button>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">Navell Enxovais</div>
+  <p>Compra 100% segura, com dados protegidos e checkout criptografado. Envio para todo o Brasil com rastreamento.</p>
+  <img class="secure" alt="Mercado Pago, compra 100% segura, Visa, Mastercard, boleto e Pix" src="img/151d3df52f.png">
+  <p class="warn">Desconfie de preços muito baixos fora deste site. Este é o canal oficial de vendas da Navell Enxovais.</p>
+  <div class="pay-icons"><span>Pix</span><span>Cartão</span><span>Boleto</span></div>
+  <p class="copy" style="font-size:11px">© 2026 Navell Enxovais · Todos os direitos reservados.</p>
+</footer>
+
+<div class="sticky-cta hidden" id="stickyCta"><a href="#modelos">Quero minha capa</a></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ===== CONFIGURAÇÃO (edite aqui) =====
+   photos: caminhos das suas fotos (até 5). Vazio mostra o espaço reservado.
+   checkoutUrl: link do checkout do seu gateway. Vazio mostra um aviso. */
+var CONFIG={
+  checkoutUrl:"",
+  pixDiscount:0.05,
+  photos:["img/53e7d46c84.webp","img/5b438a3e98.webp","img/04555ce183.webp","img/e354eafe40.webp"],
+  models:["img/54d0137376.webp","img/ea6d29206c.webp","img/9161d170ee.webp","img/8a7da39c81.webp","img/1f2190bde8.webp","img/2c27d45124.webp","img/39f27415ea.webp","img/e64799e936.webp"],
+  photoLabels:["Sofá com a capa instalada","Detalhe do tecido","Toque macio","Fácil de colocar","Almofadas de brinde"],
+  colors:[{n:"Preto",c:"#1f1f1f"},{n:"Marrom",c:"#7a5338"},{n:"Azul",c:"#35547a"},{n:"Cinza",c:"#8d8d8d"}],
+  sizes:[
+    {n:"2 lugares",w:"até 1,70 m",use:"Sofá pequeno",price:69.90,old:139.90},
+    {n:"3 lugares",w:"1,70 a 2,20 m",use:"Sofá de sala comum",price:84.90,old:169.90},
+    {n:"4 lugares",w:"2,20 a 2,70 m",use:"Sofá grande",price:99.90,old:199.90}
+  ]
+};
+var $=function(id){return document.getElementById(id)};
+var brl=function(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})};
+function photo(i){return CONFIG.photos[i]?'<img alt="'+CONFIG.photoLabels[i]+'" src="'+CONFIG.photos[i]+'">':'<div class="ph"><b>Foto '+(i+1)+'</b>'+CONFIG.photoLabels[i]+'<br>Adicione em CONFIG.photos</div>'}
+$("heroImg").innerHTML=photo(0);
+var NAMES=["Flara","Stella","Melina","Dália"];
+var COLL={flara:["img/74afdfc194.webp","img/088bf71e91.webp","img/40144bf9f9.webp","img/c3050f1c08.webp","img/2ac2ca9252.webp","img/f4d54efb6f.webp","img/c223bce29a.webp","img/cf7865a8ae.webp","img/83b5221b17.webp","img/122393a3fe.webp","img/c94321e3af.webp","img/74dd7a03bc.webp","img/a9e36838f6.webp"],stella:["img/7343b5bcd1.webp","img/376c941bf1.webp","img/f408f8045d.webp","img/9c14574d8b.webp","img/29abbbdcc6.webp","img/d098301980.webp","img/ef46c10833.webp","img/741d36c71a.webp","img/95dbb430c1.webp","img/a98a2b7fe5.webp","img/bdfd6662e9.webp","img/4a2158bc8e.webp","img/f4d1e042bf.webp","img/542c66dc3a.webp"],melina:["img/b4272b3291.webp","img/5e1b3631fa.webp","img/4e5b3172ed.webp","img/daabdc5748.webp","img/b16cc61e1b.webp","img/56eef720d9.webp","img/6fa94df508.webp","img/98eec1dc78.webp","img/e55dbb0f71.webp","img/89cea0755d.webp","img/783c6cfafb.webp"],dalia:["img/579b022df1.webp","img/7306c11b7d.webp","img/64c1be9833.webp","img/26acf1bbd1.webp","img/f48b020096.webp","img/b2d85750be.webp","img/c5aa53b5b9.webp","img/3ed223db07.webp","img/e647bd7d05.webp","img/312795501f.webp","img/978fd4ab4e.webp","img/42682ea8f7.webp","img/598e2e201a.webp","img/e4ae1d353c.webp"]};
+var track=$("track"),dots=$("dots");
+track.innerHTML=CONFIG.models.map(function(u,i){return'<figure class="slide"><img alt="Capa de lençol '+NAMES[Math.floor(i/2)]+', foto '+(i%2+1)+'" src="'+u+'"'+(i?' loading="lazy"':'')+'></figure>'}).join("");
+dots.innerHTML=CONFIG.models.map(function(){return"<i></i>"}).join("");
+function carSync(){
+  var n=CONFIG.models.length,i=Math.round(track.scrollLeft/track.clientWidth);i=Math.max(0,Math.min(n-1,i));
+  Array.prototype.forEach.call(dots.children,function(d,k){d.classList.toggle("on",k===i)});
+  $("carCap").textContent="Capa de lençol "+NAMES[Math.floor(i/2)]+" · "+(i%2+1)+"/2";
+  $("prevBtn").disabled=i===0;$("nextBtn").disabled=i===n-1;
+}
+$("prevBtn").onclick=function(){track.scrollBy({left:-track.clientWidth,behavior:"smooth"})};
+$("nextBtn").onclick=function(){track.scrollBy({left:track.clientWidth,behavior:"smooth"})};
+track.addEventListener("scroll",function(){clearTimeout(carSync.t);carSync.t=setTimeout(carSync,40)});
+window.addEventListener("resize",carSync);carSync();
+$("gallery").innerHTML=[1,2,3].map(function(i){return'<figure>'+photo(i)+'<figcaption>'+CONFIG.photoLabels[i]+'</figcaption></figure>'}).join("");
+$("sizeTable").innerHTML='<tr><th>Tamanho</th><th>Largura</th><th>Preço</th></tr>'+CONFIG.sizes.map(function(s){return'<tr><td>'+s.n+'</td><td>'+s.w+'</td><td>'+brl(s.price)+'</td></tr>'}).join("");
+var s0=CONFIG.sizes[0];
+$("heroOld").textContent=brl(s0.old);$("heroPrice").textContent=brl(s0.price);
+$("heroPix").innerHTML="ou <b>"+brl(s0.price*(1-CONFIG.pixDiscount))+" no Pix</b> (5% OFF)";
+function toast(m){var t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true},4500)}
+var sticky=$("stickyCta"),hv=true,onSub=false;
+function refresh(){sticky.classList.toggle("hidden",hv||onSub)}
+new IntersectionObserver(function(e){hv=e[0].isIntersecting;refresh()},{threshold:.15}).observe($("hero"));
+var KEYS=["flara","stella","melina","dalia"];
+var COLORS={flara:["Azul","Preto","Rosa","Bege"],stella:["Preto","Bege","Cinza","Vermelho","Verde"],melina:["Preto","Marrom","Azul","Cinza"],dalia:["Preto","Marrom","Bege","Azul","Verde"]};
+var COLPHOTO={flara:{Azul:9,Preto:10,Rosa:11,Bege:12},stella:{Preto:9,Bege:10,Cinza:11,Vermelho:12,Verde:13},melina:{Preto:7,Marrom:8,Azul:9,Cinza:10},dalia:{Preto:9,Marrom:10,Bege:11,Azul:12,Verde:13}};
+var VIEWS={home:"viewHome",modelos:"viewModels",coll:"viewColl",carrinho:"viewCart"};
+function show(v){
+  Object.keys(VIEWS).forEach(function(k){$(VIEWS[k]).hidden=k!==v});
+  onSub=v!=="home";$("sheet").hidden=true;
+  document.querySelector(".announce").hidden=v!=="home";
+  document.querySelector("footer").classList.toggle("mini",v==="coll"||v==="carrinho");
+  refresh();window.scrollTo(0,0);
+}
+function setHash(h){try{if(h){location.hash=h}else if(location.hash){history.replaceState(null,"",location.pathname+location.search)}}catch(e){}}
+function go(v){if(v==="carrinho")renderCart();setHash(v==="home"?"":v);show(v)}
+/* carrinho */
+var CART=[];
+try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i){return KEYS.indexOf(i.k)>-1&&COLORS[i.k].indexOf(i.color)>-1&&CONFIG.sizes[i.s]&&i.qty>0})}catch(e){CART=[]}
+function saveCart(){try{localStorage.setItem("navell_cart",JSON.stringify(CART))}catch(e){}}
+function cardImg(k){return document.querySelector('.mcard[data-m="'+k+'"] img').src}
+function nameOf(k){return NAMES[KEYS.indexOf(k)]}
+function badge(){
+  var n=CART.reduce(function(a,i){return a+i.qty},0);
+  Array.prototype.forEach.call(document.querySelectorAll(".cartcount"),function(b){b.textContent=n;b.hidden=n===0});
+}
+function renderCart(){
+  var list=$("cartList"),total=0;
+  list.innerHTML=CART.map(function(it,i){
+    var sz=CONFIG.sizes[it.s];total+=sz.price*it.qty;
+    return'<div class="citem"><img alt="" src="'+cardImg(it.k)+'"><div class="ci"><h4>'+nameOf(it.k)+'</h4><div class="sub">'+it.color+' · '+sz.n+'</div><div class="row"><span class="qs"><button type="button" data-act="minus" data-i="'+i+'" aria-label="Diminuir">−</button><span>'+it.qty+'</span><button type="button" data-act="plus" data-i="'+i+'" aria-label="Aumentar">+</button></span><span class="price">'+brl(sz.price*it.qty)+'</span></div><button type="button" class="rm" data-act="rm" data-i="'+i+'">Remover</button></div></div>'
+  }).join("");
+  $("cartEmpty").hidden=CART.length>0;$("cartFoot").hidden=CART.length===0;
+  $("cartTotal").textContent=brl(total);
+  $("cartPix").textContent="ou "+brl(total*(1-CONFIG.pixDiscount))+" no Pix";
+  badge();
+}
+$("cartList").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-act]");if(!b)return;
+  var i=+b.getAttribute("data-i"),a=b.getAttribute("data-act"),it=CART[i];if(!it)return;
+  if(a==="plus"&&it.qty<10)it.qty++;
+  else if(a==="minus"&&it.qty>1)it.qty--;
+  else if(a==="rm")CART.splice(i,1);
+  saveCart();renderCart();
+});
+$("payBtn").onclick=function(){
+  if(!CART.length)return;
+  if(CONFIG.checkoutUrl){
+    var itens=CART.map(function(i){return nameOf(i.k)+"|"+i.color+"|"+CONFIG.sizes[i.s].n+"|"+i.qty}).join(";");
+    window.open(CONFIG.checkoutUrl+"?"+new URLSearchParams({itens:itens}),"_blank");return;
+  }
+  toast("Pedido montado. Falta conectar o gateway de pagamento.");
+};
+/* coleção */
+var cur={k:"flara",c:0,s:0};
+function chip(txt,sub,on,fn){var b=document.createElement("button");b.type="button";b.className="chip";b.setAttribute("aria-pressed",on);b.innerHTML=txt+(sub?"<small>"+sub+"</small>":"");b.onclick=fn;return b}
+function renderOpts(){
+  var sz=CONFIG.sizes[cur.s],cs=COLORS[cur.k];
+  var c=$("optColors");c.innerHTML="";
+  cs.forEach(function(n,i){c.appendChild(chip(n,"",cur.c===i,function(){
+    cur.c=i;renderOpts();
+    var t=$("ctrack"),idx=COLPHOTO[cur.k][n];
+    if(idx!==undefined&&idx<t.children.length){t.scrollTo({left:idx*t.clientWidth,behavior:"smooth"});t.scrollIntoView({behavior:"smooth",block:"center"})}
+  }))});
+  var z=$("optSizes");z.innerHTML="";
+  CONFIG.sizes.forEach(function(x,i){z.appendChild(chip(x.n,brl(x.price),cur.s===i,function(){cur.s=i;renderOpts()}))});
+  $("optColorName").textContent=cur.c>-1?cs[cur.c]:"";
+  var ab=$("addCart");ab.disabled=cur.c<0;ab.textContent=cur.c<0?"Escolha uma cor":"Adicionar ao carrinho";$("optSizeName").textContent=sz.n;
+  $("optOld").textContent=brl(sz.old);$("optTotal").textContent=brl(sz.price);
+  $("optPix").textContent="ou "+brl(sz.price*(1-CONFIG.pixDiscount))+" no Pix";
+}
+function openColl(k){
+  var list=COLL[k];
+  if(!list){toast("A coleção "+nameOf(k)+" chega em breve.");return}
+  cur={k:k,c:-1,s:0};
+  $("collTitle").textContent=nameOf(k);
+  var t=$("ctrack");
+  t.innerHTML=list.map(function(u,i){return'<figure class="slide"><img alt="Foto '+(i+1)+'" src="'+u+'"'+(i?' loading="lazy"':'')+'></figure>'}).join("");
+  $("cthumbs").innerHTML=list.map(function(u,i){return'<button type="button" data-i="'+i+'" aria-label="Ver foto '+(i+1)+'"><img alt="" src="'+u+'"></button>'}).join("");
+  t.scrollLeft=0;renderOpts();
+  setHash(k);show("coll");t.scrollLeft=0;collSync();
+}
+function collSync(){
+  var t=$("ctrack"),n=t.children.length,i=n?Math.max(0,Math.min(n-1,Math.round(t.scrollLeft/(t.clientWidth||1)))):0;
+  $("ccap").textContent=(i+1)+" / "+n;
+  $("cprev").disabled=i===0;$("cnext").disabled=i>=n-1;
+  Array.prototype.forEach.call($("cthumbs").children,function(b,k){b.classList.toggle("on",k===i);if(k===i){var s=$("cthumbs");s.scrollLeft=b.offsetLeft-s.clientWidth/2+b.clientWidth/2}});
+}
+$("cprev").onclick=function(){$("ctrack").scrollBy({left:-$("ctrack").clientWidth,behavior:"smooth"})};
+$("cnext").onclick=function(){$("ctrack").scrollBy({left:$("ctrack").clientWidth,behavior:"smooth"})};
+$("ctrack").addEventListener("scroll",function(){clearTimeout(collSync.t);collSync.t=setTimeout(collSync,40)});
+$("cthumbs").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var t=$("ctrack");t.scrollTo({left:+b.getAttribute("data-i")*t.clientWidth,behavior:"smooth"})});
+$("addCart").onclick=function(){
+  if(cur.c<0)return;
+  var color=COLORS[cur.k][cur.c],hit=CART.filter(function(i){return i.k===cur.k&&i.color===color&&i.s===cur.s})[0];
+  if(hit){if(hit.qty<10)hit.qty++}else CART.push({k:cur.k,color:color,s:cur.s,qty:1});
+  saveCart();badge();
+  $("sheetTxt").textContent=nameOf(cur.k)+" · "+color+" · "+CONFIG.sizes[cur.s].n;
+  $("sheet").hidden=false;
+};
+$("sheetGo").onclick=function(){go("carrinho")};
+$("sheetMore").onclick=function(){go("modelos")};
+$("sheet").addEventListener("click",function(e){if(e.target===$("sheet"))$("sheet").hidden=true});
+document.addEventListener("click",function(e){
+  var t=e.target;if(!t.closest)return;
+  var c=t.closest(".vercol,.pick");
+  if(c){e.preventDefault();openColl((c.closest(".mcard")||c).getAttribute("data-m"));return}
+  var g=t.closest("[data-go]");
+  if(g){e.preventDefault();go(g.getAttribute("data-go"));return}
+  var a=t.closest("a[href]");if(!a)return;
+  var h=a.getAttribute("href");
+  if(h==="#modelos"){e.preventDefault();go("modelos")}
+  else if(h==="#"&&a.classList.contains("back")){e.preventDefault();go("home")}
+});
+window.addEventListener("hashchange",function(){
+  var h=location.hash;
+  if(h==="#modelos")show("modelos");
+  else if(h==="#carrinho"){renderCart();show("carrinho")}
+  else if(h===""||h==="#")show("home");
+});
+badge();
+if(location.hash==="#modelos")show("modelos");
+else if(location.hash==="#carrinho"){renderCart();show("carrinho")}
+</script>
+
+</body>
+</html>
