@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#6E3F1D">
+<title>Pedido confirmado — Navell Enxovais</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Cinzel:wght@500;600;700&display=swap">
+<style>
+:root{--bg:#FCFAF7;--panel:#fff;--panel2:#F4EEE8;--btn:#96592A;--gold:#B97B45;--gold-light:#96592A;--ink:#141211;--ink-dim:#6B625B;--line:#E8DED4;color-scheme:light}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 'Inter',system-ui,sans-serif;max-width:480px;margin:0 auto;padding:48px max(20px,env(safe-area-inset-right,0px)) 40px max(20px,env(safe-area-inset-left,0px));text-align:center}
+.ok{width:64px;height:64px;border-radius:50%;background:var(--btn);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.eyebrow{font:12px 'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{font:600 26px 'Oswald',sans-serif;text-transform:uppercase;margin:8px 0 10px}
+p{color:var(--ink-dim);line-height:1.6;margin-bottom:18px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 16px;margin:22px 0;text-align:left}
+.r{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+.r:last-child{border-bottom:0}.r span{color:var(--ink-dim)}.r strong{word-break:break-all;text-align:right}
+.gift{font:600 11px 'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-light);background:var(--panel2);border:1px dashed #E3CDB8;border-radius:8px;padding:9px}
+.btn{display:block;margin-top:22px;background:var(--btn);color:#fff;font:600 14.5px 'Oswald',sans-serif;letter-spacing:.03em;text-transform:uppercase;text-decoration:none;padding:15px;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="ok">✓</div>
+<p class="eyebrow" style="margin:0">Pagamento aprovado</p>
+<h1>Obrigada pela compra!</h1>
+<p>Recebemos o seu pedido e já estamos separando tudo com carinho. Em breve entraremos em contato com as informações de envio.</p>
+<div class="box">
+  <div class="r"><span>Pedido</span><strong id="oid">—</strong></div>
+  <div class="r"><span>Total pago</span><strong id="otot">—</strong></div>
+</div>
+<div class="gift">Brinde: 2 almofadas a cada coleção</div>
+<a class="btn" href="index.html">Voltar para a loja</a>
+<script>
+var q=new URLSearchParams(location.search),t=parseFloat(q.get("total")),o=q.get("order");
+if(!isNaN(t))document.getElementById("otot").textContent=t.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});else document.getElementById("otot").closest(".r").hidden=true;
+if(o)document.getElementById("oid").textContent=o;else document.getElementById("oid").closest(".r").hidden=true;
+</script>
+</body>
+</html>

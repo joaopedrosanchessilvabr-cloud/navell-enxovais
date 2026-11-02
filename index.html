@@ -517,11 +517,7 @@ $("cartList").addEventListener("click",function(e){
 });
 $("payBtn").onclick=function(){
   if(!CART.length)return;
-  if(CONFIG.checkoutUrl){
-    var itens=CART.map(function(i){return nameOf(i.k)+"|"+i.color+"|"+CONFIG.sizes[i.s].n+"|"+i.qty}).join(";");
-    window.open(CONFIG.checkoutUrl+"?"+new URLSearchParams({itens:itens}),"_blank");return;
-  }
-  toast("Pedido montado. Falta conectar o gateway de pagamento.");
+  window.location.href="checkout.html";
 };
 /* coleção */
 var cur={k:"flara",c:0,s:0};
