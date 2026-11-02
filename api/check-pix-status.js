@@ -4,6 +4,8 @@
 //
 // GET /api/check-pix-status?id=TXN_XXXXXXXX
 
+import { salvarNaPlanilha } from './_planilha.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
@@ -37,6 +39,10 @@ export default async function handler(req, res) {
     if (!simplifyRes.ok) {
       console.error('[check-pix-status] SimplifyBR respondeu com erro:', simplifyRes.status, data);
       return res.status(simplifyRes.status).json({ error: data?.message || 'Não foi possível consultar o status agora.' });
+    }
+
+    if (['paid', 'approved', 'completed', 'confirmed'].includes(String(data.status || '').toLowerCase())) {
+      await salvarNaPlanilha({ acao: 'status', pedido: data.external_id, status: 'Pago' });
     }
 
     return res.status(200).json({

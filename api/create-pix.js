@@ -5,6 +5,8 @@
 // O valor NÃO vem do navegador: o servidor recalcula o total a partir dos
 // itens do carrinho, para ninguém conseguir pagar menos alterando a página.
 
+import { salvarNaPlanilha } from './_planilha.js';
+
 const KEYS = ['flara', 'stella', 'melina', 'dalia'];
 const NAMES = { flara: 'Flara', stella: 'Stella', melina: 'Melina', dalia: 'Dália' };
 const COLORS = {
@@ -106,6 +108,11 @@ export default async function handler(req, res) {
       frete: SHIPPING[shipping].n,
       itens: resumo, cliente: payer, entrega: address,
     }));
+
+    await salvarNaPlanilha({
+      pedido: data.external_id || external_id, status: 'Pix gerado', idPix: data.internal_id,
+      valor: amount, frete: SHIPPING[shipping].n, itens: resumo, cliente: payer, entrega: address,
+    });
 
     return res.status(201).json({
       internal_id: data.internal_id,
