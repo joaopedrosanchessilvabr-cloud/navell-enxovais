@@ -39,7 +39,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
-  const { items, payer, address, shipping, vid } = req.body || {};
+  const { items, payer, address, shipping, vid, t } = req.body || {};
+  // TESTE TEMPORÁRIO: com o código secreto, o Pix sai de R$ 1,00. Será removido após o teste.
+  const teste = typeof t === 'string' && t === '1f98c8dae562a77a1e06';
 
   if (!payer || !payer.name || !payer.email || !payer.document || !payer.phone ||
       !address || !address.cep || !address.street || !address.number || !address.city || !address.state ||
@@ -51,7 +53,7 @@ export default async function handler(req, res) {
   if (!r0 || !r0.resumo.length) return res.status(422).json({ error: 'Carrinho inválido. Volte e confira os itens.' });
   const subtotal = r0.subtotal;
   const resumo = r0.resumo;
-  const amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + SHIPPING[shipping].price) * 100) / 100;
+  const amount = teste ? 1 : Math.round((subtotal * (1 - PIX_DISCOUNT) + SHIPPING[shipping].price) * 100) / 100;
 
   const clientId = process.env.SIMPLIFY_CLIENT_ID;
   const clientSecret = process.env.SIMPLIFY_CLIENT_SECRET;
@@ -102,6 +104,7 @@ export default async function handler(req, res) {
       status: data.status,
       qrcode: data.qrcode,
       amount: data.amount ?? amount,
+      teste: teste || undefined,
     });
   } catch (err) {
     console.error('[create-pix] Erro ao chamar a SimplifyBR:', err);
