@@ -1,22 +1,26 @@
 // Navell Enxovais — recebe os passos dos clientes e organiza em 3 abas da planilha:
-//   1 - Carrinho : quem adicionou algo ao carrinho
-//   2 - Dados    : quem preencheu nome/contato/endereço no checkout
-//   3 - Pedidos  : quem gerou o Pix (Pendente → Pago)
+//   adicionar carrinho : quem adicionou algo ao carrinho
+//   preencher dados    : quem preencheu nome/contato/endereço no checkout
+//   gerou pix          : quem gerou o Pix (Pendente → Pago)
+// (as abas são criadas sozinhas se não existirem; se já existirem vazias, o cabeçalho é colocado nelas)
 
 var SEGREDO = 'TROQUE-POR-UMA-SENHA-SUA'; // a mesma senha que está em SHEETS_SECRET na Vercel
 
 var ABAS = {
-  carrinho: { nome: '1 - Carrinho', chave: 'Visitante',
+  carrinho: { nome: 'adicionar carrinho', chave: 'Visitante',
     cab: ['Visitante', 'Primeiro acesso', 'Atualizado', 'Status', 'Itens no carrinho', 'Subtotal (R$)'] },
-  dados: { nome: '2 - Dados', chave: 'Visitante',
+  dados: { nome: 'preencher dados', chave: 'Visitante',
     cab: ['Visitante', 'Primeiro acesso', 'Atualizado', 'Status', 'Nome', 'E-mail', 'CPF', 'Telefone',
           'CEP', 'Endereço', 'Número', 'Complemento', 'Bairro', 'Cidade', 'UF', 'Itens no carrinho', 'Subtotal (R$)'] },
-  pedido: { nome: '3 - Pedidos', chave: 'Pedido',
+  pedido: { nome: 'gerou pix', chave: 'Pedido',
     cab: ['Pedido', 'Criado em', 'Atualizado', 'Status', 'Nome', 'E-mail', 'CPF', 'Telefone',
           'CEP', 'Endereço', 'Número', 'Complemento', 'Bairro', 'Cidade', 'UF',
           'Itens', 'Frete', 'Valor (R$)', 'ID Pix', 'Visitante'] }
 };
 var TEXTO = ['Visitante', 'Pedido', 'CPF', 'Telefone', 'CEP', 'Número', 'ID Pix'];
+
+// Abrir o link do app no navegador mostra "ok" quando está tudo publicado.
+function doGet() { return resposta({ ok: true, app: 'Navell pedidos' }); }
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -73,8 +77,8 @@ function gravar(tipo, chave, campos, soAtualizar) {
   var cfg = ABAS[tipo], cab = cfg.cab;
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(cfg.nome);
-  if (!sh) {
-    sh = ss.insertSheet(cfg.nome);
+  if (!sh) sh = ss.insertSheet(cfg.nome);
+  if (sh.getLastRow() === 0) {
     sh.appendRow(cab);
     sh.getRange(1, 1, 1, cab.length).setFontWeight('bold').setBackground('#f3e6df');
     sh.setFrozenRows(1);
