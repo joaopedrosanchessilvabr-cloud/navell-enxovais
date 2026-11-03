@@ -2,6 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<script>
+/* guarda as UTMs do anúncio (utmify) assim que a pessoa chega ao site */
+(function(){var K=["utm_source","utm_campaign","utm_medium","utm_content","utm_term","src","sck"];
+try{var q=new URLSearchParams(location.search),o={},f=false;K.forEach(function(k){var v=q.get(k);if(v){o[k]=v.slice(0,150);f=true}});
+if(f)localStorage.setItem("navell_utm",JSON.stringify(o))}catch(e){}
+window.navellUtm=function(){try{return JSON.parse(localStorage.getItem("navell_utm")||"{}")||{}}catch(e){return{}}}})();
+</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Capas de sofá em algodão e poliéster, com encaixe sem costura. Comprando hoje, ganhe 2 almofadas de brinde.">
 <meta name="theme-color" content="#6E3F1D">

@@ -8,6 +8,7 @@
 import { createHmac } from 'node:crypto';
 import { salvarNaPlanilha } from './_planilha.js';
 import { resumirItens } from './_catalogo.js';
+import { montarCtx, empacotar, enviarUtmify } from './_utmify.js';
 
 const PIX_DISCOUNT = 0.05;
 const FREE_SHIPPING_MIN = 70;
@@ -41,7 +42,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
-  const { items, payer, address, shipping, vid } = req.body || {};
+  const { items, payer, address, shipping, vid, utm } = req.body || {};
 
   if (!payer || !payer.name || !payer.email || !payer.document || !payer.phone ||
       !address || !address.cep || !address.street || !address.number || !address.city || !address.state ||
@@ -99,7 +100,19 @@ export default async function handler(req, res) {
       valor: amount, frete: SHIPPING[shipping].n, itens: resumo, cliente: payer, entrega: address,
     });
 
+    // Utmify: pedido "aguardando pagamento" (e guarda o contexto assinado para avisar quando pagar)
+    const fator = amount / (subtotal || 1);
+    const produtos = r0.produtos.map((p) => ({ id: p.id, name: p.name, quantity: p.quantity, priceInCents: Math.round(p.price * fator * 100) }));
+    const ctx = montarCtx({
+      orderId: String(data.external_id || external_id), createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      payer, produtos, tracking: utm, total: amount,
+      ip: String(req.headers['x-forwarded-for'] || '').split(',')[0].trim(),
+    });
+    await enviarUtmify(ctx, 'waiting_payment');
+    const pack = empacotar(ctx);
+
     return res.status(201).json({
+      ...pack,
       internal_id: data.internal_id,
       order: external_id,
       external_id: data.external_id || external_id,

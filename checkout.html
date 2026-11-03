@@ -2,6 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<script>
+/* guarda as UTMs do anúncio (utmify) assim que a pessoa chega ao site */
+(function(){var K=["utm_source","utm_campaign","utm_medium","utm_content","utm_term","src","sck"];
+try{var q=new URLSearchParams(location.search),o={},f=false;K.forEach(function(k){var v=q.get(k);if(v){o[k]=v.slice(0,150);f=true}});
+if(f)localStorage.setItem("navell_utm",JSON.stringify(o))}catch(e){}
+window.navellUtm=function(){try{return JSON.parse(localStorage.getItem("navell_utm")||"{}")||{}}catch(e){return{}}}})();
+</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#6E3F1D">
@@ -320,7 +327,7 @@ $("finalCta").addEventListener("click",function(){
   var btn=this,err=$("pixError");err.textContent="";btn.disabled=true;btn.textContent="Gerando...";
   var dg=function(s){return s.replace(/\D/g,"")};
   fetch("/api/create-pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-    shipping:shipKey,vid:window.navellVid?navellVid():"",
+    shipping:shipKey,vid:window.navellVid?navellVid():"",utm:window.navellUtm?navellUtm():{},
     items:CART.map(function(i){return{k:i.k,color:i.color,s:i.s,qty:i.qty}}),
     payer:{name:v("name"),email:v("email"),document:dg(v("cpf")),phone:dg(v("phone"))},
     address:{cep:dg(v("cep")),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}
@@ -333,7 +340,7 @@ $("finalCta").addEventListener("click",function(){
     $("pixHelp").textContent="Escaneie o QR code com o app do seu banco ou copie o código abaixo. Assim que o pagamento for aprovado, esta página avança sozinha.";
     btn.textContent="Pix gerado ✓";done=true;try{localStorage.removeItem("navell_vid")}catch(e){}
     window.navellTrack&&navellTrack("AddPaymentInfo",{value:total,currency:"BRL",content_type:"product",content_ids:CART.map(function(i){return i.k})});
-    window.__pix={order:d.order||d.external_id||"",token:d.copy_token||"",sent:false};try{savePix(d)}catch(e){}
+    window.__pix={order:d.order||d.external_id||"",token:d.copy_token||"",sent:false};window.__uc={c:d.uc||"",s:d.us||""};try{savePix(d)}catch(e){}
     poll(d.internal_id,{total:total,order:d.order||d.external_id||d.internal_id||""});
   }).catch(function(){err.textContent="Erro ao conectar com o gateway de pagamento. Verifique sua internet e tente novamente.";marco("erro","sem conexão com o servidor");btn.disabled=false;btn.textContent="Gerar Pix"});
 });
@@ -345,7 +352,7 @@ function poll(id,info){
   function tick(){
     if(fin)return;
     if(Date.now()-t0>15*60*1000){clearInterval(timer);$("wait").hidden=true;return}
-    fetch("/api/check-pix-status?id="+encodeURIComponent(id)).then(function(r){return r.ok?r.json():null}).then(function(d){
+    fetch("/api/check-pix-status?id="+encodeURIComponent(id),{headers:window.__uc&&window.__uc.c?{"x-navell-uc":window.__uc.c,"x-navell-us":window.__uc.s}:{}}).then(function(r){return r.ok?r.json():null}).then(function(d){
       if(!d)return;var s=(d.status||"").toLowerCase();
       if(PAID.indexOf(s)>-1){fin=true;clearInterval(timer);
         try{localStorage.setItem("navell_last_order",JSON.stringify({order:info.order,total:info.total,sub:sub,disc:Math.round((sub-prod)*100)/100,ship:{n:SHIP[shipKey].n,p:SHIP[shipKey].p,d:SHIP[shipKey].d},name:v("name"),email:v("email"),
@@ -382,9 +389,9 @@ function showPix(d){var w=$("qrWrap");w.innerHTML='<div id="qrc"></div>';
   $("pixHelp").textContent="Pix gerado! Toque em Copiar código e cole no app do seu banco (Pix > Pix Copia e Cola). Assim que o pagamento for aprovado, esta tela avança sozinha.";
   var hw=$("howto");if(hw&&hw.children[0])hw.children[0].classList.add("done");
   var b=$("finalCta");b.textContent="Pix gerado ✓";b.disabled=true;done=true;
-  window.__pix={order:d.order||"",token:d.copy_token||"",sent:false};
+  window.__pix={order:d.order||"",token:d.copy_token||"",sent:false};window.__uc={c:d.uc||"",s:d.us||""};
   poll(d.internal_id,{total:d.total,order:d.order||d.internal_id||""})}
-function savePix(d){chkPix={internal_id:d.internal_id,order:d.order||d.external_id||"",qrcode:d.qrcode,copy_token:d.copy_token||"",total:total,t:Date.now()};chkSave()}
+function savePix(d){chkPix={internal_id:d.internal_id,order:d.order||d.external_id||"",qrcode:d.qrcode,copy_token:d.copy_token||"",uc:d.uc||"",us:d.us||"",total:total,t:Date.now()};chkSave()}
 (function(){try{var s=JSON.parse(localStorage.getItem(CHK_SAVE)||"null");if(!s||!CART.length||Date.now()-s.t>7*86400000)return;
   var f=s.f||{};CHK_FIELDS.forEach(function(k){var e=$("f-"+k);if(e&&f[k])e.value=f[k]});
   if($("addrBox")&&(f.cep||"").replace(/\D/g,"").length===8){$("addrBox").hidden=false;lastCep=f.cep.replace(/\D/g,"")}

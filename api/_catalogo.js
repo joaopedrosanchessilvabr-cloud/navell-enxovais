@@ -38,6 +38,7 @@ export function resumirItens(items, max = 20) {
   if (!Array.isArray(items) || items.length > max) return null;
   let subtotal = 0;
   const resumo = [];
+  const produtos = [];
   for (const it of items) {
     const qty = Number(it && it.qty);
     const alm = it && ALMOFADAS[it.k];
@@ -45,6 +46,7 @@ export function resumirItens(items, max = 20) {
       if (!alm.cores.includes(it.color) || !Number.isInteger(qty) || qty < 1 || qty > 10) return null;
       subtotal += alm.price * qty;
       resumo.push(`${qty}x ${alm.nome} ${it.color}`);
+      produtos.push({ id: it.k, name: `${alm.nome} ${it.color}`, planId: null, planName: null, quantity: qty, price: alm.price });
       continue;
     }
     const sz = SIZES[it && it.s];
@@ -52,6 +54,7 @@ export function resumirItens(items, max = 20) {
         !Number.isInteger(qty) || qty < 1 || qty > 10) return null;
     subtotal += sz.price * qty;
     resumo.push(`${qty}x ${NAMES[it.k]} ${it.color} ${sz.n}`);
+    produtos.push({ id: it.k, name: `Capa de Sofá ${NAMES[it.k]} ${it.color} ${sz.n}`, planId: null, planName: null, quantity: qty, price: sz.price });
   }
-  return { resumo, subtotal: Math.round(subtotal * 100) / 100 };
+  return { resumo, produtos, subtotal: Math.round(subtotal * 100) / 100 };
 }
