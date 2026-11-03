@@ -714,7 +714,7 @@ var ALM={
  "alm-rosa":{n:"Almofada Rosa",color:"Rosa",hex:"#b8687a",slug:"rosa",files:[14,15]},
  "alm-marrom":{n:"Almofada Marrom",color:"Marrom",hex:"#4a2f25",slug:"marrom",files:[6,7,8]}};
 function almFile(n){return"img/alm-"+(n<10?"0":"")+n+".webp"}
-Object.keys(ALM).forEach(function(k){var a=ALM[k];a.sizes=ALMSZ;a.cover="img/alm-capa-"+a.slug+".webp";COLL[k]=[a.cover].concat(a.files.map(almFile));COLORS[k]=[a.color];COLPHOTO[k]={};COLPHOTO[k][a.color]=0});
+Object.keys(ALM).forEach(function(k){var a=ALM[k];a.sizes=ALMSZ;a.cover="img/alm-capa-"+a.slug+(a.slug==="bege"?"-v2":"")+".webp";COLL[k]=[a.cover].concat(a.files.map(almFile));COLORS[k]=[a.color];COLPHOTO[k]={};COLPHOTO[k][a.color]=0});
 function isAlm(k){return !!ALM[k]}
 function szOf(k){return ALM[k]?ALMSZ:CONFIG.sizes}
 function almImg(k){return almFile(ALM[k].files[0])}
