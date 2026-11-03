@@ -274,10 +274,11 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 .citem .price{font-weight:700;color:var(--gold-light);font-size:15px}
 .qs{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:6px;background:#fff}
 .qs button{width:32px;height:32px;border:0;background:none;font-size:18px;cursor:pointer;color:var(--ink)}
+.qs button:disabled{color:#c2bdb8;cursor:default}
 .qs span{min-width:24px;text-align:center;font-size:14px}
 .rm{background:none;border:0;color:var(--ink-dim);font-size:12px;text-decoration:underline;cursor:pointer;padding:6px 0 0}
 .empty-cart{text-align:center;color:var(--ink-dim);padding:40px 0}
-.gift-note{text-align:center;font-size:13px;letter-spacing:.04em;font-weight:600;color:var(--gold-light);background:var(--bg-panel-2);border:1px dashed var(--gold);border-radius:8px;padding:10px;margin-top:16px}
+.gift-note{text-align:center;font-size:9.5px;letter-spacing:0;padding-left:4px;padding-right:4px;white-space:nowrap;font-weight:600;color:var(--gold-light);background:var(--bg-panel-2);border:1px dashed var(--gold);border-radius:8px;padding:10px;margin-top:16px}
 .back{padding:14px 4px 4px}
 .coll-track{margin-top:16px}
 .thumbs{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 4px;scrollbar-width:none}
@@ -607,7 +608,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   <div id="bumpBox" hidden></div>
   <div id="cartEmpty" class="empty-cart" hidden>Seu carrinho está vazio.<a href="#modelos" class="btn-primary" style="margin-top:16px">Escolher modelos</a></div>
   <div id="cartFoot" hidden>
-    <div class="gift-note">BRINDE: 2 ALMOFADAS A CADA COLEÇÃO</div>
+    <div class="gift-note">BRINDE: 2 ALMOFADAS A CADA COLEÇÃO DE CAPA DE SOFÁ</div>
     <div class="opt-total"><span class="label">Total</span><div><span class="value" id="cartTotal"></span><span class="pix" id="cartPix"></span></div></div>
     <button type="button" id="payBtn" class="btn-primary" style="margin-top:16px">Finalizar compra</button>
     <div class="trust-line" style="margin-bottom:8px">Pagamento por Pix ou cartão</div>
@@ -761,7 +762,7 @@ function renderCart(){
   var list=$("cartList"),total=0;
   list.innerHTML=CART.map(function(it,i){
     var sz=szOf(it.k)[it.s];total+=sz.price*it.qty;
-    return'<div class="citem"><img alt="" src="'+(isAlm(it.k)?almImg(it.k):cardImg(it.k))+'"><div class="ci"><h4>'+nameOf(it.k)+'</h4><div class="sub">'+it.color+' · '+sz.n+'</div><div class="row"><span class="qs"><button type="button" data-act="minus" data-i="'+i+'" aria-label="Diminuir">−</button><span>'+it.qty+'</span><button type="button" data-act="plus" data-i="'+i+'" aria-label="Aumentar">+</button></span><span class="price">'+brl(sz.price*it.qty)+'</span></div><button type="button" class="rm" data-act="rm" data-i="'+i+'">Remover</button></div></div>'
+    return'<div class="citem"><img alt="" src="'+(isAlm(it.k)?almImg(it.k):cardImg(it.k))+'"><div class="ci"><h4>'+nameOf(it.k)+'</h4><div class="sub">'+it.color+' · '+sz.n+'</div><div class="row"><span class="qs"><button type="button" data-act="minus" data-i="'+i+'"'+(it.qty<=1?' disabled':'')+' aria-label="Diminuir">−</button><span>'+it.qty+'</span><button type="button" data-act="plus" data-i="'+i+'" aria-label="Aumentar">+</button></span><span class="price">'+brl(sz.price*it.qty)+'</span></div><button type="button" class="rm" data-act="rm" data-i="'+i+'">Remover</button></div></div>'
   }).join("");
   $("cartEmpty").hidden=CART.length>0;$("cartFoot").hidden=CART.length===0;
   $("cartTotal").textContent=brl(total);
@@ -773,7 +774,7 @@ function renderBump(){
   var b=$("bumpBox"),has=CART.some(function(i){return isAlm(i.k)}),cov=CART.some(function(i){return !isAlm(i.k)});
   if(!CART.length||has||!cov){b.hidden=true;b.innerHTML="";return}
   var z=ALMSZ[0];
-  b.hidden=false;b.innerHTML='<div class="bump"><img alt="'+ALM[bumpKey].n+'" src="'+almImg(bumpKey)+'"><div class="bt"><small>Aproveite e leve também</small><strong>KIT COM 2 ALMOFADAS</strong><div class="bc">'+Object.keys(ALM).map(function(k){return'<button type="button" aria-label="'+ALM[k].color+'" title="'+ALM[k].color+'" aria-pressed="'+(k===bumpKey)+'" data-bc="'+k+'" style="background:'+ALM[k].hex+'"></button>'}).join("")+'</div><span><s>'+brl(z.old)+'</s><b>'+brl(z.price)+'</b> · cor '+ALM[bumpKey].color+'</span><br><button type="button" class="bb" id="bumpAdd" style="margin-top:8px">Sim, adicionar</button></div></div>';
+  b.hidden=false;b.innerHTML='<div class="bump"><img alt="'+ALM[bumpKey].n+'" src="'+almImg(bumpKey)+'"><div class="bt"><small>Aproveite e leve também</small><strong>KIT COM 2 ALMOFADAS</strong><div class="bc">'+Object.keys(ALM).map(function(k){return'<button type="button" aria-label="'+ALM[k].color+'" title="'+ALM[k].color+'" aria-pressed="'+(k===bumpKey)+'" data-bc="'+k+'" style="background:'+ALM[k].hex+'"></button>'}).join("")+'</div><span><s>'+brl(z.old)+'</s><b>'+brl(z.price)+'</b> · '+ALM[bumpKey].color+'</span><br><button type="button" class="bb" id="bumpAdd" style="margin-top:8px">Sim, adicionar</button></div></div>';
 }
 $("bumpBox").addEventListener("click",function(e){
   var c=e.target.closest("[data-bc]");if(c){bumpKey=c.getAttribute("data-bc");renderBump();return}
