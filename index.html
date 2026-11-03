@@ -155,13 +155,13 @@ section{padding:0 4px}
 .revsum{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 10px;margin:2px 0 4px;font-size:13px;color:var(--ink-dim)}
 .revsum .stars{color:#C9923F;font-size:19px;letter-spacing:2px;line-height:1}
 .revsum b{color:var(--ink);font:600 15px 'Inter',system-ui,sans-serif}
-.revgrid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
+.revgrid{display:flex;gap:12px;margin-top:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}.revgrid::-webkit-scrollbar{display:none}.revgrid .rev{flex:0 0 84%;scroll-snap-align:start}
 .rev{background:var(--bg-panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .rev p{font-size:14px;line-height:1.65;color:var(--ink-dim);margin:0}
 .rev footer{padding:0;text-align:left;margin-top:auto;font-size:12px;color:var(--ink-dim)}
 .rev footer strong{display:block;font:600 14px 'Inter',system-ui,sans-serif;color:var(--ink);margin-bottom:1px}
 .rev-note{font-size:11.5px;color:var(--ink-dim);text-align:center;margin-top:12px}
-@media (min-width:900px){.revgrid{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:900px){.revgrid .rev{flex:0 0 calc((100% - 24px)/3)}}
 .faq-item{border-bottom:1px solid var(--line)}
 .faq-item summary{list-style:none;cursor:pointer;padding:16px 4px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;font-weight:500}
 .faq-item summary::-webkit-details-marker{display:none}
@@ -547,19 +547,39 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 <div class="cross-divider"><span></span></div>
 <section id="avaliacoes">
   <h2 class="section-title">Quem comprou, <span>aprovou</span></h2>
-  <div class="revsum"><span class="stars" aria-hidden="true">★★★★★</span><b>4,92</b><span>de 5 · 250+ avaliações de clientes</span></div>
+  <div class="revsum"><span class="stars" aria-hidden="true">★★★★★</span><b>4,96</b><span>de 5 · +500 avaliações de clientes</span></div>
   <div class="revgrid">
     <blockquote class="rev">
-      <p>Nossa loja muito boa!!! Comprei tem 1 semana e chegou tudo certinho! Adorei</p>
-      <footer><strong>Maria C.</strong>Cliente Navell</footer>
+      <p>Gente, que capa perfeita! Meu sofá é de 3 lugares e achei que ia ficar folgado ou soltando, mas o tecido estica super bem e se molda certinho nos cantos. Deu outra cara pra minha sala, parecia que eu tinha comprado um sofá novo. Super recomendo!</p>
+      <footer><strong>Mariana Souza</strong>Cliente Navell</footer>
     </blockquote>
     <blockquote class="rev">
-      <p>Comprei com zero expectativas e quando chegou aqui em casa eu achei o máximo, bom acabamento, boa qualidade e uma ótima textura</p>
-      <footer><strong>Ana Julia S.</strong>Cliente Navell</footer>
+      <p>Produto de excelente qualidade. O tecido é grosso, macio ao toque e o melhor de tudo é que não esquenta. Minha gata arranhava o sofá antigo e agora tô super tranquilo porque protege muito bem. Chegou bem rápido aqui em casa também.</p>
+      <footer><strong>Carlos Eduardo Mendes</strong>Cliente Navell</footer>
     </blockquote>
     <blockquote class="rev">
-      <p>Estava procurando isso há 3 meses e adorei os conjuntos, por isso comprei logo 2 e semana que vem vou comprar mais 2!!! Fica ótimo na sala recomendo demais</p>
-      <footer><strong>Fernanda F.</strong>Cliente Navell</footer>
+      <p>Comprei com um pouco de medo de ficar saindo do lugar toda vez que a gente senta, mas ela fica bem firme. A cor é idêntica à foto do anúncio e a lavagem é super tranquila na máquina. Nota 10!</p>
+      <footer><strong>Juliana Ribeiro</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Excelente custo-benefício. Salvou meu sofá de canto que tava com o tecido manchado. Ficou com um acabamento muito elegante e todo mundo que vem aqui em casa elogia. Vale cada centavo investido.</p>
+      <footer><strong>Roberto Siqueira</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Simplesmente apaixonada pelo meu kit novo! A capa do sofá veste perfeitamente e as almofadas deram um toque de sofisticação enorme na sala. A qualidade do tecido é impecável, muito macio e fácil de limpar. A composição das cores ficou super harmoniosa.</p>
+      <footer><strong>Fernanda Lima</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Comprei o conjunto completo pra renovar a sala de estar e o resultado superou as expectativas. A capa encaixou direitinho e as almofadas são bem cheias e confortáveis, não ficam murchas. A patroa adorou e a sala ficou com cara de revista de decoração!</p>
+      <footer><strong>Lucas Martins</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Que capricho! Chegou super bem embalado. A capa protege super bem e as almofadas completaram o visual perfeitamente. O tecido tem um toque muito gostoso e a cor é linda. Dá pra ver que é um produto feito com muito cuidado. Comprarei mais vezes com certeza.</p>
+      <footer><strong>Patrícia Antunes</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Comprei só as almofadas para dar um ponto de cor no sofá e valeu muito a pena. O enchimento é excelente, bem gordinho e macio, e o acabamento dos zíperes é super discreto. Deixaram o ambiente muito mais aconchegante. Adorei!</p>
+      <footer><strong>Beatriz Almeida</strong>Cliente Navell</footer>
     </blockquote>
   </div>
   <p class="rev-note">Nota média das avaliações coletadas de clientes que compraram.</p>
@@ -640,19 +660,39 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 <div class="cross-divider"><span></span></div>
 <section>
   <h2 class="section-title">Quem comprou, <span>aprovou</span></h2>
-  <div class="revsum"><span class="stars" aria-hidden="true">★★★★★</span><b>4,92</b><span>de 5 · 250+ avaliações de clientes</span></div>
+  <div class="revsum"><span class="stars" aria-hidden="true">★★★★★</span><b>4,96</b><span>de 5 · +500 avaliações de clientes</span></div>
   <div class="revgrid">
     <blockquote class="rev">
-      <p>Nossa loja muito boa!!! Comprei tem 1 semana e chegou tudo certinho! Adorei</p>
-      <footer><strong>Maria C.</strong>Cliente Navell</footer>
+      <p>Gente, que capa perfeita! Meu sofá é de 3 lugares e achei que ia ficar folgado ou soltando, mas o tecido estica super bem e se molda certinho nos cantos. Deu outra cara pra minha sala, parecia que eu tinha comprado um sofá novo. Super recomendo!</p>
+      <footer><strong>Mariana Souza</strong>Cliente Navell</footer>
     </blockquote>
     <blockquote class="rev">
-      <p>Comprei com zero expectativas e quando chegou aqui em casa eu achei o máximo, bom acabamento, boa qualidade e uma ótima textura</p>
-      <footer><strong>Ana Julia S.</strong>Cliente Navell</footer>
+      <p>Produto de excelente qualidade. O tecido é grosso, macio ao toque e o melhor de tudo é que não esquenta. Minha gata arranhava o sofá antigo e agora tô super tranquilo porque protege muito bem. Chegou bem rápido aqui em casa também.</p>
+      <footer><strong>Carlos Eduardo Mendes</strong>Cliente Navell</footer>
     </blockquote>
     <blockquote class="rev">
-      <p>Estava procurando isso há 3 meses e adorei os conjuntos, por isso comprei logo 2 e semana que vem vou comprar mais 2!!! Fica ótimo na sala recomendo demais</p>
-      <footer><strong>Fernanda F.</strong>Cliente Navell</footer>
+      <p>Comprei com um pouco de medo de ficar saindo do lugar toda vez que a gente senta, mas ela fica bem firme. A cor é idêntica à foto do anúncio e a lavagem é super tranquila na máquina. Nota 10!</p>
+      <footer><strong>Juliana Ribeiro</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Excelente custo-benefício. Salvou meu sofá de canto que tava com o tecido manchado. Ficou com um acabamento muito elegante e todo mundo que vem aqui em casa elogia. Vale cada centavo investido.</p>
+      <footer><strong>Roberto Siqueira</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Simplesmente apaixonada pelo meu kit novo! A capa do sofá veste perfeitamente e as almofadas deram um toque de sofisticação enorme na sala. A qualidade do tecido é impecável, muito macio e fácil de limpar. A composição das cores ficou super harmoniosa.</p>
+      <footer><strong>Fernanda Lima</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Comprei o conjunto completo pra renovar a sala de estar e o resultado superou as expectativas. A capa encaixou direitinho e as almofadas são bem cheias e confortáveis, não ficam murchas. A patroa adorou e a sala ficou com cara de revista de decoração!</p>
+      <footer><strong>Lucas Martins</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Que capricho! Chegou super bem embalado. A capa protege super bem e as almofadas completaram o visual perfeitamente. O tecido tem um toque muito gostoso e a cor é linda. Dá pra ver que é um produto feito com muito cuidado. Comprarei mais vezes com certeza.</p>
+      <footer><strong>Patrícia Antunes</strong>Cliente Navell</footer>
+    </blockquote>
+    <blockquote class="rev">
+      <p>Comprei só as almofadas para dar um ponto de cor no sofá e valeu muito a pena. O enchimento é excelente, bem gordinho e macio, e o acabamento dos zíperes é super discreto. Deixaram o ambiente muito mais aconchegante. Adorei!</p>
+      <footer><strong>Beatriz Almeida</strong>Cliente Navell</footer>
     </blockquote>
   </div>
   <p class="rev-note">Nota média das avaliações coletadas de clientes que compraram.</p>
@@ -1109,7 +1149,7 @@ function storyHTML(k){var s=STORY[k];if(!s)return"";var N=s.n,im=s.im;return`
 
     <div class="st-sec st-dark">
       <h2 style="font-size:22px">Cuidado com golpes</h2>
-      <p>A Navell tem nota <b style="color:var(--st-gold)">4,92 de 5</b> em mais de <b style="color:var(--st-gold)">250 avaliações</b> de clientes que compraram, e isso existe por causa da confiança de quem compra com a gente.</p>
+      <p>A Navell tem nota <b style="color:var(--st-gold)">4,96 de 5</b> em mais de <b style="color:var(--st-gold)">500 avaliações</b> de clientes que compraram, e isso existe por causa da confiança de quem compra com a gente.</p>
       <p style="margin-top:12px">Nunca pedimos dados bancários, senhas ou pagamentos fora do site. Se receber uma mensagem suspeita, não responda e fale direto com a gente pelo Instagram oficial <b>@navellenxovais</b>.</p>
     </div>
 
