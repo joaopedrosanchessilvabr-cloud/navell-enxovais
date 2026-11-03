@@ -10,6 +10,7 @@ import { salvarNaPlanilha } from './_planilha.js';
 import { resumirItens } from './_catalogo.js';
 
 const PIX_DISCOUNT = 0.05;
+const FREE_SHIPPING_MIN = 70;
 const SHIPPING = {
   sedex: { n: 'SEDEX', price: 19.9 },
   jadlog: { n: 'Jadlog', price: 14.9 },
@@ -52,7 +53,9 @@ export default async function handler(req, res) {
   if (!r0 || !r0.resumo.length) return res.status(422).json({ error: 'Carrinho inválido. Volte e confira os itens.' });
   const subtotal = r0.subtotal;
   const resumo = r0.resumo;
-  const amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + SHIPPING[shipping].price) * 100) / 100;
+  // Frete grátis na Loggi em compras a partir de R$ 70 (valor dos itens, antes do desconto Pix).
+  const shipPrice = (shipping === 'loggi' && subtotal >= FREE_SHIPPING_MIN) ? 0 : SHIPPING[shipping].price;
+  const amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + shipPrice) * 100) / 100;
 
   const clientId = process.env.SIMPLIFY_CLIENT_ID;
   const clientSecret = process.env.SIMPLIFY_CLIENT_SECRET;

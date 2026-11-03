@@ -35,6 +35,7 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 .cit img{width:52px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line);flex:none}
 .cit .i{flex:1;min-width:0}.cit strong{display:block;font-size:13px}.cit small{display:block;font-size:11.5px;color:var(--ink-dim)}
 .cit b{font:600 15px 'Oswald',sans-serif;color:var(--gold-light)}
+.freeinfo{font-size:12.5px;font-weight:600;margin:-4px 0 10px;color:var(--ink-dim)}.freeinfo.ok{color:#2f6b3f}
 .gift{margin-top:8px;text-align:center;font:600 10px 'Oswald',sans-serif;letter-spacing:.02em;white-space:nowrap;text-transform:uppercase;color:var(--gold-light);background:var(--panel2);border:1px dashed var(--gold-dim);border-radius:8px;padding:8px}
 .card{margin-top:18px}
 .eyebrow{font:12px 'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
@@ -167,10 +168,11 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
     <label class="field"><span>UF</span><input id="f-state" maxlength="2" autocomplete="address-level1"><small class="err" id="err-state"></small></label>
   </div>
   <p class="shiptitle">Escolha a forma de envio</p>
+  <p class="freeinfo" id="freeInfo"></p>
   <div id="shipOpts">
     <label class="shopt"><input type="radio" name="ship" value="sedex"><span class="shlogo"><img src="img/frete-sedex.webp" alt="Correios SEDEX"></span><span class="t"><strong>SEDEX</strong><small>2 a 7 dias úteis</small></span><b>R$ 19,90</b></label>
     <label class="shopt"><input type="radio" name="ship" value="jadlog"><span class="shlogo"><img src="img/frete-jadlog.webp" alt="Jadlog"></span><span class="t"><strong>Jadlog</strong><small>7 a 11 dias úteis</small></span><b>R$ 14,90</b></label>
-    <label class="shopt sel"><input type="radio" name="ship" value="loggi" checked><span class="shlogo"><img src="img/frete-loggi.webp" alt="Loggi"></span><span class="t"><strong>Loggi</strong><small>12 a 17 dias úteis</small></span><b>R$ 9,90</b></label>
+    <label class="shopt sel"><input type="radio" name="ship" value="loggi" checked><span class="shlogo"><img src="img/frete-loggi.webp" alt="Loggi"></span><span class="t"><strong>Loggi</strong><small>12 a 17 dias úteis</small></span><b id="loggiPrice">R$ 9,90</b></label>
   </div>
   <div style="height:10px"></div>
   <div class="act"><button class="back" type="button" data-to="1">Voltar</button><button class="btn" type="submit">Continuar</button></div>
@@ -208,10 +210,10 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 <script>
 var NAMES={flara:"Flara",stella:"Stella",melina:"Melina",dalia:"Dália",ayla:"Ayla",alina:"Alina",celina:"Celina",aurora:"Aurora",lumira:"Lumira",magna:"Magna",renovare:"Renovare",lana:"Lana",luma:"Luma",mila:"Mila",cloe:"Cloe"};
 var THUMB={flara:"img/flara-capa2.webp",stella:"img/stella-capa2.webp",melina:"img/melina-capa2.webp",dalia:"img/dalia-capa2.webp",ayla:"img/ayla-capa2.webp",alina:"img/alina-capa2.webp",celina:"img/celina-capa2.webp",aurora:"img/aurora-capa2.webp",lumira:"img/lumira-capa2.webp",magna:"img/magna-capa2.webp",renovare:"img/renovare-capa2.webp",lana:"img/lana-capa2.webp",luma:"img/luma-capa2.webp",mila:"img/mila-capa2.webp",cloe:"img/cloe-capa2.webp"};
-var SIZES=[{n:"2 lugares",price:69.90},{n:"3 lugares",price:84.90},{n:"4 lugares",price:99.90}];
+var SIZES=[{n:"2 lugares",price:54.90},{n:"3 lugares",price:69.90},{n:"4 lugares",price:84.90}];
 var ALM={"alm-bege":{n:"Almofada Bege (KIT COM 2)",cor:"Bege",f:1},"alm-creme":{n:"Almofada Creme (KIT COM 2)",cor:"Creme",f:9},"alm-marrom":{n:"Almofada Marrom (KIT COM 2)",cor:"Marrom",f:6},"alm-cinza":{n:"Almofada Cinza (KIT COM 2)",cor:"Cinza",f:3},"alm-rosa":{n:"Almofada Rosa (KIT COM 2)",cor:"Rosa",f:14}};
 function almThumb(i){var n=ALM[i.k].f;return"img/alm-"+(n<10?"0":"")+n+".webp"}
-function unitPrice(i){return ALM[i.k]?39.90:SIZES[i.s].price}
+function unitPrice(i){return ALM[i.k]?29.90:SIZES[i.s].price}
 var PIX=0.05;
 var $=function(id){return document.getElementById(id)};
 function brl(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
@@ -221,6 +223,8 @@ if(!CART.length){$("empty").hidden=false}else{$("main").hidden=false}
 
 var sub=CART.reduce(function(a,i){return a+unitPrice(i)*i.qty},0);
 var SHIP={sedex:{n:"SEDEX",p:19.90,d:"2 a 7 dias úteis"},jadlog:{n:"Jadlog",p:14.90,d:"7 a 11 dias úteis"},loggi:{n:"Loggi",p:9.90,d:"12 a 17 dias úteis"}};
+var FREE_MIN=70;SHIP.loggi.p=sub>=FREE_MIN?0:9.90;
+function shipTxt(k){return SHIP[k].p===0?"Grátis":brl(SHIP[k].p)}
 var shipKey="loggi";
 var prod=Math.round(sub*(1-PIX)*100)/100;
 var total=prod+SHIP[shipKey].p;
@@ -233,13 +237,15 @@ var shipShown=false;
 function upd(){
   total=Math.round((prod+SHIP[shipKey].p)*100)/100;
   $("aSub").textContent=brl(sub);$("aDisc").textContent="− "+brl(sub-prod);
-  if(shipShown){$("aShipName").textContent="("+SHIP[shipKey].n+")";$("aShip").textContent=brl(SHIP[shipKey].p);$("aTot").textContent=brl(total)}
+  if(shipShown){$("aShipName").textContent="("+SHIP[shipKey].n+")";$("aShip").textContent=shipTxt(shipKey);$("aTot").textContent=brl(total)}
   else{$("aShipName").textContent="";$("aShip").textContent="a escolher";$("aTot").textContent=brl(prod)}
   $("pixLabel").textContent=brl(total);
   $("sSub").textContent=brl(sub);$("sDisc").textContent="− "+brl(sub-prod);
-  $("sShipName").textContent="("+SHIP[shipKey].n+")";$("sShip").textContent=brl(SHIP[shipKey].p);
+  $("sShipName").textContent="("+SHIP[shipKey].n+")";$("sShip").textContent=shipTxt(shipKey);
   $("sTot").textContent=brl(total);
 }
+$("loggiPrice").textContent=shipTxt("loggi");
+$("freeInfo").className="freeinfo"+(sub>=FREE_MIN?" ok":"");$("freeInfo").textContent=sub>=FREE_MIN?"Você ganhou frete grátis na Loggi neste pedido!":"Frete grátis na Loggi em compras acima de R$ 70.";
 upd();
 Array.prototype.forEach.call(document.querySelectorAll("#shipOpts .shopt"),function(l){l.addEventListener("click",function(){
   var i=l.querySelector("input");i.checked=true;shipKey=i.value;

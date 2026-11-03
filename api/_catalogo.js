@@ -19,18 +19,18 @@ export const COLORS = {
   cloe: ['Marrom', 'Preto', 'Bege', 'Verde'],
 };
 export const SIZES = [
-  { n: '2 lugares', price: 69.9 },
-  { n: '3 lugares', price: 84.9 },
-  { n: '4 lugares', price: 99.9 },
+  { n: '2 lugares', price: 54.9 },
+  { n: '3 lugares', price: 69.9 },
+  { n: '4 lugares', price: 84.9 },
 ];
 
 // Almofadas (vendidas em kit com 2). Chave do item no carrinho: 'alm-<modelo>'.
 export const ALMOFADAS = {
-  'alm-bege': { nome: 'Almofada Bege (KIT COM 2)', price: 39.9, cores: ['Bege'] },
-  'alm-creme': { nome: 'Almofada Creme (KIT COM 2)', price: 39.9, cores: ['Creme'] },
-  'alm-marrom': { nome: 'Almofada Marrom (KIT COM 2)', price: 39.9, cores: ['Marrom'] },
-  'alm-cinza': { nome: 'Almofada Cinza (KIT COM 2)', price: 39.9, cores: ['Cinza'] },
-  'alm-rosa': { nome: 'Almofada Rosa (KIT COM 2)', price: 39.9, cores: ['Rosa'] },
+  'alm-bege': { nome: 'Almofada Bege (KIT COM 2)', price: 29.9, cores: ['Bege'] },
+  'alm-creme': { nome: 'Almofada Creme (KIT COM 2)', price: 29.9, cores: ['Creme'] },
+  'alm-marrom': { nome: 'Almofada Marrom (KIT COM 2)', price: 29.9, cores: ['Marrom'] },
+  'alm-cinza': { nome: 'Almofada Cinza (KIT COM 2)', price: 29.9, cores: ['Cinza'] },
+  'alm-rosa': { nome: 'Almofada Rosa (KIT COM 2)', price: 29.9, cores: ['Rosa'] },
 };
 
 // Valida os itens e devolve { resumo: ['2x Flara Azul 3 lugares', ...], subtotal } ou null.
