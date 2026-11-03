@@ -172,9 +172,9 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
   <p class="shiptitle">Escolha a forma de envio</p>
   <p class="freeinfo" id="freeInfo"></p>
   <div id="shipOpts">
-    <label class="shopt"><input type="radio" name="ship" value="sedex"><span class="shlogo"><img src="img/frete-sedex.webp" alt="Correios SEDEX"></span><span class="t"><strong>SEDEX</strong><small>2 a 7 dias úteis</small></span><b>R$ 19,90</b></label>
-    <label class="shopt"><input type="radio" name="ship" value="jadlog"><span class="shlogo"><img src="img/frete-jadlog.webp" alt="Jadlog"></span><span class="t"><strong>Jadlog</strong><small>7 a 11 dias úteis</small></span><b id="jadlogPrice">R$ 14,90</b></label>
-    <label class="shopt sel"><input type="radio" name="ship" value="loggi" checked><span class="shlogo"><img src="img/frete-loggi.webp" alt="Loggi"></span><span class="t"><strong>Loggi</strong><small>12 a 17 dias úteis</small></span><b>R$ 9,90</b></label>
+    <label class="shopt"><input type="radio" name="ship" value="sedex"><span class="shlogo"><img src="img/frete-sedex.webp" alt="Correios SEDEX"></span><span class="t"><strong>SEDEX</strong><small>3 a 7 dias úteis</small></span><b>R$ 19,90</b></label>
+    <label class="shopt"><input type="radio" name="ship" value="jadlog"><span class="shlogo"><img src="img/frete-jadlog.webp" alt="Jadlog"></span><span class="t"><strong>Jadlog</strong><small>5 a 9 dias úteis</small></span><b id="jadlogPrice">R$ 14,90</b></label>
+    <label class="shopt sel"><input type="radio" name="ship" value="loggi" checked><span class="shlogo"><img src="img/frete-loggi.webp" alt="Loggi"></span><span class="t"><strong>Loggi</strong><small>7 a 11 dias úteis</small></span><b>R$ 9,90</b></label>
   </div>
   <div style="height:10px"></div>
   <div class="act"><button class="back" type="button" data-to="1">Voltar</button><button class="btn" type="submit">Continuar</button></div>
@@ -187,7 +187,7 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
     <button type="button" class="payopt sel" data-m="pix"><span class="t"><strong>Pix</strong><small>Aprovação rápida · 5% OFF</small></span><b id="pixLabel"></b></button>
     <p class="payhow"><b>Como funciona:</b> toque em Gerar Pix, pague o QR code ou o código copia e cola no app do seu banco e a confirmação é automática.</p>
     <button type="button" class="payopt off" data-m="cartao" aria-disabled="true"><span class="t"><strong>Cartão</strong><small>Em breve</small></span><span class="soon">Em implementação</span></button>
-    <p class="payhow"><b>Cartão:</b> ainda em implementação. Por enquanto, a compra é feita só no Pix.</p>
+    <p class="payhow"><b>Cartão:</b> em breve você poderá pagar digitando os dados do cartão aqui mesmo, com aprovação na hora. Por enquanto, a compra é só no Pix.</p>
   </div>
   <div class="cardnote" id="cardNote"><strong>O pagamento por cartão está sendo implementado.</strong> No momento aceitamos Pix, que é aprovado na hora, é 100% seguro e ainda tem <strong>5% de desconto</strong>.</div>
   <div class="pixbox">
@@ -227,7 +227,7 @@ try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i
 if(!CART.length){$("empty").hidden=false}else{$("main").hidden=false}
 
 var sub=CART.reduce(function(a,i){return a+unitPrice(i)*i.qty},0);
-var SHIP={sedex:{n:"SEDEX",p:19.90,d:"2 a 7 dias úteis"},jadlog:{n:"Jadlog",p:14.90,d:"7 a 11 dias úteis"},loggi:{n:"Loggi",p:9.90,d:"12 a 17 dias úteis"}};
+var SHIP={sedex:{n:"SEDEX",p:19.90,d:"3 a 7 dias úteis"},jadlog:{n:"Jadlog",p:14.90,d:"5 a 9 dias úteis"},loggi:{n:"Loggi",p:9.90,d:"7 a 11 dias úteis"}};
 var FREE_MIN=70;SHIP.jadlog.p=sub>=FREE_MIN?0:14.90;
 function shipTxt(k){return SHIP[k].p===0?"Grátis":brl(SHIP[k].p)}
 var shipKey="loggi";
@@ -252,6 +252,7 @@ function upd(){
   $("sTot").textContent=brl(total);
 }
 $("jadlogPrice").textContent=shipTxt("jadlog");
+if(sub>=FREE_MIN){var so=$("shipOpts"),jl=so.querySelector('input[value="jadlog"]').closest("label");so.insertBefore(jl,so.firstChild)}
 $("freeInfo").className="freeinfo"+(sub>=FREE_MIN?" ok":"");$("freeInfo").textContent=sub>=FREE_MIN?"Você ganhou frete grátis neste pedido!":"Frete grátis em compras acima de R$ 70.";
 upd();
 Array.prototype.forEach.call(document.querySelectorAll("#shipOpts .shopt"),function(l){l.addEventListener("click",function(){

@@ -925,7 +925,7 @@ $("bumpBox").addEventListener("click",function(e){
 });
 /* entrega no carrinho (CEP + endereço + frete) */
 var DLV_KEY="navell_entrega_v1",CSUB=0;
-var SHIPS=[{k:"sedex",n:"SEDEX",d:"2 a 7 dias úteis",p:19.90,img:"img/frete-sedex.webp"},{k:"jadlog",n:"Jadlog",d:"7 a 11 dias úteis",p:14.90,img:"img/frete-jadlog.webp"},{k:"loggi",n:"Loggi",d:"12 a 17 dias úteis",p:9.90,img:"img/frete-loggi.webp"}];
+var SHIPS=[{k:"sedex",n:"SEDEX",d:"3 a 7 dias úteis",p:19.90,img:"img/frete-sedex.webp"},{k:"jadlog",n:"Jadlog",d:"5 a 9 dias úteis",p:14.90,img:"img/frete-jadlog.webp"},{k:"loggi",n:"Loggi",d:"7 a 11 dias úteis",p:9.90,img:"img/frete-loggi.webp"}];
 var DLV={cep:"",street:"",number:"",comp:"",nb:"",city:"",uf:"",ship:""};
 try{var _d=JSON.parse(localStorage.getItem(DLV_KEY)||"null");if(_d)Object.keys(DLV).forEach(function(k){if(typeof _d[k]==="string")DLV[k]=_d[k]})}catch(e){}
 function shipP(k){var o=SHIPS.filter(function(x){return x.k===k})[0];if(!o)return 0;return(k==="jadlog"&&CSUB>=FREE_MIN)?0:o.p}
@@ -934,7 +934,8 @@ var DMAP={"d-cep":"cep","d-street":"street","d-number":"number","d-comp":"comp",
 function dlvFill(){Object.keys(DMAP).forEach(function(id){$(id).value=DLV[DMAP[id]]||"";$(id).classList.remove("invalid")});$("dlvAddr").hidden=DLV.cep.replace(/\D/g,"").length!==8}
 function dlvRender(){
   var o=$("dlvOpts");
-  o.innerHTML=SHIPS.map(function(x){var p=shipP(x.k);return'<label class="dopt'+(DLV.ship===x.k?" sel":"")+'"><input type="radio" name="dship" value="'+x.k+'"'+(DLV.ship===x.k?" checked":"")+'><span class="lg"><img alt="'+x.n+'" src="'+x.img+'"></span><span class="t"><strong>'+x.n+'</strong><small>'+x.d+'</small></span><b'+(p===0?' class="fr"':"")+'>'+(p===0?"Grátis":brl(p))+'</b></label>'}).join("");
+  var LST=SHIPS.slice();if(CSUB>=FREE_MIN)LST.unshift(LST.splice(1,1)[0]);
+  o.innerHTML=LST.map(function(x){var p=shipP(x.k);return'<label class="dopt'+(DLV.ship===x.k?" sel":"")+'"><input type="radio" name="dship" value="'+x.k+'"'+(DLV.ship===x.k?" checked":"")+'><span class="lg"><img alt="'+x.n+'" src="'+x.img+'"></span><span class="t"><strong>'+x.n+'</strong><small>'+x.d+'</small></span><b'+(p===0?' class="fr"':"")+'>'+(p===0?"Grátis":brl(p))+'</b></label>'}).join("");
   var sp=DLV.ship?shipP(DLV.ship):null;
   $("cartShip").textContent=sp===null?"a escolher":(sp===0?"Grátis":brl(sp));
   $("cartTotal").textContent=brl(CSUB+(sp||0));
