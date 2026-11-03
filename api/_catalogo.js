@@ -26,7 +26,7 @@ export const SIZES = [
 
 // Almofadas (vendidas em kit com 2). Chave do item no carrinho: 'alm-<modelo>'.
 export const ALMOFADAS = {
-  'alm-losango': { nome: 'Almofada Losango (kit com 2)', price: 39.9, cores: ['Caramelo', 'Cinza', 'Marrom', 'Off-white', 'Preto', 'Rosê', 'Terracota'] },
+  'alm-losango': { nome: 'Almofada Losango (kit com 2)', price: 39.9, cores: ['Bege', 'Cinza', 'Marrom', 'Off-white', 'Preto', 'Rosê', 'Terracota'] },
 };
 
 // Valida os itens e devolve { resumo: ['2x Flara Azul 3 lugares', ...], subtotal } ou null.

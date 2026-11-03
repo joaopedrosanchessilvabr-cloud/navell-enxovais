@@ -209,7 +209,7 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 var NAMES={flara:"Flara",stella:"Stella",melina:"Melina",dalia:"Dália",ayla:"Ayla",alina:"Alina",celina:"Celina",aurora:"Aurora",lumira:"Lumira",magna:"Magna",renovare:"Renovare",lana:"Lana",luma:"Luma",mila:"Mila",cloe:"Cloe"};
 var THUMB={flara:"img/flara-capa2.webp",stella:"img/stella-capa2.webp",melina:"img/melina-capa2.webp",dalia:"img/dalia-capa2.webp",ayla:"img/ayla-capa2.webp",alina:"img/alina-capa2.webp",celina:"img/celina-capa2.webp",aurora:"img/aurora-capa2.webp",lumira:"img/lumira-capa2.webp",magna:"img/magna-capa2.webp",renovare:"img/renovare-capa2.webp",lana:"img/lana-capa2.webp",luma:"img/luma-capa2.webp",mila:"img/mila-capa2.webp",cloe:"img/cloe-capa2.webp"};
 var SIZES=[{n:"2 lugares",price:69.90},{n:"3 lugares",price:84.90},{n:"4 lugares",price:99.90}];
-var ALM={"alm-losango":{n:"Almofada Losango (kit com 2)",price:39.90,cores:["Caramelo","Cinza","Marrom","Off-white","Preto","Rosê","Terracota"],first:{"Caramelo":1,"Cinza":3,"Marrom":6,"Off-white":9,"Preto":12,"Rosê":14,"Terracota":16}}};
+var ALM={"alm-losango":{n:"Almofada Losango (kit com 2)",price:39.90,cores:["Bege","Cinza","Marrom","Off-white","Preto","Rosê","Terracota"],first:{"Bege":1,"Cinza":3,"Marrom":6,"Off-white":9,"Preto":12,"Rosê":14,"Terracota":16}}};
 function almThumb(i){var n=ALM[i.k].first[i.color];return"img/alm-"+(n<10?"0":"")+n+".webp"}
 function unitPrice(i){return ALM[i.k]?ALM[i.k].price:SIZES[i.s].price}
 var PIX=0.05;

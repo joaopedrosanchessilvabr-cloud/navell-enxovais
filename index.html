@@ -706,8 +706,8 @@ var KEYS=["flara","stella","melina","dalia","ayla","alina","celina","aurora","lu
 var COLORS={flara:["Azul", "Preto", "Rosa", "Lilás", "Bege"],stella:["Preto", "Bege", "Cinza", "Vermelho", "Verde"],melina:["Preto", "Marrom", "Azul", "Cinza"],dalia:["Preto", "Marrom", "Bege", "Azul", "Verde"],ayla:["Preto", "Bege", "Cinza", "Laranja", "Grafite"],alina:["Marrom", "Preto", "Cinza", "Bege", "Grafite"],celina:["Cinza", "Marrom", "Bege", "Branco", "Preto"],aurora:["Branco", "Marrom", "Cinza", "Grafite", "Preto"],lumira:["Cinza", "Verde", "Marrom", "Preto", "Branco"],magna:["Bege", "Marrom", "Preto", "Branco", "Verde"],renovare:["Verde", "Marrom", "Preto e Branco", "Misto"],lana:["Bege", "Preto", "Cinza", "Marrom", "Verde"],luma:["Marrom", "Preto", "Bege", "Café", "Verde"],mila:["Branco", "Marrom", "Preto", "Laranja", "Bege"],cloe:["Marrom", "Preto", "Bege", "Verde"]};
 var COLPHOTO={flara:{"Azul": 9, "Preto": 10, "Rosa": 11, "Lilás": 12, "Bege": 13},stella:{"Preto": 9, "Bege": 10, "Cinza": 11, "Vermelho": 12, "Verde": 13},melina:{"Preto": 7, "Marrom": 8, "Azul": 9, "Cinza": 10},dalia:{"Preto": 10, "Marrom": 11, "Bege": 12, "Azul": 13, "Verde": 14},ayla:{"Preto": 9, "Bege": 10, "Cinza": 11, "Laranja": 12, "Grafite": 13},alina:{"Marrom": 9, "Preto": 10, "Cinza": 11, "Bege": 12, "Grafite": 13},celina:{"Cinza": 9, "Marrom": 10, "Bege": 11, "Branco": 12, "Preto": 13},aurora:{"Branco": 8, "Marrom": 9, "Cinza": 10, "Grafite": 11, "Preto": 12},lumira:{"Cinza": 9, "Verde": 10, "Marrom": 11, "Preto": 12, "Branco": 13},magna:{"Bege": 9, "Marrom": 10, "Preto": 11, "Branco": 12, "Verde": 13},renovare:{"Verde": 9, "Marrom": 10, "Preto e Branco": 11, "Misto": 12},lana:{"Bege": 9, "Preto": 10, "Cinza": 11, "Marrom": 12, "Verde": 13},luma:{"Marrom": 9, "Preto": 10, "Bege": 11, "Café": 12, "Verde": 13},mila:{"Branco": 9, "Marrom": 10, "Preto": 11, "Laranja": 12, "Bege": 13},cloe:{"Marrom": 9, "Preto": 10, "Bege": 11, "Verde": 12}};
 /* ===== almofadas ===== */
-var ALM={"alm-losango":{n:"Almofada Losango",sizes:[{n:"Kit com 2 almofadas",w:"",use:"",price:39.90,old:79.90}],colors:["Caramelo","Cinza","Marrom","Off-white","Preto","Rosê","Terracota"],hex:{"Caramelo":"#b58a5e","Cinza":"#6b6b6b","Marrom":"#4a2f25","Off-white":"#efe6d6","Preto":"#1f1f1f","Rosê":"#b8687a","Terracota":"#c4651f"},first:{"Caramelo":0,"Cinza":2,"Marrom":5,"Off-white":8,"Preto":11,"Rosê":13,"Terracota":15}}};
-(function(){var l=[];for(var i=1;i<=18;i++)l.push("img/alm-"+(i<10?"0":"")+i+".webp");COLL["alm-losango"]=l;COLORS["alm-losango"]=ALM["alm-losango"].colors;COLPHOTO["alm-losango"]=ALM["alm-losango"].first})();
+var ALM={"alm-losango":{n:"Almofada Losango",sizes:[{n:"Kit com 2 almofadas",w:"",use:"",price:39.90,old:79.90}],colors:["Bege","Cinza","Marrom","Off-white","Preto","Rosê","Terracota"],hex:{"Bege":"#c9a577","Cinza":"#6b6b6b","Marrom":"#4a2f25","Off-white":"#efe6d6","Preto":"#1f1f1f","Rosê":"#b8687a","Terracota":"#c4651f"},first:{"Bege":0,"Cinza":2,"Marrom":5,"Off-white":8,"Preto":11,"Rosê":13,"Terracota":15}}};
+(function(){var l=[];for(var i=1;i<=18;i++)l.push("img/alm-"+(i<10?"0":"")+i+".webp");l.unshift("img/alm-capa-bege.webp");COLL["alm-losango"]=l;COLORS["alm-losango"]=ALM["alm-losango"].colors;COLPHOTO["alm-losango"]=(function(){var o={},f=ALM["alm-losango"].first;Object.keys(f).forEach(function(c){o[c]=f[c]+1});o["Bege"]=0;return o})()})();
 function isAlm(k){return !!ALM[k]}
 function szOf(k){return ALM[k]?ALM[k].sizes:CONFIG.sizes}
 function almImg(c,k){var n=ALM[k||"alm-losango"].first[c]+1;return"img/alm-"+(n<10?"0":"")+n+".webp"}
@@ -720,7 +720,7 @@ function setTab(t){
     var al=t==="alm";
     $("pickTitle").innerHTML=al?"Escolha a sua <span>almofada</span>":"Escolha o seu <span>modelo</span>";
     $("pickLead").textContent=al?"Kits com 2 almofadas. Entre, escolha a cor e adicione ao carrinho.":"Entre na coleção, escolha a cor e adicione ao carrinho.";
-    $("cards").innerHTML=al?Object.keys(ALM).map(function(k){var z=ALM[k].sizes[0];return'<div class="mcard" data-m="'+k+'"><button type="button" class="pick" aria-label="Abrir '+ALM[k].n+'"><img alt="'+ALM[k].n+'" src="'+almImg("Caramelo",k)+'"><span class="info"><span class="nm">'+ALM[k].n+'</span><span class="pr">kit com 2 · <b>'+brl(z.price)+'</b></span></span></button><button type="button" class="vercol" data-m="'+k+'">Ver coleção</button></div>'}).join(""):CARDS_CAPAS;
+    $("cards").innerHTML=al?Object.keys(ALM).map(function(k){var z=ALM[k].sizes[0];return'<div class="mcard" data-m="'+k+'"><button type="button" class="pick" aria-label="Abrir '+ALM[k].n+'"><img alt="'+ALM[k].n+'" src="img/alm-capa-bege.webp"><span class="info"><span class="nm">'+ALM[k].n+'</span><span class="pr">kit com 2 · <b>'+brl(z.price)+'</b></span></span></button><button type="button" class="vercol" data-m="'+k+'">Ver coleção</button></div>'}).join(""):CARDS_CAPAS;
   }
 }
 function menu(o){$("menu").hidden=!o;$("menuOv").hidden=!o}
@@ -761,7 +761,7 @@ function renderCart(){
   $("cartPix").textContent="ou "+brl(total*(1-CONFIG.pixDiscount))+" no Pix";
   badge();renderBump(total);
 }
-var bumpColor="Caramelo";
+var bumpColor="Bege";
 function renderBump(){
   var b=$("bumpBox"),has=CART.some(function(i){return isAlm(i.k)}),cov=CART.some(function(i){return !isAlm(i.k)});
   if(!CART.length||has||!cov){b.hidden=true;b.innerHTML="";return}
