@@ -168,9 +168,9 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
   </div>
   <p class="shiptitle">Escolha a forma de envio</p>
   <div id="shipOpts">
-    <label class="shopt"><input type="radio" name="ship" value="sedex"><span class="shlogo"><img src="img/frete-sedex.webp" alt="Correios SEDEX"></span><span class="t"><strong>SEDEX</strong><small>3 a 7 dias úteis</small></span><b>R$ 29,90</b></label>
-    <label class="shopt"><input type="radio" name="ship" value="jadlog"><span class="shlogo"><img src="img/frete-jadlog.webp" alt="Jadlog"></span><span class="t"><strong>Jadlog</strong><small>5 a 9 dias úteis</small></span><b>R$ 23,90</b></label>
-    <label class="shopt sel"><input type="radio" name="ship" value="loggi" checked><span class="shlogo"><img src="img/frete-loggi.webp" alt="Loggi"></span><span class="t"><strong>Loggi</strong><small>10 a 15 dias úteis</small></span><b>R$ 14,90</b></label>
+    <label class="shopt"><input type="radio" name="ship" value="sedex"><span class="shlogo"><img src="img/frete-sedex.webp" alt="Correios SEDEX"></span><span class="t"><strong>SEDEX</strong><small>2 a 7 dias úteis</small></span><b>R$ 19,90</b></label>
+    <label class="shopt"><input type="radio" name="ship" value="jadlog"><span class="shlogo"><img src="img/frete-jadlog.webp" alt="Jadlog"></span><span class="t"><strong>Jadlog</strong><small>7 a 11 dias úteis</small></span><b>R$ 14,90</b></label>
+    <label class="shopt sel"><input type="radio" name="ship" value="loggi" checked><span class="shlogo"><img src="img/frete-loggi.webp" alt="Loggi"></span><span class="t"><strong>Loggi</strong><small>12 a 17 dias úteis</small></span><b>R$ 9,90</b></label>
   </div>
   <div style="height:10px"></div>
   <div class="act"><button class="back" type="button" data-to="1">Voltar</button><button class="btn" type="submit">Continuar</button></div>
@@ -218,7 +218,7 @@ try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i
 if(!CART.length){$("empty").hidden=false}else{$("main").hidden=false}
 
 var sub=CART.reduce(function(a,i){return a+SIZES[i.s].price*i.qty},0);
-var SHIP={sedex:{n:"SEDEX",p:29.90,d:"3 a 7 dias úteis"},jadlog:{n:"Jadlog",p:23.90,d:"5 a 9 dias úteis"},loggi:{n:"Loggi",p:14.90,d:"10 a 15 dias úteis"}};
+var SHIP={sedex:{n:"SEDEX",p:19.90,d:"2 a 7 dias úteis"},jadlog:{n:"Jadlog",p:14.90,d:"7 a 11 dias úteis"},loggi:{n:"Loggi",p:9.90,d:"12 a 17 dias úteis"}};
 var shipKey="loggi";
 var prod=Math.round(sub*(1-PIX)*100)/100;
 var total=prod+SHIP[shipKey].p;

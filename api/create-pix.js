@@ -10,9 +10,9 @@ import { resumirItens } from './_catalogo.js';
 
 const PIX_DISCOUNT = 0.05;
 const SHIPPING = {
-  sedex: { n: 'SEDEX', price: 29.9 },
-  jadlog: { n: 'Jadlog', price: 23.9 },
-  loggi: { n: 'Loggi', price: 14.9 },
+  sedex: { n: 'SEDEX', price: 19.9 },
+  jadlog: { n: 'Jadlog', price: 14.9 },
+  loggi: { n: 'Loggi', price: 9.9 },
 };
 
 // Número do pedido: contador sequencial de 9 dígitos (000000001, 000000002...).
