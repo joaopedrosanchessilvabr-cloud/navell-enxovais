@@ -192,6 +192,12 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 .back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .pick-head{text-align:center;padding:6px 4px 4px}
 .infobtn{display:block;margin:16px auto 0;max-width:340px;padding:12px 16px;background:none;border:1.5px solid var(--btn);color:var(--btn);border-radius:4px;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-align:center;text-decoration:none;line-height:1.35}
+.seg{display:flex;gap:2px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 6px 18px -10px rgba(20,18,17,.35)}
+.seg button{border:0;background:none;border-radius:999px;padding:8px 10px;font-family:'Oswald',sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-dim);cursor:pointer;white-space:nowrap;transition:.15s}
+.seg button[aria-selected=true]{background:var(--btn);color:#fff;box-shadow:0 4px 10px -4px rgba(154,91,44,.7)}
+.mini-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 6px}
+.mini-cards .mcard:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 6px)}
+.cartbtn,.menubtn{flex:none}
 .menubtn{background:none;border:0;padding:10px;margin-left:-10px;cursor:pointer;color:var(--ink)}
 .menubtn svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;display:block}
 .menu-ov{position:fixed;inset:0;background:rgba(20,18,17,.45);z-index:90}
@@ -427,7 +433,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 <div class="announce" hidden>Pré Black Friday &nbsp;•&nbsp; 50% OFF</div>
 
 <div id="viewHome" hidden>
-<div class="topbar" style="padding:0 16px"><button type="button" class="menubtn" data-menu aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
+<div class="topbar" style="padding:0 16px"><button type="button" class="menubtn" data-menu aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button><div class="seg" role="tablist"><button type="button" role="tab" data-seg="capas" aria-selected="true">Capa de sofá</button><button type="button" role="tab" data-seg="alm" aria-selected="false">Almofadas</button></div><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
 <div class="hero" id="hero">
   <h1>Seu sofá renovado<em>em poucos minutos</em></h1>
   <p class="hero-sub">Capas de sofá em algodão e poliéster, com encaixe sem costura.</p>
@@ -549,6 +555,68 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   </div>
 </section>
 
+</div>
+
+<div id="viewHomeAlm" hidden>
+<div class="topbar" style="padding:0 16px"><button type="button" class="menubtn" data-menu aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button><div class="seg" role="tablist"><button type="button" role="tab" data-seg="capas" aria-selected="false">Capa de sofá</button><button type="button" role="tab" data-seg="alm" aria-selected="true">Almofadas</button></div><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
+<div class="hero">
+  <h1>Almofadas que renovam<em>o visual da sua sala</em></h1>
+  <p class="hero-sub">Kit com 2 almofadas com acabamento em losango, em 5 cores para combinar com o seu sofá.</p>
+  <div class="hero-photo"><div class="hero-img-wrap"><img alt="Almofadas cinza sobre sofá claro" src="img/alm-04.webp" style="display:block;width:100%;height:auto"></div><div class="gift-bubble"><small>Kit</small><b>2</b><i>almofadas</i></div></div>
+  <div class="price-from">Kit com 2 por</div>
+  <div class="price-strip">
+    <span class="old">R$ 79,90</span>
+    <span class="now">R$ 39,90</span>
+    <span class="pix">ou <b>R$ 37,91 no Pix</b> (5% OFF)</span>
+  </div>
+  <a href="#" class="btn-primary" id="almHeroCta">Quero minhas almofadas</a>
+  <div class="trust-line">Escolha a cor</div>
+</div>
+
+<div class="badges">
+  <div class="badge"><svg viewBox="0 0 24 24"><path d="M12 3l9 9-9 9-9-9 9-9z"></path></svg><span>Acabamento em losango</span></div>
+  <div class="badge"><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"></path></svg><span>Kit com 2 unidades</span></div>
+  <div class="badge"><svg viewBox="0 0 24 24"><path d="M10 2H14V9H21V14H14V22H10V14H3V9H10V2Z"></path></svg><span>5 cores</span></div>
+</div>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Escolha a sua <span>cor</span></h2>
+  <p class="section-lead">Cada cor é uma coleção. Entre, veja as fotos e adicione o kit ao carrinho.</p>
+  <div class="mini-cards" id="almCards"></div>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Feitas para <span>combinar com a sua sala</span></h2>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 3l9 9-9 9-9-9 9-9z"></path></svg></div>
+      <div><h3>Costura em losango</h3><p>Detalhe discreto que dá acabamento elegante ao sofá.</p></div></div>
+    <div class="feat-card"><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M10 2H14V9H21V14H14V22H10V14H3V9H10V2Z"></path></svg></div>
+      <div><h3>Kit com 2 almofadas</h3><p>Duas almofadas por kit, prontas para decorar.</p></div></div>
+    <div class="feat-card"><div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"></path></svg></div>
+      <div><h3>Combina com tudo</h3><p>Cores neutras e marcantes para qualquer estilo de sala.</p></div></div>
+  </div>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section>
+  <h2 class="section-title">Veja nos <span>detalhes</span></h2>
+  <div class="gallery">
+    <figure><img alt="Detalhe da almofada cinza" src="img/alm-03.webp"><figcaption>Detalhe do acabamento</figcaption></figure>
+    <figure><img alt="Detalhe da almofada creme" src="img/alm-09.webp"><figcaption>Costura em losango</figcaption></figure>
+    <figure><img alt="Almofadas rosa" src="img/alm-14.webp"><figcaption>Cores para todos os gostos</figcaption></figure>
+  </div>
+</section>
+
+<div class="cross-divider"><span></span></div>
+<section style="padding-bottom:6px">
+  <div class="ship-box">
+    <svg viewBox="0 0 24 24"><path d="M3 13h13V6H3v7zm18-5h-2.5l2 5H21v3h-2.05a2.5 2.5 0 0 1-4.9 0h-4.1a2.5 2.5 0 0 1-4.9 0H3v-2h13V8h5z"></path></svg>
+    <div><h3>Entrega para todo o Brasil</h3><p>Prazo e valor do frete calculados no carrinho pelo seu CEP. Você recebe o código de rastreio quando o pedido for despachado.</p></div>
+  </div>
+  <a href="#" class="btn-primary" id="almEndCta" style="margin-top:18px">Escolher minha cor</a>
+</section>
 </div>
 
 <div id="viewModels">
@@ -735,19 +803,21 @@ function menu(o){$("menu").hidden=!o;$("menuOv").hidden=!o}
 document.addEventListener("click",function(e){var t=e.target;if(!t.closest)return;
   if(t.closest("[data-menu]")){e.preventDefault();menu($("menu").hidden);return}
   if(t.closest("#menuOv")){menu(false);return}
+  var sg=t.closest("[data-seg]");if(sg){e.preventDefault();go(sg.getAttribute("data-seg")==="alm"?"homeAlm":"home");return}
+  if(t.closest("#almHeroCta,#almEndCta")){e.preventDefault();setTab("alm");go("modelos");return}
   var b=t.closest("#menu [data-tab]");if(!b)return;e.preventDefault();var k=b.getAttribute("data-tab");menu(false);
   if(k==="info"){setTab("info");go("home")}else{setTab(k);go("modelos")}});
-var VIEWS={home:"viewHome",modelos:"viewModels",coll:"viewColl",carrinho:"viewCart"};
+var VIEWS={homeAlm:"viewHomeAlm",home:"viewHome",modelos:"viewModels",coll:"viewColl",carrinho:"viewCart"};
 function show(v){
-  if(v==="modelos"&&TAB==="info")setTab("capas");else if(v==="home"&&TAB!=="info")setTab("info");
+  if(v==="modelos"&&TAB==="info")setTab("capas");else if((v==="home"||v==="homeAlm")&&TAB!=="info")setTab("info");
   Object.keys(VIEWS).forEach(function(k){$(VIEWS[k]).hidden=k!==v});
   onSub=v!=="home";$("sheet").hidden=true;
-  document.querySelector(".announce").hidden=v!=="home";
+  document.querySelector(".announce").hidden=(v!=="home"&&v!=="homeAlm");
   document.querySelector("footer").classList.toggle("mini",v==="coll"||v==="carrinho");
   refresh();window.scrollTo(0,0);
 }
 function setHash(h){try{if(h){location.hash=h}else if(location.hash){history.replaceState(null,"",location.pathname+location.search)}}catch(e){}}
-function go(v){if(v==="carrinho")renderCart();setHash(v==="home"?"sobre":(v==="modelos"?"":v));show(v)}
+function go(v){if(v==="carrinho")renderCart();setHash(v==="home"?"sobre":(v==="homeAlm"?"almofadas-info":(v==="modelos"?"":v)));show(v)}
 /* carrinho */
 var CART=[];
 try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i){return (KEYS.indexOf(i.k)>-1||isAlm(i.k))&&COLORS[i.k].indexOf(i.color)>-1&&szOf(i.k)[i.s]&&i.qty>0})}catch(e){CART=[]}
@@ -958,12 +1028,15 @@ document.addEventListener("click",function(e){
 window.addEventListener("hashchange",function(){
   var h=location.hash;
   if(h==="#sobre")show("home");
+  else if(h==="#almofadas-info")show("homeAlm");
   else if(h==="#carrinho"){renderCart();show("carrinho")}
   else if(h===""||h==="#"||h==="#modelos")show("modelos");
 });
-setTab(location.hash==="#sobre"?"info":"capas");
+$("almCards").innerHTML=Object.keys(ALM).map(function(k){var z=ALMSZ[0];return'<div class="mcard" data-m="'+k+'"><button type="button" class="pick" aria-label="Abrir '+ALM[k].n+'"><img alt="'+ALM[k].n+'" src="'+ALM[k].cover+'"><span class="info"><span class="nm">'+ALM[k].n+'</span><span class="pr">KIT COM 2 · <b>'+brl(z.price)+'</b></span></span></button><button type="button" class="vercol" data-m="'+k+'">Ver coleção</button></div>'}).join("");
+setTab((location.hash==="#sobre"||location.hash==="#almofadas-info")?"info":"capas");
 badge();
 if(location.hash==="#sobre")show("home");
+else if(location.hash==="#almofadas-info"){setTab("info");show("homeAlm")}
 else if(location.hash==="#carrinho"){renderCart();show("carrinho")}
 else show("modelos");
 </script>
