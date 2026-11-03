@@ -710,9 +710,9 @@ var ALMSZ=[{n:"Kit com 2 almofadas",w:"",use:"",price:39.90,old:79.90}];
 var ALM={
  "alm-bege":{n:"Almofada Bege",color:"Bege",hex:"#c9a577",slug:"bege",files:[1,2]},
  "alm-creme":{n:"Almofada Creme",color:"Creme",hex:"#efe6d6",slug:"creme",files:[9,10,11]},
- "alm-marrom":{n:"Almofada Marrom",color:"Marrom",hex:"#4a2f25",slug:"marrom",files:[6,7,8]},
  "alm-cinza":{n:"Almofada Cinza",color:"Cinza",hex:"#6b6b6b",slug:"cinza",files:[3,4,5]},
- "alm-rosa":{n:"Almofada Rosa",color:"Rosa",hex:"#b8687a",slug:"rosa",files:[14,15]}};
+ "alm-rosa":{n:"Almofada Rosa",color:"Rosa",hex:"#b8687a",slug:"rosa",files:[14,15]},
+ "alm-marrom":{n:"Almofada Marrom",color:"Marrom",hex:"#4a2f25",slug:"marrom",files:[6,7,8]}};
 function almFile(n){return"img/alm-"+(n<10?"0":"")+n+".webp"}
 Object.keys(ALM).forEach(function(k){var a=ALM[k];a.sizes=ALMSZ;a.cover="img/alm-capa-"+a.slug+".webp";COLL[k]=[a.cover].concat(a.files.map(almFile));COLORS[k]=[a.color];COLPHOTO[k]={};COLPHOTO[k][a.color]=0});
 function isAlm(k){return !!ALM[k]}
