@@ -287,7 +287,13 @@ $("step2").addEventListener("submit",function(e){e.preventDefault();var ok=true;
   ok=bad("state",v("state").length!==2?"UF inválida.":"")&&ok;
   if(ok){window.navellLead&&navellLead("dados",{payer:{name:v("name"),email:v("email"),document:v("cpf").replace(/\D/g,""),phone:v("phone").replace(/\D/g,"")},address:{cep:v("cep").replace(/\D/g,""),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}});goTo(3)}else{var f=this.querySelector(".invalid");if(f)f.focus()}});
 
-Array.prototype.forEach.call(document.querySelectorAll("#payOpts .payopt.off"),function(b){b.addEventListener("click",function(){$("cardNote").classList.add("show")})});
+Array.prototype.forEach.call(document.querySelectorAll("#payOpts .payopt.off"),function(b){b.addEventListener("click",function(){$("cardNote").classList.add("show");marco("cartao")})});
+/* registra na planilha o que acontece no passo do pagamento (para saber por que alguém não gerou o Pix) */
+function marco(m,msg){try{var dg=function(x){return x.replace(/\D/g,"")};
+  fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({etapa:"dados",marco:m,msg:msg||"",vid:window.navellVid?navellVid():"",
+    items:CART.map(function(i){return{k:i.k,color:i.color,s:i.s,qty:i.qty}}),
+    payer:{name:v("name"),email:v("email"),document:dg(v("cpf")),phone:dg(v("phone"))},
+    address:{cep:dg(v("cep")),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}})}).catch(function(){})}catch(e){}}
 var done=false;
 $("finalCta").addEventListener("click",function(){
   if(done)return;
@@ -298,8 +304,8 @@ $("finalCta").addEventListener("click",function(){
     items:CART.map(function(i){return{k:i.k,color:i.color,s:i.s,qty:i.qty}}),
     payer:{name:v("name"),email:v("email"),document:dg(v("cpf")),phone:dg(v("phone"))},
     address:{cep:dg(v("cep")),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}
-  })}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(x){
-    if(!x.ok){err.textContent=x.j.error||"Não foi possível gerar o Pix agora. Tente novamente.";btn.disabled=false;btn.textContent="Gerar Pix";return}
+  })}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j,status:r.status}})}).then(function(x){
+    if(!x.ok){err.textContent=x.j.error||"Não foi possível gerar o Pix agora. Tente novamente.";marco("erro",(x.j.error||"")+" ("+(x.status||"")+")");btn.disabled=false;btn.textContent="Gerar Pix";return}
     var d=x.j,w=$("qrWrap");w.innerHTML='<div id="qrc"></div>';
     try{new QRCode($("qrc"),{text:d.qrcode,width:164,height:164,colorDark:"#141211",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M})}
     catch(e){w.innerHTML="<span>Não foi possível desenhar o QR — use o código abaixo</span>"}
@@ -308,7 +314,7 @@ $("finalCta").addEventListener("click",function(){
     btn.textContent="Pix gerado ✓";done=true;try{localStorage.removeItem("navell_vid")}catch(e){}
     window.navellTrack&&navellTrack("AddPaymentInfo",{value:total,currency:"BRL",content_type:"product",content_ids:CART.map(function(i){return i.k})});
     poll(d.internal_id,{total:total,order:d.order||d.external_id||d.internal_id||""});
-  }).catch(function(){err.textContent="Erro ao conectar com o gateway de pagamento. Verifique sua internet e tente novamente.";btn.disabled=false;btn.textContent="Gerar Pix"});
+  }).catch(function(){err.textContent="Erro ao conectar com o gateway de pagamento. Verifique sua internet e tente novamente.";marco("erro","sem conexão com o servidor");btn.disabled=false;btn.textContent="Gerar Pix"});
 });
 
 var PAID=["paid","approved","completed","confirmed"],DEAD=["cancelled","canceled","expired","failed"];

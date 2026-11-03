@@ -32,7 +32,9 @@ export default async function handler(req, res) {
     if (!txt(p.name) || !txt(p.email) || !txt(p.phone)) return res.status(422).json({ ok: false });
     await salvarNaPlanilha({
       acao: 'dados', vid, itens: r.resumo, valor: r.subtotal,
-      status: a ? 'Endereço preenchido' : 'Dados preenchidos',
+      status: b.marco === 'cartao' ? 'Tentou pagar com cartão'
+        : b.marco === 'erro' ? ('Erro ao gerar Pix: ' + txt(b.msg, 100))
+        : (a ? 'Endereço preenchido' : 'Dados preenchidos'),
       cliente: { name: txt(p.name), email: txt(p.email), document: txt(p.document, 14), phone: txt(p.phone, 15) },
       entrega: a ? {
         cep: txt(a.cep, 8), street: txt(a.street), number: txt(a.number, 20), complement: txt(a.complement),
