@@ -559,7 +559,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 
 <div id="viewHomeAlm" hidden>
 <div class="topbar" style="padding:0 16px"><button type="button" class="menubtn" data-menu aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button><div class="seg" role="tablist"><button type="button" role="tab" data-seg="capas" aria-selected="false">Capa de sofá</button><button type="button" role="tab" data-seg="alm" aria-selected="true">Almofadas</button></div><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
-<div class="hero">
+<div class="hero" id="almHero">
   <h1>Almofadas que renovam<em>o visual da sua sala</em></h1>
   <p class="hero-sub">Kit com 2 almofadas com acabamento em losango, em 5 cores para combinar com o seu sofá.</p>
   <div class="hero-photo"><div class="hero-img-wrap"><img alt="Almofadas cinza sobre sofá claro" src="img/alm-04.webp" style="display:block;width:100%;height:auto"></div></div>
@@ -645,7 +645,6 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
     <svg viewBox="0 0 24 24"><path d="M3 13h13V6H3v7zm18-5h-2.5l2 5H21v3h-2.05a2.5 2.5 0 0 1-4.9 0h-4.1a2.5 2.5 0 0 1-4.9 0H3v-2h13V8h5z"></path></svg>
     <div><h3>Entrega para todo o Brasil</h3><p>Prazo e valor do frete calculados no carrinho pelo seu CEP. Você recebe o código de rastreio quando o pedido for despachado.</p></div>
   </div>
-  <a href="#" class="btn-primary" id="almEndCta" style="margin-top:18px">Escolher minha cor</a>
 </section>
 </div>
 
@@ -743,6 +742,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 </footer>
 
 <div class="sticky-cta hidden" id="collBar"><a href="#" id="collBarBtn">Adicionar ao carrinho</a></div>
+<div class="sticky-cta hidden" id="stickyAlm"><a href="#" id="almStickyCta">Quero minhas almofadas</a></div>
 <div class="sticky-cta hidden" id="stickyCta"><a href="#modelos">Quero minha capa</a></div>
 <div class="toast" id="toast" hidden></div>
 
@@ -790,7 +790,8 @@ $("heroOld").textContent=brl(s0.old);$("heroPrice").textContent=brl(s0.price);
 $("heroPix").innerHTML="ou <b>"+brl(s0.price*(1-CONFIG.pixDiscount))+" no Pix</b> (5% OFF)";
 function toast(m){var t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true},4500)}
 var sticky=$("stickyCta"),hv=true,onSub=false;
-function refresh(){sticky.classList.toggle("hidden",hv||onSub);barUpdate()}
+var curV="modelos",hva=true,stickyA=$("stickyAlm");
+function refresh(){sticky.classList.toggle("hidden",hv||onSub);stickyA.classList.toggle("hidden",hva||curV!=="homeAlm");barUpdate()}
 function barUpdate(){
   var bar=$("collBar");if(!bar)return;
   var vc=$("viewColl");
@@ -801,6 +802,7 @@ function barUpdate(){
 window.addEventListener("scroll",barUpdate,{passive:true});window.addEventListener("resize",barUpdate);
 $("collBarBtn").onclick=function(e){e.preventDefault();document.querySelector(".coll-right").scrollIntoView({behavior:"smooth",block:"center"})};
 new IntersectionObserver(function(e){hv=e[0].isIntersecting;refresh()},{threshold:.15}).observe($("hero"));
+new IntersectionObserver(function(e){hva=e[0].isIntersecting;refresh()},{threshold:.15}).observe($("almHero"));
 var KEYS=["flara","stella","melina","dalia","ayla","alina","celina","aurora","lumira","magna","renovare","lana","luma","mila","cloe"];
 var COLORS={flara:["Azul", "Preto", "Rosa", "Lilás", "Bege"],stella:["Preto", "Bege", "Cinza", "Vermelho", "Verde"],melina:["Preto", "Marrom", "Azul", "Cinza"],dalia:["Preto", "Marrom", "Bege", "Azul", "Verde"],ayla:["Preto", "Bege", "Cinza", "Laranja", "Grafite"],alina:["Marrom", "Preto", "Cinza", "Bege", "Grafite"],celina:["Cinza", "Marrom", "Bege", "Branco", "Preto"],aurora:["Branco", "Marrom", "Cinza", "Grafite", "Preto"],lumira:["Cinza", "Verde", "Marrom", "Preto", "Branco"],magna:["Bege", "Marrom", "Preto", "Branco", "Verde"],renovare:["Verde", "Marrom", "Preto e Branco", "Misto"],lana:["Bege", "Preto", "Cinza", "Marrom", "Verde"],luma:["Marrom", "Preto", "Bege", "Café", "Verde"],mila:["Branco", "Marrom", "Preto", "Laranja", "Bege"],cloe:["Marrom", "Preto", "Bege", "Verde"]};
 var COLPHOTO={flara:{"Azul": 9, "Preto": 10, "Rosa": 11, "Lilás": 12, "Bege": 13},stella:{"Preto": 9, "Bege": 10, "Cinza": 11, "Vermelho": 12, "Verde": 13},melina:{"Preto": 7, "Marrom": 8, "Azul": 9, "Cinza": 10},dalia:{"Preto": 10, "Marrom": 11, "Bege": 12, "Azul": 13, "Verde": 14},ayla:{"Preto": 9, "Bege": 10, "Cinza": 11, "Laranja": 12, "Grafite": 13},alina:{"Marrom": 9, "Preto": 10, "Cinza": 11, "Bege": 12, "Grafite": 13},celina:{"Cinza": 9, "Marrom": 10, "Bege": 11, "Branco": 12, "Preto": 13},aurora:{"Branco": 8, "Marrom": 9, "Cinza": 10, "Grafite": 11, "Preto": 12},lumira:{"Cinza": 9, "Verde": 10, "Marrom": 11, "Preto": 12, "Branco": 13},magna:{"Bege": 9, "Marrom": 10, "Preto": 11, "Branco": 12, "Verde": 13},renovare:{"Verde": 9, "Marrom": 10, "Preto e Branco": 11, "Misto": 12},lana:{"Bege": 9, "Preto": 10, "Cinza": 11, "Marrom": 12, "Verde": 13},luma:{"Marrom": 9, "Preto": 10, "Bege": 11, "Café": 12, "Verde": 13},mila:{"Branco": 9, "Marrom": 10, "Preto": 11, "Laranja": 12, "Bege": 13},cloe:{"Marrom": 9, "Preto": 10, "Bege": 11, "Verde": 12}};
@@ -834,14 +836,14 @@ document.addEventListener("click",function(e){var t=e.target;if(!t.closest)retur
   if(t.closest("[data-menu]")){e.preventDefault();menu($("menu").hidden);return}
   if(t.closest("#menuOv")){menu(false);return}
   var sg=t.closest("[data-seg]");if(sg){e.preventDefault();go(sg.getAttribute("data-seg")==="alm"?"homeAlm":"home");return}
-  if(t.closest("#almHeroCta,#almEndCta")){e.preventDefault();setTab("alm");go("modelos");return}
+  if(t.closest("#almHeroCta,#almStickyCta")){e.preventDefault();setTab("alm");go("modelos");return}
   var b=t.closest("#menu [data-tab]");if(!b)return;e.preventDefault();var k=b.getAttribute("data-tab");menu(false);
   if(k==="info"){setTab("info");go("home")}else{setTab(k);go("modelos")}});
 var VIEWS={homeAlm:"viewHomeAlm",home:"viewHome",modelos:"viewModels",coll:"viewColl",carrinho:"viewCart"};
 function show(v){
   if(v==="modelos"&&TAB==="info")setTab("capas");else if((v==="home"||v==="homeAlm")&&TAB!=="info")setTab("info");
   Object.keys(VIEWS).forEach(function(k){$(VIEWS[k]).hidden=k!==v});
-  onSub=v!=="home";$("sheet").hidden=true;
+  onSub=v!=="home";curV=v;$("sheet").hidden=true;
   document.querySelector(".announce").hidden=(v!=="home"&&v!=="homeAlm");
   document.querySelector("footer").classList.toggle("mini",v==="coll"||v==="carrinho");
   refresh();window.scrollTo(0,0);
