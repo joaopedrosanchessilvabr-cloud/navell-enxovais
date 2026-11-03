@@ -36,6 +36,7 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 .cit .i{flex:1;min-width:0}.cit strong{display:block;font-size:13px}.cit small{display:block;font-size:11.5px;color:var(--ink-dim)}
 .cit b{font:600 15px 'Oswald',sans-serif;color:var(--gold-light)}
 .freeinfo{font-size:12.5px;font-weight:600;margin:-4px 0 10px;color:var(--ink-dim)}.freeinfo.ok{color:#2f6b3f}
+.dlvsum{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;line-height:1.55;color:var(--ink-dim)}.dlvsum strong{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}.dlvsum a{color:var(--gold-light);font-weight:600}
 .gift{margin-top:8px;text-align:center;font:600 10px 'Oswald',sans-serif;letter-spacing:.02em;white-space:nowrap;text-transform:uppercase;color:var(--gold-light);background:var(--panel2);border:1px dashed var(--gold-dim);border-radius:8px;padding:8px}
 .card{margin-top:18px}
 .eyebrow{font:12px 'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
@@ -171,8 +172,8 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
   <p class="freeinfo" id="freeInfo"></p>
   <div id="shipOpts">
     <label class="shopt"><input type="radio" name="ship" value="sedex"><span class="shlogo"><img src="img/frete-sedex.webp" alt="Correios SEDEX"></span><span class="t"><strong>SEDEX</strong><small>2 a 7 dias úteis</small></span><b>R$ 19,90</b></label>
-    <label class="shopt"><input type="radio" name="ship" value="jadlog"><span class="shlogo"><img src="img/frete-jadlog.webp" alt="Jadlog"></span><span class="t"><strong>Jadlog</strong><small>7 a 11 dias úteis</small></span><b>R$ 14,90</b></label>
-    <label class="shopt sel"><input type="radio" name="ship" value="loggi" checked><span class="shlogo"><img src="img/frete-loggi.webp" alt="Loggi"></span><span class="t"><strong>Loggi</strong><small>12 a 17 dias úteis</small></span><b id="loggiPrice">R$ 9,90</b></label>
+    <label class="shopt"><input type="radio" name="ship" value="jadlog"><span class="shlogo"><img src="img/frete-jadlog.webp" alt="Jadlog"></span><span class="t"><strong>Jadlog</strong><small>7 a 11 dias úteis</small></span><b id="jadlogPrice">R$ 14,90</b></label>
+    <label class="shopt sel"><input type="radio" name="ship" value="loggi" checked><span class="shlogo"><img src="img/frete-loggi.webp" alt="Loggi"></span><span class="t"><strong>Loggi</strong><small>12 a 17 dias úteis</small></span><b>R$ 9,90</b></label>
   </div>
   <div style="height:10px"></div>
   <div class="act"><button class="back" type="button" data-to="1">Voltar</button><button class="btn" type="submit">Continuar</button></div>
@@ -181,6 +182,7 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 <form class="card" id="step3" novalidate hidden>
   <p class="eyebrow">Etapa 3 de 3</p><h1>Pagamento</h1>
   <p class="intro">Um QR code Pix será gerado aqui mesmo, sem sair desta página.</p>
+  <div class="dlvsum" id="dlvSum" hidden></div>
   <div id="payOpts">
     <button type="button" class="payopt sel" data-m="pix"><span class="t"><strong>Pix</strong><small>Aprovação rápida · 5% OFF</small></span><b id="pixLabel"></b></button>
     <button type="button" class="payopt off" data-m="cartao" aria-disabled="true"><span class="t"><strong>Cartão</strong><small>Estamos implementando esta forma de pagamento</small></span><span class="soon">Em implementação</span></button>
@@ -223,9 +225,11 @@ if(!CART.length){$("empty").hidden=false}else{$("main").hidden=false}
 
 var sub=CART.reduce(function(a,i){return a+unitPrice(i)*i.qty},0);
 var SHIP={sedex:{n:"SEDEX",p:19.90,d:"2 a 7 dias úteis"},jadlog:{n:"Jadlog",p:14.90,d:"7 a 11 dias úteis"},loggi:{n:"Loggi",p:9.90,d:"12 a 17 dias úteis"}};
-var FREE_MIN=70;SHIP.loggi.p=sub>=FREE_MIN?0:9.90;
+var FREE_MIN=70;SHIP.jadlog.p=sub>=FREE_MIN?0:14.90;
 function shipTxt(k){return SHIP[k].p===0?"Grátis":brl(SHIP[k].p)}
 var shipKey="loggi";
+var DLV=null;try{var _d=JSON.parse(localStorage.getItem("navell_entrega_v1")||"null");if(_d&&String(_d.cep||"").replace(/\D/g,"").length===8&&_d.street&&_d.number&&_d.nb&&_d.city&&_d.uf&&_d.uf.length===2&&SHIP[_d.ship])DLV=_d}catch(e){}
+var HAS_ADDR=!!DLV;if(HAS_ADDR)shipKey=DLV.ship;
 var prod=Math.round(sub*(1-PIX)*100)/100;
 var total=prod+SHIP[shipKey].p;
 if(CART.length&&window.navellTrack)navellTrack("InitiateCheckout",{content_ids:CART.map(function(i){return i.k}),content_type:"product",contents:CART.map(function(i){return{id:i.k,quantity:i.qty}}),num_items:CART.reduce(function(a,i){return a+i.qty},0),value:sub,currency:"BRL"});
@@ -233,7 +237,7 @@ $("cart").innerHTML=CART.map(function(i){
   if(ALM[i.k])return'<div class="cit"><img alt="" src="'+almThumb(i)+'"><div class="i"><strong>'+ALM[i.k].n.toUpperCase()+'</strong><small>'+i.color+' · Qtd: '+i.qty+'</small></div><b>'+brl(unitPrice(i)*i.qty)+'</b></div>';
   var z=SIZES[i.s];
   return'<div class="cit"><img alt="" src="'+THUMB[i.k]+'"><div class="i"><strong>CAPA DE SOFÁ '+NAMES[i.k].toUpperCase()+'</strong><small>'+i.color+' · '+z.n+' · Qtd: '+i.qty+'</small></div><b>'+brl(z.price*i.qty)+'</b></div>'}).join("");
-var shipShown=false;
+var shipShown=HAS_ADDR;
 function upd(){
   total=Math.round((prod+SHIP[shipKey].p)*100)/100;
   $("aSub").textContent=brl(sub);$("aDisc").textContent="− "+brl(sub-prod);
@@ -244,14 +248,15 @@ function upd(){
   $("sShipName").textContent="("+SHIP[shipKey].n+")";$("sShip").textContent=shipTxt(shipKey);
   $("sTot").textContent=brl(total);
 }
-$("loggiPrice").textContent=shipTxt("loggi");
-$("freeInfo").className="freeinfo"+(sub>=FREE_MIN?" ok":"");$("freeInfo").textContent=sub>=FREE_MIN?"Você ganhou frete grátis na Loggi neste pedido!":"Frete grátis na Loggi em compras acima de R$ 70.";
+$("jadlogPrice").textContent=shipTxt("jadlog");
+$("freeInfo").className="freeinfo"+(sub>=FREE_MIN?" ok":"");$("freeInfo").textContent=sub>=FREE_MIN?"Você ganhou frete grátis no Jadlog neste pedido!":"Frete grátis no Jadlog em compras acima de R$ 70.";
 upd();
 Array.prototype.forEach.call(document.querySelectorAll("#shipOpts .shopt"),function(l){l.addEventListener("click",function(){
   var i=l.querySelector("input");i.checked=true;shipKey=i.value;
   Array.prototype.forEach.call(document.querySelectorAll("#shipOpts .shopt"),function(x){x.classList.toggle("sel",x===l)});upd()})});
 
 function goTo(n){
+  if(HAS_ADDR&&n===2)n=3;
   if(n>=2&&!shipShown){shipShown=true;upd()}
   [1,2,3].forEach(function(i){$("step"+i).hidden=i!==n});
   Array.prototype.forEach.call(document.querySelectorAll(".step"),function(el){var s=+el.dataset.step;el.classList.remove("active","done");if(s===n)el.classList.add("active");else if(s<n)el.classList.add("done")});
@@ -378,11 +383,31 @@ function savePix(d){chkPix={internal_id:d.internal_id,order:d.order||d.external_
 (function(){try{var s=JSON.parse(localStorage.getItem(CHK_SAVE)||"null");if(!s||!CART.length||Date.now()-s.t>7*86400000)return;
   var f=s.f||{};CHK_FIELDS.forEach(function(k){var e=$("f-"+k);if(e&&f[k])e.value=f[k]});
   if($("addrBox")&&(f.cep||"").replace(/\D/g,"").length===8){$("addrBox").hidden=false;lastCep=f.cep.replace(/\D/g,"")}
-  if(s.ship&&SHIP[s.ship]){var inp=document.querySelector('#shipOpts input[value="'+s.ship+'"]');if(inp&&inp.closest("label"))inp.closest("label").click()}
+  if(s.ship&&SHIP[s.ship]&&!HAS_ADDR){var inp=document.querySelector('#shipOpts input[value="'+s.ship+'"]');if(inp&&inp.closest("label"))inp.closest("label").click()}
   var ok1=f.name&&f.cpf&&f.email&&f.phone&&(f.cep||"").replace(/\D/g,"").length===8;
   if(s.step>1&&ok1){goTo(s.step);window.scrollTo(0,0)}
   var p=s.pix;if(p&&p.qrcode&&ok1&&Date.now()-p.t<30*60000){chkPix=p;goTo(document.querySelector("#step3")?3:2);showPix({internal_id:p.internal_id,order:p.order,qrcode:p.qrcode,copy_token:p.copy_token,total:p.total})}
   }catch(e){}})();
+
+/* endereço e frete vindos do carrinho: pula a etapa de entrega */
+function applyDlv(){
+  if(!HAS_ADDR)return;
+  var m={cep:DLV.cep,address:DLV.street,number:DLV.number,complement:DLV.comp||"",neighborhood:DLV.nb,city:DLV.city,state:DLV.uf.toUpperCase()};
+  Object.keys(m).forEach(function(k){var e=$("f-"+k);if(e)e.value=m[k]});
+  shipKey=DLV.ship;upd();
+  var st=document.querySelector("#step3");
+  Array.prototype.forEach.call(document.querySelectorAll("#shipOpts .shopt"),function(l){var i=l.querySelector("input");l.classList.toggle("sel",i.value===shipKey);i.checked=i.value===shipKey});
+  $("dlvSum").hidden=false;
+  $("dlvSum").innerHTML="<strong>Entrega</strong>"+DLV.street+", "+DLV.number+(DLV.comp?" - "+DLV.comp:"")+" · "+DLV.nb+" · "+DLV.city+"/"+DLV.uf.toUpperCase()+" · CEP "+DLV.cep+"<br>"+SHIP[shipKey].n+" ("+SHIP[shipKey].d+") · "+shipTxt(shipKey)+' · <a href="index.html#carrinho">Alterar</a>';
+}
+if(HAS_ADDR){
+  var s2=document.querySelector('.step[data-step="2"]');if(s2){var ln=s2.nextElementSibling;s2.style.display="none";if(ln&&ln.classList.contains("step-line"))ln.style.display="none"}
+  var n3=document.querySelector('.step[data-step="3"] .step-num');if(n3)n3.textContent="2";
+  var e1=document.querySelector("#step1 .eyebrow");if(e1)e1.textContent="Etapa 1 de 2";
+  var e3=document.querySelector("#step3 .eyebrow");if(e3)e3.textContent="Etapa 2 de 2";
+  $("backBtn").setAttribute("data-to","1");
+}
+applyDlv();
 </script>
 </body>
 </html>

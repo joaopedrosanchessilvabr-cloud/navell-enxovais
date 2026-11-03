@@ -53,8 +53,8 @@ export default async function handler(req, res) {
   if (!r0 || !r0.resumo.length) return res.status(422).json({ error: 'Carrinho inválido. Volte e confira os itens.' });
   const subtotal = r0.subtotal;
   const resumo = r0.resumo;
-  // Frete grátis na Loggi em compras a partir de R$ 70 (valor dos itens, antes do desconto Pix).
-  const shipPrice = (shipping === 'loggi' && subtotal >= FREE_SHIPPING_MIN) ? 0 : SHIPPING[shipping].price;
+  // Frete grátis no Jadlog em compras a partir de R$ 70 (valor dos itens, antes do desconto Pix).
+  const shipPrice = (shipping === 'jadlog' && subtotal >= FREE_SHIPPING_MIN) ? 0 : SHIPPING[shipping].price;
   const amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + shipPrice) * 100) / 100;
 
   const clientId = process.env.SIMPLIFY_CLIENT_ID;

@@ -284,6 +284,24 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 .qs span{min-width:24px;text-align:center;font-size:14px}
 .rm{background:none;border:0;color:var(--ink-dim);font-size:12px;text-decoration:underline;cursor:pointer;padding:6px 0 0}
 .empty-cart{text-align:center;color:var(--ink-dim);padding:40px 0}
+.dlv{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px}
+.dlv-t{font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.fld{display:block;margin-bottom:12px;min-width:0}
+.fld span{display:block;font:11px 'Oswald',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px}
+.fld input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;color:var(--ink);font:14px 'Inter',sans-serif;outline:none}
+.fld input:focus{border-color:var(--gold)}.fld input.invalid{border-color:#c0392b}
+.dlv-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dlv-row.uf{grid-template-columns:1fr 84px}
+.dlv-st{display:block;font-size:12px;color:var(--ink-dim);margin:-4px 0 10px}.dlv-st.ok{color:#2f6b3f}.dlv-st.er{color:#c0392b}
+.dlv-s{font:600 12px 'Oswald',sans-serif;letter-spacing:.06em;text-transform:uppercase;margin:6px 0 8px}
+.dlv-err{display:block;color:#c0392b;font-size:12.5px;font-weight:600;margin-top:6px}
+.dopt{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px;cursor:pointer;background:var(--bg)}
+.dopt.sel{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.dopt input{accent-color:var(--btn);width:16px;height:16px;flex:none}
+.dopt .lg{flex:none;width:64px;height:38px;background:#fff;border:1px solid var(--line);border-radius:6px;display:flex;align-items:center;justify-content:center;padding:3px;overflow:hidden}
+.dopt .lg img{max-width:100%;max-height:100%;object-fit:contain}
+.dopt .t{flex:1;min-width:0}.dopt strong{display:block;font-size:13px}.dopt small{display:block;font-size:11px;color:var(--ink-dim)}
+.dopt b{font:600 14px 'Oswald',sans-serif;color:var(--gold-light);white-space:nowrap}.dopt b.fr{color:#2f6b3f}
+.ship-line{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-dim);margin-top:14px}.ship-line b{color:var(--ink)}
 .free-bar{text-align:center;font-size:12.5px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:16px}
 .free-bar.ok{color:#2f6b3f;background:#eef6f0;border-color:#bfd9c6}
 .free-bar b{color:var(--gold-light)}
@@ -710,6 +728,21 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   <div id="cartFoot" hidden>
     <div class="free-bar" id="freeBar"></div>
     <div class="gift-note">BRINDE: 2 ALMOFADAS A CADA COLEÇÃO DE CAPA DE SOFÁ</div>
+    <div class="dlv" id="dlv">
+      <h3 class="dlv-t">Entrega</h3>
+      <label class="fld"><span>CEP</span><input id="d-cep" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code"></label>
+      <small class="dlv-st" id="dlvSt">Digite seu CEP para preencher o endereço e escolher o frete.</small>
+      <div id="dlvAddr" hidden>
+        <label class="fld"><span>Endereço</span><input id="d-street" autocomplete="address-line1"></label>
+        <div class="dlv-row"><label class="fld"><span>Número</span><input id="d-number"></label><label class="fld"><span>Complemento (opcional)</span><input id="d-comp" autocomplete="address-line2"></label></div>
+        <label class="fld"><span>Bairro</span><input id="d-nb"></label>
+        <div class="dlv-row uf"><label class="fld"><span>Cidade</span><input id="d-city" autocomplete="address-level2"></label><label class="fld"><span>UF</span><input id="d-uf" maxlength="2" autocomplete="address-level1"></label></div>
+        <p class="dlv-s">Escolha a forma de envio</p>
+        <div id="dlvOpts"></div>
+      </div>
+      <small class="dlv-err" id="dlvErr"></small>
+    </div>
+    <div class="ship-line"><span>Frete</span><b id="cartShip">a escolher</b></div>
     <div class="opt-total"><span class="label">Total</span><div><span class="value" id="cartTotal"></span><span class="pix" id="cartPix"></span></div></div>
     <button type="button" id="payBtn" class="btn-primary" style="margin-top:16px">Finalizar compra</button>
     <div class="trust-line" style="margin-bottom:8px">Pagamento por Pix ou cartão</div>
@@ -857,6 +890,7 @@ function setHash(h){try{if(h){location.hash=h}else if(location.hash){history.rep
 function go(v){if(v==="carrinho")renderCart();setHash(v==="home"?"sobre":(v==="homeAlm"?"almofadas-info":(v==="modelos"?"":v)));show(v)}
 /* carrinho */
 var FREE_MIN=70;
+
 var CART=[];
 try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i){return (KEYS.indexOf(i.k)>-1||isAlm(i.k))&&COLORS[i.k].indexOf(i.color)>-1&&szOf(i.k)[i.s]&&i.qty>0})}catch(e){CART=[]}
 function saveCart(){try{localStorage.setItem("navell_cart",JSON.stringify(CART))}catch(e){}window.navellLead&&navellLead("carrinho")}
@@ -873,9 +907,8 @@ function renderCart(){
     return'<div class="citem"><img alt="" src="'+(isAlm(it.k)?almImg(it.k):cardImg(it.k))+'"><div class="ci"><h4>'+nameOf(it.k)+'</h4><div class="sub">'+it.color+' · '+sz.n+'</div><div class="row"><span class="qs"><button type="button" data-act="minus" data-i="'+i+'"'+(it.qty<=1?' disabled':'')+' aria-label="Diminuir">−</button><span>'+it.qty+'</span><button type="button" data-act="plus" data-i="'+i+'" aria-label="Aumentar">+</button></span><span class="price">'+brl(sz.price*it.qty)+'</span></div><button type="button" class="rm" data-act="rm" data-i="'+i+'">Remover</button></div></div>'
   }).join("");
   $("cartEmpty").hidden=CART.length>0;$("cartFoot").hidden=CART.length===0;
-  $("cartTotal").textContent=brl(total);
-  $("cartPix").textContent="ou "+brl(total*(1-CONFIG.pixDiscount))+" no Pix";
-  var fb=$("freeBar");fb.className="free-bar"+(total>=FREE_MIN?" ok":"");fb.innerHTML=total>=FREE_MIN?"Você ganhou <b>frete grátis</b> (Loggi) neste pedido":"Frete grátis (Loggi) em compras acima de R$ 70. Faltam <b>"+brl(FREE_MIN-total)+"</b>";
+  CSUB=total;dlvRender();
+  var fb=$("freeBar");fb.className="free-bar"+(total>=FREE_MIN?" ok":"");fb.innerHTML=total>=FREE_MIN?"Você ganhou <b>frete grátis</b> no Jadlog neste pedido":"Frete grátis no Jadlog em compras acima de R$ 70. Faltam <b>"+brl(FREE_MIN-total)+"</b>";
   badge();renderBump(total);
 }
 var bumpKey="alm-bege";
@@ -890,6 +923,54 @@ $("bumpBox").addEventListener("click",function(e){
   if(e.target.closest("#bumpAdd")){CART.push({k:bumpKey,color:ALM[bumpKey].color,s:0,qty:1});saveCart();
     window.navellTrack&&navellTrack("AddToCart",{content_ids:[bumpKey],content_name:ALM[bumpKey].n+" (bump)",content_type:"product",contents:[{id:bumpKey,quantity:1}],value:ALMSZ[0].price,currency:"BRL"});renderCart()}
 });
+/* entrega no carrinho (CEP + endereço + frete) */
+var DLV_KEY="navell_entrega_v1",CSUB=0;
+var SHIPS=[{k:"sedex",n:"SEDEX",d:"2 a 7 dias úteis",p:19.90,img:"img/frete-sedex.webp"},{k:"jadlog",n:"Jadlog",d:"7 a 11 dias úteis",p:14.90,img:"img/frete-jadlog.webp"},{k:"loggi",n:"Loggi",d:"12 a 17 dias úteis",p:9.90,img:"img/frete-loggi.webp"}];
+var DLV={cep:"",street:"",number:"",comp:"",nb:"",city:"",uf:"",ship:""};
+try{var _d=JSON.parse(localStorage.getItem(DLV_KEY)||"null");if(_d)Object.keys(DLV).forEach(function(k){if(typeof _d[k]==="string")DLV[k]=_d[k]})}catch(e){}
+function shipP(k){var o=SHIPS.filter(function(x){return x.k===k})[0];if(!o)return 0;return(k==="jadlog"&&CSUB>=FREE_MIN)?0:o.p}
+function dlvSave(){try{localStorage.setItem(DLV_KEY,JSON.stringify(DLV))}catch(e){}}
+var DMAP={"d-cep":"cep","d-street":"street","d-number":"number","d-comp":"comp","d-nb":"nb","d-city":"city","d-uf":"uf"};
+function dlvFill(){Object.keys(DMAP).forEach(function(id){$(id).value=DLV[DMAP[id]]||"";$(id).classList.remove("invalid")});$("dlvAddr").hidden=DLV.cep.replace(/\D/g,"").length!==8}
+function dlvRender(){
+  var o=$("dlvOpts");
+  o.innerHTML=SHIPS.map(function(x){var p=shipP(x.k);return'<label class="dopt'+(DLV.ship===x.k?" sel":"")+'"><input type="radio" name="dship" value="'+x.k+'"'+(DLV.ship===x.k?" checked":"")+'><span class="lg"><img alt="'+x.n+'" src="'+x.img+'"></span><span class="t"><strong>'+x.n+'</strong><small>'+x.d+'</small></span><b'+(p===0?' class="fr"':"")+'>'+(p===0?"Grátis":brl(p))+'</b></label>'}).join("");
+  var sp=DLV.ship?shipP(DLV.ship):null;
+  $("cartShip").textContent=sp===null?"a escolher":(sp===0?"Grátis":brl(sp));
+  $("cartTotal").textContent=brl(CSUB+(sp||0));
+  $("cartPix").textContent="ou "+brl(Math.round((CSUB*(1-CONFIG.pixDiscount)+(sp||0))*100)/100)+" no Pix";
+}
+$("dlvOpts").addEventListener("change",function(e){if(e.target.name==="dship"){DLV.ship=e.target.value;dlvSave();dlvRender();$("dlvErr").textContent=""}});
+Object.keys(DMAP).forEach(function(id){$(id).addEventListener("input",function(){
+  if(id==="d-cep"){var d=this.value.replace(/\D/g,"").slice(0,8);this.value=d.length>5?d.slice(0,5)+"-"+d.slice(5):d}
+  if(id==="d-uf")this.value=this.value.toUpperCase();
+  DLV[DMAP[id]]=this.value;this.classList.remove("invalid");$("dlvErr").textContent="";dlvSave();
+  if(id==="d-cep")cepLookup()})});
+var lastCepD="";
+function cepLookup(){
+  var d=$("d-cep").value.replace(/\D/g,""),st=$("dlvSt");
+  if(d.length<8){st.textContent="Digite seu CEP para preencher o endereço e escolher o frete.";st.className="dlv-st";return}
+  if(d===lastCepD)return;lastCepD=d;
+  st.textContent="Buscando endereço...";st.className="dlv-st";
+  var ids=["d-street","d-nb","d-city","d-uf"];ids.forEach(function(i){$(i).disabled=true});
+  fetch("https://viacep.com.br/ws/"+d+"/json/").then(function(r){return r.json()}).then(function(j){
+    $("dlvAddr").hidden=false;
+    if(j.erro){st.textContent="CEP não encontrado. Preencha o endereço manualmente.";st.className="dlv-st er"}
+    else{DLV.street=j.logradouro||"";DLV.nb=j.bairro||"";DLV.city=j.localidade||"";DLV.uf=j.uf||"";dlvFill();st.textContent="✓ Endereço encontrado. Confira e escolha o frete.";st.className="dlv-st ok";if(!DLV.ship){DLV.ship=CSUB>=FREE_MIN?"jadlog":"loggi"}dlvSave();dlvRender();$("d-number").focus()}
+  }).catch(function(){$("dlvAddr").hidden=false;st.textContent="Não foi possível buscar o CEP agora. Preencha manualmente.";st.className="dlv-st er"})
+  .then(function(){ids.forEach(function(i){$(i).disabled=false})});
+}
+function dlvValid(){
+  var bad=[];
+  if(DLV.cep.replace(/\D/g,"").length!==8)bad.push("d-cep");
+  if(!DLV.street.trim())bad.push("d-street");if(!DLV.number.trim())bad.push("d-number");if(!DLV.nb.trim())bad.push("d-nb");if(!DLV.city.trim())bad.push("d-city");if(DLV.uf.trim().length!==2)bad.push("d-uf");
+  bad.forEach(function(i){$(i).classList.add("invalid")});
+  var msg=bad.length?"Preencha o CEP e o endereço de entrega.":(!DLV.ship?"Escolha a forma de envio.":"");
+  $("dlvErr").textContent=msg;
+  if(msg){$("dlv").scrollIntoView({behavior:"smooth",block:"center"});if(bad.length)$("dlvAddr").hidden=false}
+  return !msg;
+}
+dlvFill();
 $("cartList").addEventListener("click",function(e){
   var b=e.target.closest("button[data-act]");if(!b)return;
   var i=+b.getAttribute("data-i"),a=b.getAttribute("data-act"),it=CART[i];if(!it)return;
@@ -900,6 +981,8 @@ $("cartList").addEventListener("click",function(e){
 });
 $("payBtn").onclick=function(){
   if(!CART.length)return;
+  if(!dlvValid())return;
+  DLV.cep=DLV.cep;dlvSave();
   window.location.href="checkout.html";
 };
 /* coleção */
