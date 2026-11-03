@@ -705,12 +705,19 @@ new IntersectionObserver(function(e){hv=e[0].isIntersecting;refresh()},{threshol
 var KEYS=["flara","stella","melina","dalia","ayla","alina","celina","aurora","lumira","magna","renovare","lana","luma","mila","cloe"];
 var COLORS={flara:["Azul", "Preto", "Rosa", "Lilás", "Bege"],stella:["Preto", "Bege", "Cinza", "Vermelho", "Verde"],melina:["Preto", "Marrom", "Azul", "Cinza"],dalia:["Preto", "Marrom", "Bege", "Azul", "Verde"],ayla:["Preto", "Bege", "Cinza", "Laranja", "Grafite"],alina:["Marrom", "Preto", "Cinza", "Bege", "Grafite"],celina:["Cinza", "Marrom", "Bege", "Branco", "Preto"],aurora:["Branco", "Marrom", "Cinza", "Grafite", "Preto"],lumira:["Cinza", "Verde", "Marrom", "Preto", "Branco"],magna:["Bege", "Marrom", "Preto", "Branco", "Verde"],renovare:["Verde", "Marrom", "Preto e Branco", "Misto"],lana:["Bege", "Preto", "Cinza", "Marrom", "Verde"],luma:["Marrom", "Preto", "Bege", "Café", "Verde"],mila:["Branco", "Marrom", "Preto", "Laranja", "Bege"],cloe:["Marrom", "Preto", "Bege", "Verde"]};
 var COLPHOTO={flara:{"Azul": 9, "Preto": 10, "Rosa": 11, "Lilás": 12, "Bege": 13},stella:{"Preto": 9, "Bege": 10, "Cinza": 11, "Vermelho": 12, "Verde": 13},melina:{"Preto": 7, "Marrom": 8, "Azul": 9, "Cinza": 10},dalia:{"Preto": 10, "Marrom": 11, "Bege": 12, "Azul": 13, "Verde": 14},ayla:{"Preto": 9, "Bege": 10, "Cinza": 11, "Laranja": 12, "Grafite": 13},alina:{"Marrom": 9, "Preto": 10, "Cinza": 11, "Bege": 12, "Grafite": 13},celina:{"Cinza": 9, "Marrom": 10, "Bege": 11, "Branco": 12, "Preto": 13},aurora:{"Branco": 8, "Marrom": 9, "Cinza": 10, "Grafite": 11, "Preto": 12},lumira:{"Cinza": 9, "Verde": 10, "Marrom": 11, "Preto": 12, "Branco": 13},magna:{"Bege": 9, "Marrom": 10, "Preto": 11, "Branco": 12, "Verde": 13},renovare:{"Verde": 9, "Marrom": 10, "Preto e Branco": 11, "Misto": 12},lana:{"Bege": 9, "Preto": 10, "Cinza": 11, "Marrom": 12, "Verde": 13},luma:{"Marrom": 9, "Preto": 10, "Bege": 11, "Café": 12, "Verde": 13},mila:{"Branco": 9, "Marrom": 10, "Preto": 11, "Laranja": 12, "Bege": 13},cloe:{"Marrom": 9, "Preto": 10, "Bege": 11, "Verde": 12}};
-/* ===== almofadas ===== */
-var ALM={"alm-losango":{n:"Almofada Losango",sizes:[{n:"Kit com 2 almofadas",w:"",use:"",price:39.90,old:79.90}],colors:["Bege","Cinza","Marrom","Off-white","Preto","Rosê","Terracota"],hex:{"Bege":"#c9a577","Cinza":"#6b6b6b","Marrom":"#4a2f25","Off-white":"#efe6d6","Preto":"#1f1f1f","Rosê":"#b8687a","Terracota":"#c4651f"},first:{"Bege":0,"Cinza":2,"Marrom":5,"Off-white":8,"Preto":11,"Rosê":13,"Terracota":15}}};
-(function(){var l=[];for(var i=1;i<=18;i++)l.push("img/alm-"+(i<10?"0":"")+i+".webp");l.unshift("img/alm-capa-bege.webp");COLL["alm-losango"]=l;COLORS["alm-losango"]=ALM["alm-losango"].colors;COLPHOTO["alm-losango"]=(function(){var o={},f=ALM["alm-losango"].first;Object.keys(f).forEach(function(c){o[c]=f[c]+1});o["Bege"]=0;return o})()})();
+/* ===== almofadas: cada cor é uma coleção ===== */
+var ALMSZ=[{n:"Kit com 2 almofadas",w:"",use:"",price:39.90,old:79.90}];
+var ALM={
+ "alm-bege":{n:"Almofada Bege",color:"Bege",hex:"#c9a577",slug:"bege",files:[1,2]},
+ "alm-creme":{n:"Almofada Creme",color:"Creme",hex:"#efe6d6",slug:"creme",files:[9,10,11]},
+ "alm-marrom":{n:"Almofada Marrom",color:"Marrom",hex:"#4a2f25",slug:"marrom",files:[6,7,8]},
+ "alm-cinza":{n:"Almofada Cinza",color:"Cinza",hex:"#6b6b6b",slug:"cinza",files:[3,4,5]},
+ "alm-rosa":{n:"Almofada Rosa",color:"Rosa",hex:"#b8687a",slug:"rosa",files:[14,15]}};
+function almFile(n){return"img/alm-"+(n<10?"0":"")+n+".webp"}
+Object.keys(ALM).forEach(function(k){var a=ALM[k];a.sizes=ALMSZ;a.cover="img/alm-capa-"+a.slug+".webp";COLL[k]=[a.cover].concat(a.files.map(almFile));COLORS[k]=[a.color];COLPHOTO[k]={};COLPHOTO[k][a.color]=0});
 function isAlm(k){return !!ALM[k]}
-function szOf(k){return ALM[k]?ALM[k].sizes:CONFIG.sizes}
-function almImg(c,k){var n=ALM[k||"alm-losango"].first[c]+1;return"img/alm-"+(n<10?"0":"")+n+".webp"}
+function szOf(k){return ALM[k]?ALMSZ:CONFIG.sizes}
+function almImg(k){return almFile(ALM[k].files[0])}
 var TAB="capas";
 var CARDS_CAPAS=$("cards").innerHTML;
 function setTab(t){
@@ -720,7 +727,7 @@ function setTab(t){
     var al=t==="alm";
     $("pickTitle").innerHTML=al?"Escolha a sua <span>almofada</span>":"Escolha o seu <span>modelo</span>";
     $("pickLead").textContent=al?"Kits com 2 almofadas. Entre, escolha a cor e adicione ao carrinho.":"Entre na coleção, escolha a cor e adicione ao carrinho.";
-    $("cards").innerHTML=al?Object.keys(ALM).map(function(k){var z=ALM[k].sizes[0];return'<div class="mcard" data-m="'+k+'"><button type="button" class="pick" aria-label="Abrir '+ALM[k].n+'"><img alt="'+ALM[k].n+'" src="img/alm-capa-bege.webp"><span class="info"><span class="nm">'+ALM[k].n+'</span><span class="pr">kit com 2 · <b>'+brl(z.price)+'</b></span></span></button><button type="button" class="vercol" data-m="'+k+'">Ver coleção</button></div>'}).join(""):CARDS_CAPAS;
+    $("cards").innerHTML=al?Object.keys(ALM).map(function(k){var z=ALMSZ[0];return'<div class="mcard" data-m="'+k+'"><button type="button" class="pick" aria-label="Abrir '+ALM[k].n+'"><img alt="'+ALM[k].n+'" src="'+ALM[k].cover+'"><span class="info"><span class="nm">'+ALM[k].n+'</span><span class="pr">kit com 2 · <b>'+brl(z.price)+'</b></span></span></button><button type="button" class="vercol" data-m="'+k+'">Ver coleção</button></div>'}).join(""):CARDS_CAPAS;
   }
 }
 function menu(o){$("menu").hidden=!o;$("menuOv").hidden=!o}
@@ -744,7 +751,7 @@ function go(v){if(v==="carrinho")renderCart();setHash(v==="home"?"sobre":(v==="m
 var CART=[];
 try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i){return (KEYS.indexOf(i.k)>-1||isAlm(i.k))&&COLORS[i.k].indexOf(i.color)>-1&&szOf(i.k)[i.s]&&i.qty>0})}catch(e){CART=[]}
 function saveCart(){try{localStorage.setItem("navell_cart",JSON.stringify(CART))}catch(e){}window.navellLead&&navellLead("carrinho")}
-function cardImg(k){return document.querySelector('.mcard[data-m="'+k+'"] img').src}
+function cardImg(k){return"img/"+k+"-capa2.webp"}
 function nameOf(k){return isAlm(k)?ALM[k].n:NAMES[KEYS.indexOf(k)]}
 function badge(){
   var n=CART.reduce(function(a,i){return a+i.qty},0);
@@ -754,24 +761,24 @@ function renderCart(){
   var list=$("cartList"),total=0;
   list.innerHTML=CART.map(function(it,i){
     var sz=szOf(it.k)[it.s];total+=sz.price*it.qty;
-    return'<div class="citem"><img alt="" src="'+(isAlm(it.k)?almImg(it.color,it.k):cardImg(it.k))+'"><div class="ci"><h4>'+nameOf(it.k)+'</h4><div class="sub">'+it.color+' · '+sz.n+'</div><div class="row"><span class="qs"><button type="button" data-act="minus" data-i="'+i+'" aria-label="Diminuir">−</button><span>'+it.qty+'</span><button type="button" data-act="plus" data-i="'+i+'" aria-label="Aumentar">+</button></span><span class="price">'+brl(sz.price*it.qty)+'</span></div><button type="button" class="rm" data-act="rm" data-i="'+i+'">Remover</button></div></div>'
+    return'<div class="citem"><img alt="" src="'+(isAlm(it.k)?almImg(it.k):cardImg(it.k))+'"><div class="ci"><h4>'+nameOf(it.k)+'</h4><div class="sub">'+it.color+' · '+sz.n+'</div><div class="row"><span class="qs"><button type="button" data-act="minus" data-i="'+i+'" aria-label="Diminuir">−</button><span>'+it.qty+'</span><button type="button" data-act="plus" data-i="'+i+'" aria-label="Aumentar">+</button></span><span class="price">'+brl(sz.price*it.qty)+'</span></div><button type="button" class="rm" data-act="rm" data-i="'+i+'">Remover</button></div></div>'
   }).join("");
   $("cartEmpty").hidden=CART.length>0;$("cartFoot").hidden=CART.length===0;
   $("cartTotal").textContent=brl(total);
   $("cartPix").textContent="ou "+brl(total*(1-CONFIG.pixDiscount))+" no Pix";
   badge();renderBump(total);
 }
-var bumpColor="Bege";
+var bumpKey="alm-bege";
 function renderBump(){
   var b=$("bumpBox"),has=CART.some(function(i){return isAlm(i.k)}),cov=CART.some(function(i){return !isAlm(i.k)});
   if(!CART.length||has||!cov){b.hidden=true;b.innerHTML="";return}
-  var A=ALM["alm-losango"],z=A.sizes[0];
-  b.hidden=false;b.innerHTML='<div class="bump"><img alt="Almofadas Losango" src="'+almImg(bumpColor)+'"><div class="bt"><small>Aproveite e leve também</small><strong>Kit com 2 almofadas</strong><div class="bc">'+A.colors.map(function(c){return'<button type="button" aria-label="'+c+'" title="'+c+'" aria-pressed="'+(c===bumpColor)+'" data-bc="'+c+'" style="background:'+A.hex[c]+'"></button>'}).join("")+'</div><span><s>'+brl(z.old)+'</s><b>'+brl(z.price)+'</b> · cor '+bumpColor+'</span><br><button type="button" class="bb" id="bumpAdd" style="margin-top:8px">Sim, adicionar</button></div></div>';
+  var z=ALMSZ[0];
+  b.hidden=false;b.innerHTML='<div class="bump"><img alt="'+ALM[bumpKey].n+'" src="'+almImg(bumpKey)+'"><div class="bt"><small>Aproveite e leve também</small><strong>Kit com 2 almofadas</strong><div class="bc">'+Object.keys(ALM).map(function(k){return'<button type="button" aria-label="'+ALM[k].color+'" title="'+ALM[k].color+'" aria-pressed="'+(k===bumpKey)+'" data-bc="'+k+'" style="background:'+ALM[k].hex+'"></button>'}).join("")+'</div><span><s>'+brl(z.old)+'</s><b>'+brl(z.price)+'</b> · cor '+ALM[bumpKey].color+'</span><br><button type="button" class="bb" id="bumpAdd" style="margin-top:8px">Sim, adicionar</button></div></div>';
 }
 $("bumpBox").addEventListener("click",function(e){
-  var c=e.target.closest("[data-bc]");if(c){bumpColor=c.getAttribute("data-bc");renderBump();return}
-  if(e.target.closest("#bumpAdd")){CART.push({k:"alm-losango",color:bumpColor,s:0,qty:1});saveCart();
-    window.navellTrack&&navellTrack("AddToCart",{content_ids:["alm-losango"],content_name:"Almofada Losango (bump)",content_type:"product",contents:[{id:"alm-losango",quantity:1}],value:ALM["alm-losango"].sizes[0].price,currency:"BRL"});renderCart()}
+  var c=e.target.closest("[data-bc]");if(c){bumpKey=c.getAttribute("data-bc");renderBump();return}
+  if(e.target.closest("#bumpAdd")){CART.push({k:bumpKey,color:ALM[bumpKey].color,s:0,qty:1});saveCart();
+    window.navellTrack&&navellTrack("AddToCart",{content_ids:[bumpKey],content_name:ALM[bumpKey].n+" (bump)",content_type:"product",contents:[{id:bumpKey,quantity:1}],value:ALMSZ[0].price,currency:"BRL"});renderCart()}
 });
 $("cartList").addEventListener("click",function(e){
   var b=e.target.closest("button[data-act]");if(!b)return;
@@ -904,7 +911,7 @@ function storyHTML(k){var s=STORY[k];if(!s)return"";var N=s.n,im=s.im;return`
 function openColl(k){
   var list=COLL[k];
   if(!list){toast("A coleção "+nameOf(k)+" chega em breve.");return}
-  cur={k:k,c:-1,s:0};
+  cur={k:k,c:isAlm(k)?0:-1,s:0};
   $("collTitle").textContent=nameOf(k);$("sizesBlk").hidden=isAlm(k);$("collTrust").textContent=isAlm(k)?"Pix ou cartão · Entrega para todo o Brasil":"Brinde: 2 almofadas · Pix ou cartão";var sc=$("collStory");sc.innerHTML=isAlm(k)?"":storyHTML(k);sc.hidden=!sc.innerHTML;
   var t=$("ctrack");
   t.innerHTML=list.map(function(u,i){return'<figure class="slide"><img alt="Foto '+(i+1)+'" src="'+u+'"'+(i?' loading="lazy"':'')+'></figure>'}).join("");
