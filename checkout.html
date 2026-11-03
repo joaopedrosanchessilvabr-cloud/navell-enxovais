@@ -241,15 +241,15 @@ var shipShown=HAS_ADDR;
 function upd(){
   total=Math.round((prod+SHIP[shipKey].p)*100)/100;
   $("aSub").textContent=brl(sub);$("aDisc").textContent="− "+brl(sub-prod);
-  if(shipShown){$("aShipName").textContent="("+SHIP[shipKey].n+")";$("aShip").textContent=shipTxt(shipKey);$("aTot").textContent=brl(total)}
+  if(shipShown){$("aShipName").textContent=HAS_ADDR?"":"("+SHIP[shipKey].n+")";$("aShip").textContent=shipTxt(shipKey);$("aTot").textContent=brl(total)}
   else{$("aShipName").textContent="";$("aShip").textContent="a escolher";$("aTot").textContent=brl(prod)}
   $("pixLabel").textContent=brl(total);
   $("sSub").textContent=brl(sub);$("sDisc").textContent="− "+brl(sub-prod);
-  $("sShipName").textContent="("+SHIP[shipKey].n+")";$("sShip").textContent=shipTxt(shipKey);
+  $("sShipName").textContent=HAS_ADDR?"":"("+SHIP[shipKey].n+")";$("sShip").textContent=shipTxt(shipKey);
   $("sTot").textContent=brl(total);
 }
 $("jadlogPrice").textContent=shipTxt("jadlog");
-$("freeInfo").className="freeinfo"+(sub>=FREE_MIN?" ok":"");$("freeInfo").textContent=sub>=FREE_MIN?"Você ganhou frete grátis no Jadlog neste pedido!":"Frete grátis no Jadlog em compras acima de R$ 70.";
+$("freeInfo").className="freeinfo"+(sub>=FREE_MIN?" ok":"");$("freeInfo").textContent=sub>=FREE_MIN?"Você ganhou frete grátis neste pedido!":"Frete grátis em compras acima de R$ 70.";
 upd();
 Array.prototype.forEach.call(document.querySelectorAll("#shipOpts .shopt"),function(l){l.addEventListener("click",function(){
   var i=l.querySelector("input");i.checked=true;shipKey=i.value;
@@ -312,6 +312,7 @@ function marco(m,msg){try{var dg=function(x){return x.replace(/\D/g,"")};
 var done=false;
 $("finalCta").addEventListener("click",function(){
   if(done)return;
+  if(window.__gate&&!window.__gate())return;
   var btn=this,err=$("pixError");err.textContent="";btn.disabled=true;btn.textContent="Gerando...";
   var dg=function(s){return s.replace(/\D/g,"")};
   fetch("/api/create-pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
@@ -398,7 +399,7 @@ function applyDlv(){
   var st=document.querySelector("#step3");
   Array.prototype.forEach.call(document.querySelectorAll("#shipOpts .shopt"),function(l){var i=l.querySelector("input");l.classList.toggle("sel",i.value===shipKey);i.checked=i.value===shipKey});
   $("dlvSum").hidden=false;
-  $("dlvSum").innerHTML="<strong>Entrega</strong>"+DLV.street+", "+DLV.number+(DLV.comp?" - "+DLV.comp:"")+" · "+DLV.nb+" · "+DLV.city+"/"+DLV.uf.toUpperCase()+" · CEP "+DLV.cep+"<br>"+SHIP[shipKey].n+" ("+SHIP[shipKey].d+") · "+shipTxt(shipKey)+' · <a href="index.html#carrinho">Alterar</a>';
+  $("dlvSum").innerHTML="<strong>Entrega</strong>"+DLV.street+", "+DLV.number+(DLV.comp?" - "+DLV.comp:"")+" · "+DLV.nb+" · "+DLV.city+"/"+DLV.uf.toUpperCase()+" · CEP "+DLV.cep+"<br>"+(SHIP[shipKey].p===0?"Frete grátis":"Frete "+SHIP[shipKey].n+" · "+brl(SHIP[shipKey].p))+" · prazo "+SHIP[shipKey].d+' · <a href="index.html#carrinho">Alterar</a>';
 }
 if(HAS_ADDR){
   var s2=document.querySelector('.step[data-step="2"]');if(s2){var ln=s2.nextElementSibling;s2.style.display="none";if(ln&&ln.classList.contains("step-line"))ln.style.display="none"}
@@ -406,6 +407,27 @@ if(HAS_ADDR){
   var e1=document.querySelector("#step1 .eyebrow");if(e1)e1.textContent="Etapa 1 de 2";
   var e3=document.querySelector("#step3 .eyebrow");if(e3)e3.textContent="Etapa 2 de 2";
   $("backBtn").setAttribute("data-to","1");
+  /* uma página só: dados em cima, pagamento embaixo; o Pix só é gerado depois de preencher os dados */
+  var stp=document.querySelector(".stepper");if(stp)stp.style.display="none";
+  var ac=document.querySelector("#step1 .act");if(ac)ac.style.display="none";
+  $("backBtn").style.display="none";
+  var e3=document.querySelector("#step3 .eyebrow");if(e3)e3.textContent="Passo 2";
+  var e1=document.querySelector("#step1 .eyebrow");if(e1)e1.textContent="Passo 1";
+  var h3=document.querySelector("#step3 h1");if(h3)h3.textContent="Pagar com Pix";
+  var in3=document.querySelector("#step3 .intro");if(in3)in3.textContent="Preencha seus dados acima e toque em Gerar Pix. O QR code aparece aqui mesmo, sem sair da página.";
+  goTo=function(n){$("step1").hidden=false;$("step2").hidden=true;$("step3").hidden=false;if(!shipShown){shipShown=true;upd()}};
+  window.__gate=function(){
+    var ok=true;
+    ok=bad("name",v("name").length<3||v("name").indexOf(" ")<0?"Digite seu nome completo.":"")&&ok;
+    ok=bad("email",!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("email"))?"Digite um e-mail válido.":"")&&ok;
+    ok=bad("phone",v("phone").replace(/\D/g,"").length<10?"Digite um celular válido com DDD.":"")&&ok;
+    ok=bad("cpf",!cpfOk(v("cpf").replace(/\D/g,""))?"Digite um CPF válido.":"")&&ok;
+    if(!ok){var f=$("step1").querySelector(".invalid");if(f){f.scrollIntoView({behavior:"smooth",block:"center"});f.focus()}return false}
+    var dg=function(x){return x.replace(/\D/g,"")};
+    window.navellLead&&navellLead("dados",{payer:{name:v("name"),email:v("email"),document:dg(v("cpf")),phone:dg(v("phone"))},address:{cep:dg(v("cep")),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}});
+    return true;
+  };
+  goTo(1);
 }
 applyDlv();
 </script>

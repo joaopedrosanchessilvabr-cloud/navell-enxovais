@@ -908,7 +908,7 @@ function renderCart(){
   }).join("");
   $("cartEmpty").hidden=CART.length>0;$("cartFoot").hidden=CART.length===0;
   CSUB=total;dlvRender();
-  var fb=$("freeBar");fb.className="free-bar"+(total>=FREE_MIN?" ok":"");fb.innerHTML=total>=FREE_MIN?"Você ganhou <b>frete grátis</b> no Jadlog neste pedido":"Frete grátis no Jadlog em compras acima de R$ 70. Faltam <b>"+brl(FREE_MIN-total)+"</b>";
+  var fb=$("freeBar");fb.className="free-bar"+(total>=FREE_MIN?" ok":"");fb.innerHTML=total>=FREE_MIN?"Você ganhou <b>frete grátis</b> neste pedido":"Frete grátis em compras acima de R$ 70. Faltam <b>"+brl(FREE_MIN-total)+"</b>";
   badge();renderBump(total);
 }
 var bumpKey="alm-bege";
