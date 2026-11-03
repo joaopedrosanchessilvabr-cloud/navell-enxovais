@@ -26,11 +26,11 @@ export const SIZES = [
 
 // Almofadas (vendidas em kit com 2). Chave do item no carrinho: 'alm-<modelo>'.
 export const ALMOFADAS = {
-  'alm-bege': { nome: 'Almofada Bege (kit com 2)', price: 39.9, cores: ['Bege'] },
-  'alm-creme': { nome: 'Almofada Creme (kit com 2)', price: 39.9, cores: ['Creme'] },
-  'alm-marrom': { nome: 'Almofada Marrom (kit com 2)', price: 39.9, cores: ['Marrom'] },
-  'alm-cinza': { nome: 'Almofada Cinza (kit com 2)', price: 39.9, cores: ['Cinza'] },
-  'alm-rosa': { nome: 'Almofada Rosa (kit com 2)', price: 39.9, cores: ['Rosa'] },
+  'alm-bege': { nome: 'Almofada Bege (KIT COM 2)', price: 39.9, cores: ['Bege'] },
+  'alm-creme': { nome: 'Almofada Creme (KIT COM 2)', price: 39.9, cores: ['Creme'] },
+  'alm-marrom': { nome: 'Almofada Marrom (KIT COM 2)', price: 39.9, cores: ['Marrom'] },
+  'alm-cinza': { nome: 'Almofada Cinza (KIT COM 2)', price: 39.9, cores: ['Cinza'] },
+  'alm-rosa': { nome: 'Almofada Rosa (KIT COM 2)', price: 39.9, cores: ['Rosa'] },
 };
 
 // Valida os itens e devolve { resumo: ['2x Flara Azul 3 lugares', ...], subtotal } ou null.

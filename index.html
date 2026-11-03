@@ -706,7 +706,7 @@ var KEYS=["flara","stella","melina","dalia","ayla","alina","celina","aurora","lu
 var COLORS={flara:["Azul", "Preto", "Rosa", "Lilás", "Bege"],stella:["Preto", "Bege", "Cinza", "Vermelho", "Verde"],melina:["Preto", "Marrom", "Azul", "Cinza"],dalia:["Preto", "Marrom", "Bege", "Azul", "Verde"],ayla:["Preto", "Bege", "Cinza", "Laranja", "Grafite"],alina:["Marrom", "Preto", "Cinza", "Bege", "Grafite"],celina:["Cinza", "Marrom", "Bege", "Branco", "Preto"],aurora:["Branco", "Marrom", "Cinza", "Grafite", "Preto"],lumira:["Cinza", "Verde", "Marrom", "Preto", "Branco"],magna:["Bege", "Marrom", "Preto", "Branco", "Verde"],renovare:["Verde", "Marrom", "Preto e Branco", "Misto"],lana:["Bege", "Preto", "Cinza", "Marrom", "Verde"],luma:["Marrom", "Preto", "Bege", "Café", "Verde"],mila:["Branco", "Marrom", "Preto", "Laranja", "Bege"],cloe:["Marrom", "Preto", "Bege", "Verde"]};
 var COLPHOTO={flara:{"Azul": 9, "Preto": 10, "Rosa": 11, "Lilás": 12, "Bege": 13},stella:{"Preto": 9, "Bege": 10, "Cinza": 11, "Vermelho": 12, "Verde": 13},melina:{"Preto": 7, "Marrom": 8, "Azul": 9, "Cinza": 10},dalia:{"Preto": 10, "Marrom": 11, "Bege": 12, "Azul": 13, "Verde": 14},ayla:{"Preto": 9, "Bege": 10, "Cinza": 11, "Laranja": 12, "Grafite": 13},alina:{"Marrom": 9, "Preto": 10, "Cinza": 11, "Bege": 12, "Grafite": 13},celina:{"Cinza": 9, "Marrom": 10, "Bege": 11, "Branco": 12, "Preto": 13},aurora:{"Branco": 8, "Marrom": 9, "Cinza": 10, "Grafite": 11, "Preto": 12},lumira:{"Cinza": 9, "Verde": 10, "Marrom": 11, "Preto": 12, "Branco": 13},magna:{"Bege": 9, "Marrom": 10, "Preto": 11, "Branco": 12, "Verde": 13},renovare:{"Verde": 9, "Marrom": 10, "Preto e Branco": 11, "Misto": 12},lana:{"Bege": 9, "Preto": 10, "Cinza": 11, "Marrom": 12, "Verde": 13},luma:{"Marrom": 9, "Preto": 10, "Bege": 11, "Café": 12, "Verde": 13},mila:{"Branco": 9, "Marrom": 10, "Preto": 11, "Laranja": 12, "Bege": 13},cloe:{"Marrom": 9, "Preto": 10, "Bege": 11, "Verde": 12}};
 /* ===== almofadas: cada cor é uma coleção ===== */
-var ALMSZ=[{n:"Kit com 2 almofadas",w:"",use:"",price:39.90,old:79.90}];
+var ALMSZ=[{n:"KIT COM 2 ALMOFADAS",w:"",use:"",price:39.90,old:79.90}];
 var ALM={
  "alm-bege":{n:"Almofada Bege",color:"Bege",hex:"#c9a577",slug:"bege",files:[1,2]},
  "alm-creme":{n:"Almofada Creme",color:"Creme",hex:"#efe6d6",slug:"creme",files:[9,10,11]},
@@ -727,7 +727,7 @@ function setTab(t){
     var al=t==="alm";
     $("pickTitle").innerHTML=al?"Escolha a sua <span>almofada</span>":"Escolha o seu <span>modelo</span>";
     $("pickLead").textContent=al?"Kits com 2 almofadas. Entre, escolha a cor e adicione ao carrinho.":"Entre na coleção, escolha a cor e adicione ao carrinho.";
-    $("cards").innerHTML=al?Object.keys(ALM).map(function(k){var z=ALMSZ[0];return'<div class="mcard" data-m="'+k+'"><button type="button" class="pick" aria-label="Abrir '+ALM[k].n+'"><img alt="'+ALM[k].n+'" src="'+ALM[k].cover+'"><span class="info"><span class="nm">'+ALM[k].n+'</span><span class="pr">kit com 2 · <b>'+brl(z.price)+'</b></span></span></button><button type="button" class="vercol" data-m="'+k+'">Ver coleção</button></div>'}).join(""):CARDS_CAPAS;
+    $("cards").innerHTML=al?Object.keys(ALM).map(function(k){var z=ALMSZ[0];return'<div class="mcard" data-m="'+k+'"><button type="button" class="pick" aria-label="Abrir '+ALM[k].n+'"><img alt="'+ALM[k].n+'" src="'+ALM[k].cover+'"><span class="info"><span class="nm">'+ALM[k].n+'</span><span class="pr">KIT COM 2 · <b>'+brl(z.price)+'</b></span></span></button><button type="button" class="vercol" data-m="'+k+'">Ver coleção</button></div>'}).join(""):CARDS_CAPAS;
   }
 }
 function menu(o){$("menu").hidden=!o;$("menuOv").hidden=!o}
@@ -773,7 +773,7 @@ function renderBump(){
   var b=$("bumpBox"),has=CART.some(function(i){return isAlm(i.k)}),cov=CART.some(function(i){return !isAlm(i.k)});
   if(!CART.length||has||!cov){b.hidden=true;b.innerHTML="";return}
   var z=ALMSZ[0];
-  b.hidden=false;b.innerHTML='<div class="bump"><img alt="'+ALM[bumpKey].n+'" src="'+almImg(bumpKey)+'"><div class="bt"><small>Aproveite e leve também</small><strong>Kit com 2 almofadas</strong><div class="bc">'+Object.keys(ALM).map(function(k){return'<button type="button" aria-label="'+ALM[k].color+'" title="'+ALM[k].color+'" aria-pressed="'+(k===bumpKey)+'" data-bc="'+k+'" style="background:'+ALM[k].hex+'"></button>'}).join("")+'</div><span><s>'+brl(z.old)+'</s><b>'+brl(z.price)+'</b> · cor '+ALM[bumpKey].color+'</span><br><button type="button" class="bb" id="bumpAdd" style="margin-top:8px">Sim, adicionar</button></div></div>';
+  b.hidden=false;b.innerHTML='<div class="bump"><img alt="'+ALM[bumpKey].n+'" src="'+almImg(bumpKey)+'"><div class="bt"><small>Aproveite e leve também</small><strong>KIT COM 2 ALMOFADAS</strong><div class="bc">'+Object.keys(ALM).map(function(k){return'<button type="button" aria-label="'+ALM[k].color+'" title="'+ALM[k].color+'" aria-pressed="'+(k===bumpKey)+'" data-bc="'+k+'" style="background:'+ALM[k].hex+'"></button>'}).join("")+'</div><span><s>'+brl(z.old)+'</s><b>'+brl(z.price)+'</b> · cor '+ALM[bumpKey].color+'</span><br><button type="button" class="bb" id="bumpAdd" style="margin-top:8px">Sim, adicionar</button></div></div>';
 }
 $("bumpBox").addEventListener("click",function(e){
   var c=e.target.closest("[data-bc]");if(c){bumpKey=c.getAttribute("data-bc");renderBump();return}
