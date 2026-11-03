@@ -312,7 +312,7 @@ $("finalCta").addEventListener("click",function(){
     $("pixHelp").textContent="Escaneie o QR code com o app do seu banco ou copie o código abaixo. Assim que o pagamento for aprovado, esta página avança sozinha.";
     btn.textContent="Pix gerado ✓";done=true;try{localStorage.removeItem("navell_vid")}catch(e){}
     window.navellTrack&&navellTrack("AddPaymentInfo",{value:total,currency:"BRL",content_type:"product",content_ids:CART.map(function(i){return i.k})});
-    window.__pix={order:d.order||d.external_id||"",token:d.copy_token||"",sent:false};
+    window.__pix={order:d.order||d.external_id||"",token:d.copy_token||"",sent:false};try{savePix(d)}catch(e){}
     poll(d.internal_id,{total:total,order:d.order||d.external_id||d.internal_id||""});
   }).catch(function(){err.textContent="Erro ao conectar com o gateway de pagamento. Verifique sua internet e tente novamente.";marco("erro","sem conexão com o servidor");btn.disabled=false;btn.textContent="Gerar Pix"});
 });
@@ -330,7 +330,7 @@ function poll(id,info){
         try{localStorage.setItem("navell_last_order",JSON.stringify({order:info.order,total:info.total,sub:sub,disc:Math.round((sub-prod)*100)/100,ship:{n:SHIP[shipKey].n,p:SHIP[shipKey].p,d:SHIP[shipKey].d},name:v("name"),email:v("email"),
           addr:v("address")+", "+v("number")+(v("complement")?" - "+v("complement"):"")+" · "+v("neighborhood")+" · "+v("city")+"/"+v("state").toUpperCase()+" · CEP "+v("cep"),
           items:CART.map(function(i){return{n:NAMES[i.k],color:i.color,size:SIZES[i.s].n,qty:i.qty,price:SIZES[i.s].price*i.qty,img:THUMB[i.k]}})}))}catch(e){}
-        try{localStorage.removeItem("navell_cart")}catch(e){}
+        try{localStorage.removeItem("navell_cart")}catch(e){}chkClear();
         location.href="obrigado.html?"+new URLSearchParams({total:info.total,order:info.order}).toString()}
       else if(DEAD.indexOf(s)>-1){clearInterval(timer);$("wait").hidden=true;$("pixError").textContent="Este Pix não foi confirmado (cancelado ou expirado). Atualize a página para gerar um novo código."}
     }).catch(function(){});
@@ -346,6 +346,32 @@ $("copyBtn").addEventListener("click",function(){var b=this,txt=$("pixCode").tex
   if(navigator.clipboard)navigator.clipboard.writeText(txt).then(ok).catch(function(){selectCode()});else selectCode();
   function selectCode(){var r=document.createRange();r.selectNodeContents($("pixCode"));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Segure o código para copiar"}
 });
+
+/* ===== não perde o que a pessoa já fez se a página atualizar ou se ela sair e voltar ===== */
+var CHK_SAVE="navell_checkout_v1",CHK_FIELDS=["name","cpf","email","phone","cep","address","number","complement","neighborhood","city","state"],chkStep=1,chkPix=null;
+function chkSave(){try{if(!CART.length)return;var f={};CHK_FIELDS.forEach(function(k){var e=$("f-"+k);if(e)f[k]=e.value});
+  localStorage.setItem(CHK_SAVE,JSON.stringify({f:f,ship:shipKey,step:chkStep,pix:chkPix,t:Date.now()}))}catch(e){}}
+function chkClear(){try{localStorage.removeItem(CHK_SAVE)}catch(e){}}
+var _goTo=goTo;goTo=function(n){_goTo(n);chkStep=n;chkSave()};
+Array.prototype.forEach.call(document.querySelectorAll("form.card input"),function(i){i.addEventListener("input",chkSave);i.addEventListener("change",chkSave)});
+Array.prototype.forEach.call(document.querySelectorAll("#shipOpts .shopt"),function(l){l.addEventListener("click",function(){setTimeout(chkSave,0)})});
+function showPix(d){var w=$("qrWrap");w.innerHTML='<div id="qrc"></div>';
+  try{new QRCode($("qrc"),{text:d.qrcode,width:164,height:164,colorDark:"#141211",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M})}catch(e){w.innerHTML="<span>Não foi possível desenhar o QR — use o código abaixo</span>"}
+  $("pixCode").textContent=d.qrcode;$("pixCode").hidden=false;$("copyBtn").hidden=false;if($("backBtn"))$("backBtn").hidden=true;
+  $("pixHelp").textContent="Pix gerado! Toque em Copiar código e cole no app do seu banco (Pix > Pix Copia e Cola). Assim que o pagamento for aprovado, esta tela avança sozinha.";
+  var hw=$("howto");if(hw&&hw.children[0])hw.children[0].classList.add("done");
+  var b=$("finalCta");b.textContent="Pix gerado ✓";b.disabled=true;done=true;
+  window.__pix={order:d.order||"",token:d.copy_token||"",sent:false};
+  poll(d.internal_id,{total:d.total,order:d.order||d.internal_id||""})}
+function savePix(d){chkPix={internal_id:d.internal_id,order:d.order||d.external_id||"",qrcode:d.qrcode,copy_token:d.copy_token||"",total:total,t:Date.now()};chkSave()}
+(function(){try{var s=JSON.parse(localStorage.getItem(CHK_SAVE)||"null");if(!s||!CART.length||Date.now()-s.t>7*86400000)return;
+  var f=s.f||{};CHK_FIELDS.forEach(function(k){var e=$("f-"+k);if(e&&f[k])e.value=f[k]});
+  if($("addrBox")&&(f.cep||"").replace(/\D/g,"").length===8){$("addrBox").hidden=false;lastCep=f.cep.replace(/\D/g,"")}
+  if(s.ship&&SHIP[s.ship]){var inp=document.querySelector('#shipOpts input[value="'+s.ship+'"]');if(inp&&inp.closest("label"))inp.closest("label").click()}
+  var ok1=f.name&&f.cpf&&f.email&&f.phone&&(f.cep||"").replace(/\D/g,"").length===8;
+  if(s.step>1&&ok1){goTo(s.step);window.scrollTo(0,0)}
+  var p=s.pix;if(p&&p.qrcode&&ok1&&Date.now()-p.t<30*60000){chkPix=p;goTo(document.querySelector("#step3")?3:2);showPix({internal_id:p.internal_id,order:p.order,qrcode:p.qrcode,copy_token:p.copy_token,total:p.total})}
+  }catch(e){}})();
 </script>
 </body>
 </html>
