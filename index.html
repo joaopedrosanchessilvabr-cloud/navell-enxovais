@@ -192,6 +192,16 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 .back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .pick-head{text-align:center;padding:6px 4px 4px}
 .infobtn{display:block;margin:16px auto 0;max-width:340px;padding:12px 16px;background:none;border:1.5px solid var(--btn);color:var(--btn);border-radius:4px;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-align:center;text-decoration:none;line-height:1.35}
+.menubtn{background:none;border:0;padding:10px;margin-left:-10px;cursor:pointer;color:var(--ink)}
+.menubtn svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;display:block}
+.menu-ov{position:fixed;inset:0;background:rgba(20,18,17,.45);z-index:90}
+.menu{position:fixed;top:0;left:0;bottom:0;width:min(300px,82vw);background:var(--bg);z-index:91;padding:64px 22px 24px;display:flex;flex-direction:column;box-shadow:6px 0 30px rgba(0,0,0,.2);overflow-y:auto}
+.menu[hidden],.menu-ov[hidden]{display:none}
+.menu-x{position:absolute;top:10px;right:14px;background:none;border:0;font-size:34px;line-height:1;color:var(--ink-dim);cursor:pointer}
+.menu-t{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);font-weight:700;margin:6px 0 4px}
+.menu button[data-tab]:not(.menu-t){text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:15px 4px;font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);cursor:pointer}
+.menu button[data-tab][aria-current=true]{color:var(--btn)}
+.menu .menu-link{text-align:left;background:none;border:0;border-top:0;padding:26px 4px 6px;margin:0;cursor:pointer;font-size:12px}
 .tabsbar{display:flex;gap:4px;background:var(--bg-panel);border:1.5px solid var(--line);border-radius:10px;padding:4px;margin:14px 0 4px}
 .tabsbar button{flex:1;min-width:0;padding:11px 4px;background:none;border:0;border-radius:7px;font-family:'Oswald',sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.02em;white-space:nowrap;text-transform:uppercase;color:var(--ink-dim);cursor:pointer;transition:.15s}
 .tabsbar button[aria-selected=true]{background:var(--btn);color:#fff}
@@ -416,7 +426,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 <div class="announce" hidden>Pré Black Friday &nbsp;•&nbsp; 50% OFF</div>
 
 <div id="viewHome" hidden>
-<div class="tabsbar" role="tablist"></div>
+<div class="topbar" style="padding:0 16px"><button type="button" class="menubtn" data-menu aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
 <div class="hero" id="hero">
   <h1>Seu sofá renovado<em>em poucos minutos</em></h1>
   <p class="hero-sub">Capas de sofá em algodão e poliéster, com encaixe sem costura.</p>
@@ -541,11 +551,10 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 </div>
 
 <div id="viewModels">
-  <div class="topbar"><span></span><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
+  <div class="topbar"><button type="button" class="menubtn" data-menu aria-label="Abrir menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button><button type="button" class="cartbtn" data-go="carrinho" aria-label="Abrir carrinho"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span class="cartcount" hidden>0</span></button></div>
   <section class="pick-head">
     <h2 class="section-title" style="margin-top:0" id="pickTitle">Escolha o seu <span>modelo</span></h2>
     <p class="section-lead" style="margin-bottom:0" id="pickLead">Entre na coleção, escolha a cor e adicione ao carrinho.</p>
-    <div class="tabsbar" role="tablist"></div>
   </section>
   <div class="cards" id="cards">
     <div class="mcard" data-m="flara"><button type="button" class="pick" aria-label="Abrir coleção Flara"><img alt="Capa de sofá Flara" src="img/flara-capa2.webp"><span class="info"><span class="nm">Flara</span><span class="pr">a partir de <b>R$ 69,90</b></span></span></button><button type="button" class="vercol" data-m="flara">Ver coleção</button></div>
@@ -604,6 +613,15 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
     <div class="trust-line" style="margin-bottom:8px">Pagamento por Pix ou cartão</div>
   </div>
 </div>
+
+<div class="menu-ov" id="menuOv" hidden></div>
+<nav class="menu" id="menu" hidden aria-label="Menu">
+  <button type="button" class="menu-x" data-menu aria-label="Fechar menu">×</button>
+  <div class="menu-t">Coleções</div>
+  <button type="button" data-tab="capas">Capa de sofá</button>
+  <button type="button" data-tab="alm">Almofadas</button>
+  <button type="button" class="menu-t menu-link" data-tab="info">Informações</button>
+</nav>
 
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Adicionado ao carrinho">
   <div class="sheet-card">
@@ -697,8 +715,7 @@ var TAB="capas";
 var CARDS_CAPAS=$("cards").innerHTML;
 function setTab(t){
   TAB=t;
-  Array.prototype.forEach.call(document.querySelectorAll(".tabsbar"),function(b){
-    b.innerHTML=[["capas","Capas de sofá"],["alm","Almofadas"],["info","Informações"]].map(function(x){return'<button type="button" role="tab" data-tab="'+x[0]+'" aria-selected="'+(x[0]===t)+'">'+x[1]+'</button>'}).join("")});
+  Array.prototype.forEach.call(document.querySelectorAll(".menu [data-tab]"),function(x){x.setAttribute("aria-current",x.getAttribute("data-tab")===t)});
   if(t==="capas"||t==="alm"){
     var al=t==="alm";
     $("pickTitle").innerHTML=al?"Escolha a sua <span>almofada</span>":"Escolha o seu <span>modelo</span>";
@@ -706,8 +723,12 @@ function setTab(t){
     $("cards").innerHTML=al?Object.keys(ALM).map(function(k){var z=ALM[k].sizes[0];return'<div class="mcard" data-m="'+k+'"><button type="button" class="pick" aria-label="Abrir '+ALM[k].n+'"><img alt="'+ALM[k].n+'" src="'+almImg("Caramelo",k)+'"><span class="info"><span class="nm">'+ALM[k].n+'</span><span class="pr">kit com 2 · <b>'+brl(z.price)+'</b></span></span></button><button type="button" class="vercol" data-m="'+k+'">Ver coleção</button></div>'}).join(""):CARDS_CAPAS;
   }
 }
-document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".tabsbar button");if(!b)return;e.preventDefault();var t=b.getAttribute("data-tab");
-  if(t==="info"){setTab("info");go("home")}else{setTab(t);if($("viewModels").hidden)go("modelos");else window.scrollTo(0,0)}});
+function menu(o){$("menu").hidden=!o;$("menuOv").hidden=!o}
+document.addEventListener("click",function(e){var t=e.target;if(!t.closest)return;
+  if(t.closest("[data-menu]")){e.preventDefault();menu($("menu").hidden);return}
+  if(t.closest("#menuOv")){menu(false);return}
+  var b=t.closest("#menu [data-tab]");if(!b)return;e.preventDefault();var k=b.getAttribute("data-tab");menu(false);
+  if(k==="info"){setTab("info");go("home")}else{setTab(k);go("modelos")}});
 var VIEWS={home:"viewHome",modelos:"viewModels",coll:"viewColl",carrinho:"viewCart"};
 function show(v){
   if(v==="modelos"&&TAB==="info")setTab("capas");else if(v==="home"&&TAB!=="info")setTab("info");
