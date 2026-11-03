@@ -160,6 +160,7 @@ section{padding:0 4px}
 .rev p{font-size:14px;line-height:1.65;color:var(--ink-dim);margin:0}
 .rev footer{padding:0;text-align:left;margin-top:auto;font-size:12px;color:var(--ink-dim)}
 .rev footer strong{display:block;font:600 14px 'Inter',system-ui,sans-serif;color:var(--ink);margin-bottom:1px}
+.revwrap{position:relative}.revnav{display:none;position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--bg-panel);color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.15);cursor:pointer;align-items:center;justify-content:center;font-size:20px;line-height:1;z-index:2;padding:0}.revnav.prev{left:-14px}.revnav.next{right:-14px}.revnav[disabled]{opacity:0;pointer-events:none}@media (hover:hover) and (pointer:fine){.revnav{display:flex}.revgrid{cursor:grab}.revgrid.drag{cursor:grabbing;scroll-snap-type:none;user-select:none}}
 .rev-note{font-size:11.5px;color:var(--ink-dim);text-align:center;margin-top:12px}
 @media (min-width:900px){.revgrid .rev{flex:0 0 calc((100% - 24px)/3)}}
 .faq-item{border-bottom:1px solid var(--line)}
@@ -1217,5 +1218,16 @@ else if(location.hash==="#carrinho"){renderCart();show("carrinho")}
 else show("modelos");
 </script>
 
+<script>
+(function(){document.querySelectorAll('.revgrid').forEach(function(g){var w=document.createElement('div');w.className='revwrap';g.parentNode.insertBefore(w,g);w.appendChild(g);
+function mk(c,t){var b=document.createElement('button');b.type='button';b.className='revnav '+c;b.setAttribute('aria-label',c=='prev'?'Anterior':'Próxima');b.innerHTML=t;w.appendChild(b);return b}
+var p=mk('prev','&#8249;'),n=mk('next','&#8250;');
+function st(){p.disabled=g.scrollLeft<4;n.disabled=g.scrollLeft+g.clientWidth>=g.scrollWidth-4}
+function step(d){var c=g.querySelector('.rev');g.scrollBy({left:d*(c.offsetWidth+12),behavior:'smooth'})}
+p.onclick=function(){step(-1)};n.onclick=function(){step(1)};g.addEventListener('scroll',st,{passive:true});window.addEventListener('resize',st);if(window.ResizeObserver)new ResizeObserver(st).observe(g);st();
+var d=false,x=0,sl=0;g.addEventListener('mousedown',function(e){d=true;x=e.pageX;sl=g.scrollLeft});
+window.addEventListener('mouseup',function(){if(d){d=false;g.classList.remove('drag')}});
+window.addEventListener('mousemove',function(e){if(!d)return;var dx=e.pageX-x;if(Math.abs(dx)>4)g.classList.add('drag');g.scrollLeft=sl-dx})})})();
+</script>
 </body>
 </html>
