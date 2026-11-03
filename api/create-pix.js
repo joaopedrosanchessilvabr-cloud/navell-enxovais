@@ -5,6 +5,7 @@
 // O valor NÃO vem do navegador: o servidor recalcula o total a partir dos
 // itens do carrinho, para ninguém conseguir pagar menos alterando a página.
 
+import { createHmac } from 'node:crypto';
 import { salvarNaPlanilha } from './_planilha.js';
 import { resumirItens } from './_catalogo.js';
 
@@ -102,6 +103,8 @@ export default async function handler(req, res) {
       status: data.status,
       qrcode: data.qrcode,
       amount: data.amount ?? amount,
+      // permite ao navegador avisar "copiou o Pix" só para este pedido (ninguém consegue forjar para outro)
+      copy_token: createHmac('sha256', process.env.SHEETS_SECRET || 'navell').update(external_id).digest('hex').slice(0, 16),
     });
   } catch (err) {
     console.error('[create-pix] Erro ao chamar a SimplifyBR:', err);

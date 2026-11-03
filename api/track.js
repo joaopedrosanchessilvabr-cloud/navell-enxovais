@@ -2,6 +2,7 @@
 //   etapa "carrinho": o que ele tem no carrinho (aba 1)
 //   etapa "dados":    dados pessoais / endereço preenchidos no checkout (aba 2)
 // A identificação é um código aleatório do navegador (vid), sem login.
+import { createHmac } from 'node:crypto';
 import { salvarNaPlanilha } from './_planilha.js';
 import { resumirItens } from './_catalogo.js';
 
@@ -13,6 +14,15 @@ export default async function handler(req, res) {
     return res.status(405).end();
   }
   const b = req.body || {};
+
+  // Cliente copiou o código Pix: marca "Copiou Pix #número" na planilha (exige o token do pedido)
+  if (b.etapa === 'copiou') {
+    const order = String(b.order || '').replace(/\D/g, '').slice(0, 12);
+    const ok = order && String(b.token || '') === createHmac('sha256', process.env.SHEETS_SECRET || 'navell').update(order).digest('hex').slice(0, 16);
+    if (!ok) return res.status(422).json({ ok: false });
+    await salvarNaPlanilha({ acao: 'status', pedido: order, status: 'Copiou Pix' });
+    return res.status(200).json({ ok: true });
+  }
   const vid = txt(b.vid, 40).replace(/[^\w-]/g, '');
   if (!vid || vid.length < 8) return res.status(422).json({ ok: false });
 

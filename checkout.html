@@ -312,6 +312,7 @@ $("finalCta").addEventListener("click",function(){
     $("pixHelp").textContent="Escaneie o QR code com o app do seu banco ou copie o código abaixo. Assim que o pagamento for aprovado, esta página avança sozinha.";
     btn.textContent="Pix gerado ✓";done=true;try{localStorage.removeItem("navell_vid")}catch(e){}
     window.navellTrack&&navellTrack("AddPaymentInfo",{value:total,currency:"BRL",content_type:"product",content_ids:CART.map(function(i){return i.k})});
+    window.__pix={order:d.order||d.external_id||"",token:d.copy_token||"",sent:false};
     poll(d.internal_id,{total:total,order:d.order||d.external_id||d.internal_id||""});
   }).catch(function(){err.textContent="Erro ao conectar com o gateway de pagamento. Verifique sua internet e tente novamente.";marco("erro","sem conexão com o servidor");btn.disabled=false;btn.textContent="Gerar Pix"});
 });
@@ -340,6 +341,7 @@ function poll(id,info){
   window.addEventListener("pageshow",tick);window.addEventListener("focus",tick);
 }
 $("copyBtn").addEventListener("click",function(){var b=this,txt=$("pixCode").textContent;
+  try{var px=window.__pix;if(px&&px.order&&px.token&&!px.sent){px.sent=true;fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({etapa:"copiou",order:px.order,token:px.token})}).catch(function(){})}}catch(e){}
   var ok=function(){b.textContent="Código copiado!";setTimeout(function(){b.textContent="Copiar código"},2200)};
   if(navigator.clipboard)navigator.clipboard.writeText(txt).then(ok).catch(function(){selectCode()});else selectCode();
   function selectCode(){var r=document.createRange();r.selectNodeContents($("pixCode"));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Segure o código para copiar"}
