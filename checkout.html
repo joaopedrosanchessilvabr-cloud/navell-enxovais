@@ -209,20 +209,25 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 var NAMES={flara:"Flara",stella:"Stella",melina:"Melina",dalia:"Dália",ayla:"Ayla",alina:"Alina",celina:"Celina",aurora:"Aurora",lumira:"Lumira",magna:"Magna",renovare:"Renovare",lana:"Lana",luma:"Luma",mila:"Mila",cloe:"Cloe"};
 var THUMB={flara:"img/flara-capa2.webp",stella:"img/stella-capa2.webp",melina:"img/melina-capa2.webp",dalia:"img/dalia-capa2.webp",ayla:"img/ayla-capa2.webp",alina:"img/alina-capa2.webp",celina:"img/celina-capa2.webp",aurora:"img/aurora-capa2.webp",lumira:"img/lumira-capa2.webp",magna:"img/magna-capa2.webp",renovare:"img/renovare-capa2.webp",lana:"img/lana-capa2.webp",luma:"img/luma-capa2.webp",mila:"img/mila-capa2.webp",cloe:"img/cloe-capa2.webp"};
 var SIZES=[{n:"2 lugares",price:69.90},{n:"3 lugares",price:84.90},{n:"4 lugares",price:99.90}];
+var ALM={"alm-losango":{n:"Almofada Losango (kit com 2)",price:39.90,cores:["Caramelo","Cinza","Marrom","Off-white","Preto","Rosê","Terracota"],first:{"Caramelo":1,"Cinza":3,"Marrom":6,"Off-white":9,"Preto":12,"Rosê":14,"Terracota":16}}};
+function almThumb(i){var n=ALM[i.k].first[i.color];return"img/alm-"+(n<10?"0":"")+n+".webp"}
+function unitPrice(i){return ALM[i.k]?ALM[i.k].price:SIZES[i.s].price}
 var PIX=0.05;
 var $=function(id){return document.getElementById(id)};
 function brl(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
 var CART=[];
-try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i){return NAMES[i.k]&&SIZES[i.s]&&i.qty>0})}catch(e){}
+try{CART=JSON.parse(localStorage.getItem("navell_cart")||"[]").filter(function(i){return i.qty>0&&(ALM[i.k]?ALM[i.k].cores.indexOf(i.color)>-1:(NAMES[i.k]&&SIZES[i.s]))})}catch(e){}
 if(!CART.length){$("empty").hidden=false}else{$("main").hidden=false}
 
-var sub=CART.reduce(function(a,i){return a+SIZES[i.s].price*i.qty},0);
+var sub=CART.reduce(function(a,i){return a+unitPrice(i)*i.qty},0);
 var SHIP={sedex:{n:"SEDEX",p:19.90,d:"2 a 7 dias úteis"},jadlog:{n:"Jadlog",p:14.90,d:"7 a 11 dias úteis"},loggi:{n:"Loggi",p:9.90,d:"12 a 17 dias úteis"}};
 var shipKey="loggi";
 var prod=Math.round(sub*(1-PIX)*100)/100;
 var total=prod+SHIP[shipKey].p;
 if(CART.length&&window.navellTrack)navellTrack("InitiateCheckout",{content_ids:CART.map(function(i){return i.k}),content_type:"product",contents:CART.map(function(i){return{id:i.k,quantity:i.qty}}),num_items:CART.reduce(function(a,i){return a+i.qty},0),value:sub,currency:"BRL"});
-$("cart").innerHTML=CART.map(function(i){var z=SIZES[i.s];
+$("cart").innerHTML=CART.map(function(i){
+  if(ALM[i.k])return'<div class="cit"><img alt="" src="'+almThumb(i)+'"><div class="i"><strong>'+ALM[i.k].n.toUpperCase()+'</strong><small>'+i.color+' · Qtd: '+i.qty+'</small></div><b>'+brl(unitPrice(i)*i.qty)+'</b></div>';
+  var z=SIZES[i.s];
   return'<div class="cit"><img alt="" src="'+THUMB[i.k]+'"><div class="i"><strong>CAPA DE SOFÁ '+NAMES[i.k].toUpperCase()+'</strong><small>'+i.color+' · '+z.n+' · Qtd: '+i.qty+'</small></div><b>'+brl(z.price*i.qty)+'</b></div>'}).join("");
 var shipShown=false;
 function upd(){
@@ -329,7 +334,7 @@ function poll(id,info){
       if(PAID.indexOf(s)>-1){fin=true;clearInterval(timer);
         try{localStorage.setItem("navell_last_order",JSON.stringify({order:info.order,total:info.total,sub:sub,disc:Math.round((sub-prod)*100)/100,ship:{n:SHIP[shipKey].n,p:SHIP[shipKey].p,d:SHIP[shipKey].d},name:v("name"),email:v("email"),
           addr:v("address")+", "+v("number")+(v("complement")?" - "+v("complement"):"")+" · "+v("neighborhood")+" · "+v("city")+"/"+v("state").toUpperCase()+" · CEP "+v("cep"),
-          items:CART.map(function(i){return{n:NAMES[i.k],color:i.color,size:SIZES[i.s].n,qty:i.qty,price:SIZES[i.s].price*i.qty,img:THUMB[i.k]}})}))}catch(e){}
+          items:CART.map(function(i){return ALM[i.k]?{n:ALM[i.k].n,color:i.color,size:"",qty:i.qty,price:unitPrice(i)*i.qty,img:almThumb(i)}:{n:NAMES[i.k],color:i.color,size:SIZES[i.s].n,qty:i.qty,price:SIZES[i.s].price*i.qty,img:THUMB[i.k]}})}))}catch(e){}
         try{localStorage.removeItem("navell_cart")}catch(e){}chkClear();
         location.href="obrigado.html?"+new URLSearchParams({total:info.total,order:info.order}).toString()}
       else if(DEAD.indexOf(s)>-1){clearInterval(timer);$("wait").hidden=true;$("pixError").textContent="Este Pix não foi confirmado (cancelado ou expirado). Atualize a página para gerar um novo código."}

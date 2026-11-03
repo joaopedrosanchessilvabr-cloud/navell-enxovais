@@ -24,14 +24,26 @@ export const SIZES = [
   { n: '4 lugares', price: 99.9 },
 ];
 
+// Almofadas (vendidas em kit com 2). Chave do item no carrinho: 'alm-<modelo>'.
+export const ALMOFADAS = {
+  'alm-losango': { nome: 'Almofada Losango (kit com 2)', price: 39.9, cores: ['Caramelo', 'Cinza', 'Marrom', 'Off-white', 'Preto', 'Rosê', 'Terracota'] },
+};
+
 // Valida os itens e devolve { resumo: ['2x Flara Azul 3 lugares', ...], subtotal } ou null.
 export function resumirItens(items, max = 20) {
   if (!Array.isArray(items) || items.length > max) return null;
   let subtotal = 0;
   const resumo = [];
   for (const it of items) {
-    const sz = SIZES[it && it.s];
     const qty = Number(it && it.qty);
+    const alm = it && ALMOFADAS[it.k];
+    if (alm) {
+      if (!alm.cores.includes(it.color) || !Number.isInteger(qty) || qty < 1 || qty > 10) return null;
+      subtotal += alm.price * qty;
+      resumo.push(`${qty}x ${alm.nome} ${it.color}`);
+      continue;
+    }
+    const sz = SIZES[it && it.s];
     if (!it || !KEYS.includes(it.k) || !COLORS[it.k].includes(it.color) || !sz ||
         !Number.isInteger(qty) || qty < 1 || qty > 10) return null;
     subtotal += sz.price * qty;

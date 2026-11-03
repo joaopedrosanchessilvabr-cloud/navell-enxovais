@@ -116,7 +116,7 @@ if(oid){$("oid").textContent=oid;$("orderPill").hidden=false}
 if(o){
   var first=(o.name||"").trim().split(/\s+/)[0];
   if(first)$("lead").textContent=first+", recebemos o seu pagamento via Pix. Obrigado por comprar na Navell Enxovais.";
-  $("itens").innerHTML=(o.items||[]).map(function(i){return'<div class="it"><img alt="" src="'+esc(i.img)+'"><div class="i"><strong>CAPA DE SOFÁ '+esc(String(i.n).toUpperCase())+'</strong><small>'+esc(i.color)+' · '+esc(i.size)+' · Qtd: '+esc(i.qty)+'</small></div><b>'+brl(i.price)+'</b></div>'}).join("");
+  $("itens").innerHTML=(o.items||[]).map(function(i){return'<div class="it"><img alt="" src="'+esc(i.img)+'"><div class="i"><strong>'+(i.size?'CAPA DE SOFÁ ':'')+esc(String(i.n).toUpperCase())+'</strong><small>'+esc(i.color)+(i.size?' · '+esc(i.size):'')+' · Qtd: '+esc(i.qty)+'</small></div><b>'+brl(i.price)+'</b></div>'}).join("");
   $("rSub").textContent=brl(o.sub);$("rDisc").textContent="− "+brl(o.disc);
   $("rShipN").textContent=o.ship?"("+o.ship.n+(o.ship.d?" · "+o.ship.d:"")+")":"";$("rShip").textContent=o.ship?brl(o.ship.p):"";
   $("rTot").textContent=brl(o.total);$("resumo").hidden=false;
