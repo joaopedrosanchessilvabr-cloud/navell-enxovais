@@ -774,7 +774,7 @@ function renderBump(){
   var b=$("bumpBox"),has=CART.some(function(i){return isAlm(i.k)}),cov=CART.some(function(i){return !isAlm(i.k)});
   if(!CART.length||has||!cov){b.hidden=true;b.innerHTML="";return}
   var z=ALMSZ[0];
-  b.hidden=false;b.innerHTML='<div class="bump"><img alt="'+ALM[bumpKey].n+'" src="'+almImg(bumpKey)+'"><div class="bt"><small>Aproveite e leve também</small><strong>KIT COM 2 ALMOFADAS</strong><div class="bc">'+Object.keys(ALM).map(function(k){return'<button type="button" aria-label="'+ALM[k].color+'" title="'+ALM[k].color+'" aria-pressed="'+(k===bumpKey)+'" data-bc="'+k+'" style="background:'+ALM[k].hex+'"></button>'}).join("")+'</div><span><s>'+brl(z.old)+'</s><b>'+brl(z.price)+'</b> · '+ALM[bumpKey].color+'</span><br><button type="button" class="bb" id="bumpAdd" style="margin-top:8px">Sim, adicionar</button></div></div>';
+  b.hidden=false;b.innerHTML='<div class="bump"><img alt="'+ALM[bumpKey].n+'" src="img/alm-bump-'+ALM[bumpKey].slug+'.webp"><div class="bt"><small>Aproveite e leve também</small><strong>KIT COM 2 ALMOFADAS</strong><div class="bc">'+Object.keys(ALM).map(function(k){return'<button type="button" aria-label="'+ALM[k].color+'" title="'+ALM[k].color+'" aria-pressed="'+(k===bumpKey)+'" data-bc="'+k+'" style="background:'+ALM[k].hex+'"></button>'}).join("")+'</div><span><s>'+brl(z.old)+'</s><b>'+brl(z.price)+'</b> · '+ALM[bumpKey].color+'</span><br><button type="button" class="bb" id="bumpAdd" style="margin-top:8px">Sim, adicionar</button></div></div>';
 }
 $("bumpBox").addEventListener("click",function(e){
   var c=e.target.closest("[data-bc]");if(c){bumpKey=c.getAttribute("data-bc");renderBump();return}
