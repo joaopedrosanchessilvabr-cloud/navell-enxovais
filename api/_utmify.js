@@ -31,7 +31,8 @@ export function abrir(b64, sig) {
 
 export async function enviarUtmify(ctx, status, quando) {
   const token = process.env.UTMIFY_API_TOKEN;
-  if (!token || !ctx) return false;
+  if (!token) { console.log('[utmify] SEM TOKEN: UTMIFY_API_TOKEN vazio ou ausente neste deploy'); return false; }
+  if (!ctx) { console.log('[utmify] sem contexto do pedido (ctx inválido), nada enviado'); return false; }
   try {
     const paid = status === 'paid';
     const body = {
