@@ -135,3 +135,28 @@ export async function listar(n = 60) {
   for (const o of orders) { const p = await lerPed(o); if (p) out.push({ ...publico(p), teste: !!p.teste }); }
   return out;
 }
+
+// Painel: cadastra um pedido antigo (feito antes do rastreio existir) já com um código escolhido.
+export async function importar({ pedido, codigo, itens, cidade, uf, frete, teste }) {
+  pedido = String(pedido || '').replace(/\D/g, '');
+  codigo = normalizar(codigo);
+  if (!pedido) return { erro: 'Informe o número do pedido.' };
+  if (!/^NV\d{9}BR$/.test(codigo)) return { erro: 'Código inválido. Use o formato NV990000001BR.' };
+  const dono = await cmd('GET', kCod(codigo));
+  if (dono && dono !== pedido) return { erro: 'Esse código já pertence ao pedido ' + dono + '.' };
+  let p = await lerPed(pedido);
+  const t = new Date().toISOString();
+  if (!p) p = { o: pedido, t, itens: [], cidade: '', uf: '', frete: '', total: 0, teste: !!teste, eventos: [{ e: 'recebido', t }] };
+  if (itens) p.itens = String(itens).split('|').map((x) => x.trim()).filter(Boolean).slice(0, 20);
+  if (cidade) p.cidade = String(cidade).slice(0, 60);
+  if (uf) p.uf = String(uf).toUpperCase().slice(0, 2);
+  if (frete) p.frete = String(frete).slice(0, 30);
+  p.teste = !!teste;
+  p.codigo = codigo;
+  if (!p.eventos.some((x) => x.e === 'pago')) p.eventos.push({ e: 'pago', t });
+  await gravarPed(p);
+  await cmd('SET', kCod(codigo), pedido);
+  const lista = (await cmd('LRANGE', 'navell:lista', 0, 499)) || [];
+  if (!lista.includes(pedido)) await cmd('LPUSH', 'navell:lista', pedido);
+  return { ok: true };
+}

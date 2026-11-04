@@ -2,7 +2,7 @@
 //   GET  /api/painel-rastreio            → lista os últimos pedidos pagos
 //   POST /api/painel-rastreio {pedido, etapa, nota, transp, link}
 import { timingSafeEqual } from 'node:crypto';
-import { listar, atualizar, ETAPAS } from './_rastreio.js';
+import { listar, atualizar, importar, ETAPAS } from './_rastreio.js';
 
 function senhaOk(h) {
   const esperado = process.env.ADMIN_SECRET || process.env.SHEETS_SECRET || '';
@@ -17,6 +17,10 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') return res.status(200).json({ etapas: ETAPAS, pedidos: await listar(80) });
     if (req.method === 'POST') {
+      if (req.body && req.body.importar) {
+        const r = await importar(req.body);
+        return r.erro ? res.status(422).json({ error: r.erro }) : res.status(200).json({ ok: true });
+      }
       const { pedido, etapa, nota, transp, link } = req.body || {};
       const p = await atualizar(pedido, { etapa, nota, transp, link });
       if (!p) return res.status(404).json({ error: 'Pedido não encontrado.' });
