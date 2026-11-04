@@ -71,13 +71,18 @@ export async function garantirCodigo(order) {
     }
     p = (await lerPed(order)) || p;
     if (p.codigo) return p.codigo;
-    const n = Number(await cmd('INCR', p.teste ? 'navell:rastreio:teste' : 'navell:rastreio'));
-    const codigo = codigoDe(n, p.teste);
+    // pula códigos que já têm dono (ex.: cadastrados à mão pelo painel), para nunca repetir um código
+    let codigo = null;
+    for (let i = 0; i < 50 && !codigo; i++) {
+      const n = Number(await cmd('INCR', p.teste ? 'navell:rastreio:teste' : 'navell:rastreio'));
+      const c = codigoDe(n, p.teste);
+      if ((await cmd('SET', kCod(c), order, 'NX')) === 'OK') codigo = c;
+    }
+    if (!codigo) return null;
     const t = new Date().toISOString();
     p.codigo = codigo;
     if (!p.eventos.some((x) => x.e === 'pago')) p.eventos.push({ e: 'pago', t });
     await gravarPed(p);
-    await cmd('SET', kCod(codigo), order);
     await cmd('LPUSH', 'navell:lista', order);
     await cmd('LTRIM', 'navell:lista', 0, 499);
     return codigo;
