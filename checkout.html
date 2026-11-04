@@ -226,7 +226,7 @@ var THUMB={flara:"img/flara-capa2.webp",stella:"img/stella-capa2.webp",melina:"i
 var SIZES=[{n:"2 lugares",price:54.90},{n:"3 lugares",price:69.90},{n:"4 lugares",price:84.90}];
 var ALM={"alm-teste":{n:"Almofada TESTE",cor:"Teste",f:0},"alm-bege":{n:"Almofada Bege (KIT COM 2)",cor:"Bege",f:1},"alm-creme":{n:"Almofada Creme (KIT COM 2)",cor:"Creme",f:9},"alm-marrom":{n:"Almofada Marrom (KIT COM 2)",cor:"Marrom",f:6},"alm-cinza":{n:"Almofada Cinza (KIT COM 2)",cor:"Cinza",f:3},"alm-rosa":{n:"Almofada Rosa (KIT COM 2)",cor:"Rosa",f:14}};
 function almThumb(i){var n=ALM[i.k].f;if(!n)return"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";return"img/alm-"+(n<10?"0":"")+n+".webp"}
-function unitPrice(i){return i.k==="alm-teste"?2:ALM[i.k]?29.90:SIZES[i.s].price}
+function unitPrice(i){return i.k==="alm-teste"?1.5:ALM[i.k]?29.90:SIZES[i.s].price}
 var PIX=0.05;
 var $=function(id){return document.getElementById(id)};
 function brl(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}

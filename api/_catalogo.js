@@ -30,7 +30,7 @@ export const ALMOFADAS = {
   'alm-creme': { nome: 'Almofada Creme (KIT COM 2)', price: 29.9, cores: ['Creme'] },
   'alm-marrom': { nome: 'Almofada Marrom (KIT COM 2)', price: 29.9, cores: ['Marrom'] },
   'alm-cinza': { nome: 'Almofada Cinza (KIT COM 2)', price: 29.9, cores: ['Cinza'] },
-  'alm-teste': { nome: 'Almofada TESTE', price: 2, cores: ['Teste'] }, // item de teste (R$ 2), acessível só por /teste.html
+  'alm-teste': { nome: 'Almofada TESTE', price: 1.5, cores: ['Teste'] }, // item de teste (R$ 1,50), acessível só por /teste.html
   'alm-rosa': { nome: 'Almofada Rosa (KIT COM 2)', price: 29.9, cores: ['Rosa'] },
 };
 
