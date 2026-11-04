@@ -57,10 +57,8 @@ export default async function handler(req, res) {
   const subtotal = r0.subtotal;
   const resumo = r0.resumo;
   // Frete grátis no Jadlog em compras a partir de R$ 70 (valor dos itens, antes do desconto Pix).
-  // Pedido de teste (só o item alm-teste): sem frete e sem desconto Pix, total exato de R$ 1,03.
-  const soTeste = items.length > 0 && items.every((i) => i && i.k === 'alm-teste');
-  const shipPrice = soTeste ? 0 : (shipping === 'jadlog' && subtotal >= FREE_SHIPPING_MIN) ? 0 : SHIPPING[shipping].price;
-  const amount = soTeste ? subtotal : Math.round((subtotal * (1 - PIX_DISCOUNT) + shipPrice) * 100) / 100;
+  const shipPrice = (shipping === 'jadlog' && subtotal >= FREE_SHIPPING_MIN) ? 0 : SHIPPING[shipping].price;
+  const amount = Math.round((subtotal * (1 - PIX_DISCOUNT) + shipPrice) * 100) / 100;
 
   const clientId = process.env.SIMPLIFY_CLIENT_ID;
   const clientSecret = process.env.SIMPLIFY_CLIENT_SECRET;
@@ -106,7 +104,7 @@ export default async function handler(req, res) {
 
     // Guarda o pedido para a página "Rastrear pedido" (o código NV...BR só nasce quando o pagamento for confirmado)
     await registrarPedido({ order: data.external_id || external_id, itens: resumo, cidade: address.city, uf: String(address.state || '').toUpperCase().slice(0, 2),
-      frete: SHIPPING[shipping].n, fretePreco: shipPrice, sub: subtotal, total: amount, teste: soTeste });
+      frete: SHIPPING[shipping].n, fretePreco: shipPrice, sub: subtotal, total: amount });
 
     // Utmify: pedido "aguardando pagamento" (e guarda o contexto assinado para avisar quando pagar)
     const fator = amount / (subtotal || 1);

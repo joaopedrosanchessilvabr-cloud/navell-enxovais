@@ -3,7 +3,7 @@
 // Código: NV + 9 dígitos + BR. O 1º pedido pago é NV120101001BR, o 2º NV120101002BR ...
 // NV120101099BR e depois NV120101100BR (é só 120101000 + o número do pedido pago).
 // O número só é gasto quando o pagamento é confirmado, então não há buracos na sequência.
-// Pedidos de teste (só o item "alm-teste") usam uma sequência separada (NV9900...), para não gastar os números reais.
+// Pedidos marcados como teste (campo "teste") usam uma sequência separada (NV9900...), para não gastar os números reais.
 //
 // Nada aqui pode derrubar uma venda: toda falha vira log e retorna null.
 

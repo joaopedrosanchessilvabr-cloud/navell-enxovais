@@ -224,9 +224,9 @@ h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.0
 var NAMES={flara:"Flara",stella:"Stella",melina:"Melina",dalia:"Dália",ayla:"Ayla",alina:"Alina",celina:"Celina",aurora:"Aurora",lumira:"Lumira",magna:"Magna",renovare:"Renovare",lana:"Lana",luma:"Luma",mila:"Mila",cloe:"Cloe"};
 var THUMB={flara:"img/flara-capa2.webp",stella:"img/stella-capa2.webp",melina:"img/melina-capa2.webp",dalia:"img/dalia-capa2.webp",ayla:"img/ayla-capa2.webp",alina:"img/alina-capa2.webp",celina:"img/celina-capa2.webp",aurora:"img/aurora-capa2.webp",lumira:"img/lumira-capa2.webp",magna:"img/magna-capa2.webp",renovare:"img/renovare-capa2.webp",lana:"img/lana-capa2.webp",luma:"img/luma-capa2.webp",mila:"img/mila-capa2.webp",cloe:"img/cloe-capa2.webp"};
 var SIZES=[{n:"2 lugares",price:54.90},{n:"3 lugares",price:69.90},{n:"4 lugares",price:84.90}];
-var ALM={"alm-teste":{n:"Almofada TESTE",cor:"Teste",f:0},"alm-bege":{n:"Almofada Bege (KIT COM 2)",cor:"Bege",f:1},"alm-creme":{n:"Almofada Creme (KIT COM 2)",cor:"Creme",f:9},"alm-marrom":{n:"Almofada Marrom (KIT COM 2)",cor:"Marrom",f:6},"alm-cinza":{n:"Almofada Cinza (KIT COM 2)",cor:"Cinza",f:3},"alm-rosa":{n:"Almofada Rosa (KIT COM 2)",cor:"Rosa",f:14}};
+var ALM={"alm-bege":{n:"Almofada Bege (KIT COM 2)",cor:"Bege",f:1},"alm-creme":{n:"Almofada Creme (KIT COM 2)",cor:"Creme",f:9},"alm-marrom":{n:"Almofada Marrom (KIT COM 2)",cor:"Marrom",f:6},"alm-cinza":{n:"Almofada Cinza (KIT COM 2)",cor:"Cinza",f:3},"alm-rosa":{n:"Almofada Rosa (KIT COM 2)",cor:"Rosa",f:14}};
 function almThumb(i){var n=ALM[i.k].f;if(!n)return"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";return"img/alm-"+(n<10?"0":"")+n+".webp"}
-function unitPrice(i){return i.k==="alm-teste"?1.03:ALM[i.k]?29.90:SIZES[i.s].price}
+function unitPrice(i){return ALM[i.k]?29.90:SIZES[i.s].price}
 var PIX=0.05;
 var $=function(id){return document.getElementById(id)};
 function brl(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
@@ -236,12 +236,12 @@ if(!CART.length){$("empty").hidden=false}else{$("main").hidden=false}
 
 var sub=CART.reduce(function(a,i){return a+unitPrice(i)*i.qty},0);
 var SHIP={sedex:{n:"SEDEX",p:19.90,d:"3 a 7 dias úteis"},jadlog:{n:"Jadlog",p:14.90,d:"5 a 9 dias úteis"},loggi:{n:"Loggi",p:9.90,d:"7 a 11 dias úteis"}};
-var FREE_MIN=70;SHIP.jadlog.p=sub>=FREE_MIN?0:14.90;var ONLYTEST=CART.length>0&&CART.every(function(i){return i.k==="alm-teste"});if(ONLYTEST){SHIP.sedex.p=SHIP.jadlog.p=SHIP.loggi.p=0}
+var FREE_MIN=70;SHIP.jadlog.p=sub>=FREE_MIN?0:14.90;
 function shipTxt(k){return SHIP[k].p===0?"Grátis":brl(SHIP[k].p)}
 var shipKey="loggi";
 var DLV=null;try{var _d=JSON.parse(localStorage.getItem("navell_entrega_v1")||"null");if(_d&&String(_d.cep||"").replace(/\D/g,"").length===8&&_d.street&&_d.number&&_d.nb&&_d.city&&_d.uf&&_d.uf.length===2&&SHIP[_d.ship])DLV=_d}catch(e){}
 var HAS_ADDR=!!DLV;if(HAS_ADDR)shipKey=DLV.ship;
-var prod=ONLYTEST?sub:Math.round(sub*(1-PIX)*100)/100;
+var prod=Math.round(sub*(1-PIX)*100)/100;
 var total=prod+SHIP[shipKey].p;
 if(CART.length&&window.navellTrack)navellTrack("InitiateCheckout",{content_ids:CART.map(function(i){return i.k}),content_type:"product",contents:CART.map(function(i){return{id:i.k,quantity:i.qty}}),num_items:CART.reduce(function(a,i){return a+i.qty},0),value:sub,currency:"BRL"});
 $("cart").innerHTML=CART.map(function(i){
