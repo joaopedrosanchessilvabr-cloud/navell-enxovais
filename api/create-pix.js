@@ -18,7 +18,8 @@ const SHIPPING = {
   loggi: { n: 'Loggi', price: 9.9 },
 };
 
-// Número do pedido: contador sequencial de 9 dígitos (000000001, 000000002...).
+// Número do pedido: 9 dígitos no formato 47345 + contador de 4 dígitos (473450021, 473450022...).
+// O contador (Redis) já estava em 20, então o próximo pedido é 473450021.
 // Fica guardado num Redis (Upstash) ligado ao projeto na Vercel, com INCR, que é
 // atômico: dois pedidos ao mesmo tempo nunca recebem o mesmo número.
 async function nextOrderNumber() {
@@ -27,13 +28,13 @@ async function nextOrderNumber() {
   if (url && token) {
     const r = await fetch(`${url}/incr/navell:pedido`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
     const j = await r.json().catch(() => ({}));
-    if (r.ok && Number.isInteger(j.result) && j.result > 0) return String(j.result).padStart(9, '0');
+    if (r.ok && Number.isInteger(j.result) && j.result > 0) return '47345' + String(j.result % 10000).padStart(4, '0');
     console.error('[pedido] Falha ao incrementar o contador:', r.status, j);
   } else {
     console.error('[pedido] Banco do contador não configurado (KV_REST_API_URL / KV_REST_API_TOKEN). Usando número provisório.');
   }
   // Plano B para não perder venda: número provisório de 9 dígitos baseado no horário.
-  return String(Math.floor(Date.now() / 1000) % 1000000000).padStart(9, '0');
+  return '47345' + String(Math.floor(Date.now() / 1000) % 10000).padStart(4, '0');
 }
 
 export default async function handler(req, res) {
