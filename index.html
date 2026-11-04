@@ -215,7 +215,7 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
 .menu-t{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);font-weight:700;margin:6px 0 4px}
 .menu button[data-tab]:not(.menu-t){text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:15px 4px;font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);cursor:pointer}
 .menu button[data-tab][aria-current=true]{color:var(--btn)}
-.menu a.menu-a{display:block;text-decoration:none;margin-top:6px;border-top:1px solid var(--line);padding:15px 4px;font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
+.menu a.menu-a{display:block;text-decoration:none;border-bottom:1px solid var(--line);padding:15px 4px;font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
 .menu .menu-link{text-align:left;background:none;border:0;border-top:0;padding:26px 4px 6px;margin:0;cursor:pointer;font-size:12px}
 .tabsbar{display:flex;gap:4px;background:var(--bg-panel);border:1.5px solid var(--line);border-radius:10px;padding:4px;margin:14px 0 4px}
 .tabsbar button{flex:1;min-width:0;padding:11px 4px;background:none;border:0;border-radius:7px;font-family:'Oswald',sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.02em;white-space:nowrap;text-transform:uppercase;color:var(--ink-dim);cursor:pointer;transition:.15s}
@@ -1206,7 +1206,8 @@ footer .pay-icons span{font-size:10px;color:var(--ink-dim);border:1px solid var(
   <div class="menu-t">Coleções</div>
   <button type="button" data-tab="capas">Capa de sofá</button>
   <button type="button" data-tab="alm">Almofadas</button>
-  <button type="button" class="menu-t menu-link" data-tab="info">Informações</button>
+  <div class="menu-t" style="margin-top:26px">Informações</div>
+  <button type="button" data-tab="info">Detalhes sobre as coleções</button>
   <a class="menu-a" href="rastrear.html">Rastrear pedido</a>
 </nav>
 
