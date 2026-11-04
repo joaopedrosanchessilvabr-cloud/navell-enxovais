@@ -10,6 +10,7 @@ import { salvarNaPlanilha } from './_planilha.js';
 import { resumirItens } from './_catalogo.js';
 import { montarCtx, empacotar, enviarUtmify } from './_utmify.js';
 import { registrarPedido } from './_rastreio.js';
+import { guardarCtx } from './_pagamento.js';
 
 const PIX_DISCOUNT = 0.05;
 const FREE_SHIPPING_MIN = 70;
@@ -44,7 +45,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método não permitido.' });
   }
 
-  const { items, payer, address, shipping, vid, utm } = req.body || {};
+  const { items, payer, address, shipping, vid, utm, fb } = req.body || {};
 
   if (!payer || !payer.name || !payer.email || !payer.document || !payer.phone ||
       !address || !address.cep || !address.street || !address.number || !address.city || !address.state ||
@@ -113,7 +114,13 @@ export default async function handler(req, res) {
       orderId: String(data.external_id || external_id), createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
       payer, produtos, tracking: utm, total: amount,
       ip: String(req.headers['x-forwarded-for'] || '').split(',')[0].trim(),
+      extra: {
+        id: data.internal_id, n: items.reduce((a, i) => a + (Number(i && i.qty) || 1), 0),
+        ad: { ct: String(address.city || '').slice(0, 60), st: String(address.state || '').slice(0, 2), zp: String(address.cep || '').slice(0, 9) },
+        fb: { p: String((fb && fb.p) || '').slice(0, 120), c: String((fb && fb.c) || '').slice(0, 160), url: String((fb && fb.url) || '').slice(0, 300), ua: String(req.headers['user-agent'] || '').slice(0, 300) },
+      },
     });
+    await guardarCtx(String(data.external_id || external_id), ctx);
     await enviarUtmify(ctx, 'waiting_payment');
     const pack = empacotar(ctx);
 

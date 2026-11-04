@@ -9,13 +9,14 @@ const str = (v, n = 150) => { const t = String(v == null ? '' : v).trim().slice(
 
 // "Contexto" do pedido: dados que o servidor guarda assinados no navegador para
 // conseguir avisar o Utmify quando o Pix for pago, sem precisar de banco de dados.
-export function montarCtx({ orderId, createdAt, payer, produtos, tracking, total, ip }) {
+export function montarCtx({ orderId, createdAt, payer, produtos, tracking, total, ip, extra }) {
   const t = tracking || {};
   const k = (x) => str(x);
   return {
     o: orderId, c: createdAt, tot: Math.round(total * 100),
     cu: { n: str(payer.name), e: str(payer.email), p: str(payer.phone), d: str(payer.document), ip: str(ip, 60) },
     pr: produtos,
+    ...(extra || {}),
     tr: { src: k(t.src), sck: k(t.sck), utm_source: k(t.utm_source), utm_campaign: k(t.utm_campaign), utm_medium: k(t.utm_medium), utm_content: k(t.utm_content), utm_term: k(t.utm_term) },
   };
 }

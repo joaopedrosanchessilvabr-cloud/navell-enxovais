@@ -4,12 +4,12 @@
 // Configure esta URL em SimplifyBR → Integrações → Webhooks:
 //   https://navell-enxovais.vercel.app/api/simplify-webhook
 //
-// Por enquanto só confirma o recebimento e grava um log (Vercel → projeto →
-// Logs). Quando houver banco de dados ou e-mail configurado, é aqui que entra
-// a lógica de marcar o pedido como pago e avisar a loja.
+// Quando o Pix é pago, mesmo que o cliente já tenha fechado a página: marca "Pago" na planilha, gera o código de rastreio
+// e avisa o Utmify e o Meta. Como qualquer um poderia mandar um aviso falso para esta URL, antes de agir o servidor
+// pergunta direto à SimplifyBR se o pagamento realmente foi feito.
 
 import { salvarNaPlanilha } from './_planilha.js';
-import { garantirCodigo } from './_rastreio.js';
+import { lerCtx, statusSimplify, confirmarPagamento, PAGO } from './_pagamento.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -22,8 +22,19 @@ export default async function handler(req, res) {
   const st = String(d.status || b.status || b.event || '').toLowerCase();
   const pedido = d.external_id || b.external_id;
   if (pedido && /paid|approved|completed|confirmed/.test(st)) {
-    await salvarNaPlanilha({ acao: 'status', pedido, status: 'Pago' });
-    await garantirCodigo(pedido);
+    const ctx = await lerCtx(pedido);
+    if (ctx && ctx.id) {
+      const real = await statusSimplify(ctx.id);
+      if (PAGO.includes(real)) {
+        await salvarNaPlanilha({ acao: 'status', pedido, status: 'Pago' });
+        await confirmarPagamento(pedido);
+      } else {
+        console.error('[simplify-webhook] aviso de pagamento NÃO confirmado na SimplifyBR, ignorado:', pedido, real);
+      }
+    } else {
+      // pedido anterior a esta versão (sem contexto guardado): mantém o comportamento antigo
+      await salvarNaPlanilha({ acao: 'status', pedido, status: 'Pago' });
+    }
   }
   return res.status(200).json({ received: true });
 }

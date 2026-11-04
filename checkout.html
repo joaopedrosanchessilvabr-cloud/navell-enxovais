@@ -328,7 +328,7 @@ $("finalCta").addEventListener("click",function(){
   var btn=this,err=$("pixError");err.textContent="";btn.disabled=true;btn.textContent="Gerando...";
   var dg=function(s){return s.replace(/\D/g,"")};
   fetch("/api/create-pix",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-    shipping:shipKey,vid:window.navellVid?navellVid():"",utm:window.navellUtm?navellUtm():{},
+    shipping:shipKey,vid:window.navellVid?navellVid():"",utm:window.navellUtm?navellUtm():{},fb:{p:(document.cookie.match(/(?:^|; )_fbp=([^;]*)/)||[])[1]||"",c:(document.cookie.match(/(?:^|; )_fbc=([^;]*)/)||[])[1]||"",url:location.origin+"/obrigado.html"},
     items:CART.map(function(i){return{k:i.k,color:i.color,s:i.s,qty:i.qty}}),
     payer:{name:v("name"),email:v("email"),document:dg(v("cpf")),phone:dg(v("phone"))},
     address:{cep:dg(v("cep")),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}

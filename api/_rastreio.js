@@ -15,7 +15,7 @@ function cfg() {
   return url && token ? { url, token } : null;
 }
 
-async function cmd(...args) {
+export async function cmd(...args) {
   const c = cfg();
   if (!c) throw new Error('Redis não configurado');
   const r = await fetch(c.url, {

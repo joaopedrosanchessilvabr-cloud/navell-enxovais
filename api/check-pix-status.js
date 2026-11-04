@@ -5,8 +5,8 @@
 // GET /api/check-pix-status?id=TXN_XXXXXXXX
 
 import { salvarNaPlanilha } from './_planilha.js';
-import { abrir, enviarUtmify } from './_utmify.js';
-import { garantirCodigo } from './_rastreio.js';
+import { abrir } from './_utmify.js';
+import { confirmarPagamento } from './_pagamento.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -47,8 +47,7 @@ export default async function handler(req, res) {
     if (['paid', 'approved', 'completed', 'confirmed'].includes(String(data.status || '').toLowerCase())) {
       await salvarNaPlanilha({ acao: 'status', pedido: data.external_id, status: 'Pago' });
       const ctx = abrir(req.headers['x-navell-uc'], req.headers['x-navell-us']);
-      if (ctx && String(ctx.o) === String(data.external_id)) await enviarUtmify(ctx, 'paid');
-      rastreio = await garantirCodigo(data.external_id);
+      rastreio = await confirmarPagamento(data.external_id, { ctxFallback: ctx && String(ctx.o) === String(data.external_id) ? ctx : null });
     }
 
     return res.status(200).json({
