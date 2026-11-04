@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel de pedidos — Navell</title>
+<style>
+:root{--bg:#FCFAF7;--panel:#fff;--ink:#141211;--dim:#6B625B;--line:#E8DED4;--btn:#96592A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,sans-serif;padding:16px;max-width:760px;margin:0 auto}
+h1{font-size:20px;margin:6px 0 14px}
+input,select,button{font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+button{background:var(--btn);color:#fff;border:0;font-weight:600;cursor:pointer}
+.row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}.row>*{flex:1 1 160px}
+.p{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
+.p b{font-size:15px}.p small{color:var(--dim);display:block}
+.tag{display:inline-block;background:#F4EEE8;border-radius:20px;padding:2px 10px;font-size:12px;margin-left:6px}
+.teste{background:#fff3cd}
+#msg{color:var(--btn);font-weight:600;min-height:20px}
+</style>
+</head>
+<body>
+<h1>Painel de pedidos</h1>
+<div id="login">
+  <p style="color:var(--dim)">Digite a senha do painel (a mesma SHEETS_SECRET da Vercel, ou ADMIN_SECRET se você criar).</p>
+  <div class="row"><input id="pw" type="password" placeholder="Senha" autocomplete="off"><button id="ent">Entrar</button></div>
+</div>
+<div id="app" hidden>
+  <div id="msg"></div>
+  <div id="lista"></div>
+</div>
+<script>
+var $=function(i){return document.getElementById(i)};
+var NOMES={recebido:"Aguardando pagamento",pago:"Pagamento confirmado",separacao:"Em separação",postado:"Postado",transito:"Em trânsito",entregue:"Entregue"};
+var pw="";try{pw=sessionStorage.getItem("navell_painel")||""}catch(e){}
+function api(m,b){return fetch("/api/painel-rastreio",{method:m,headers:{"x-painel":pw,"Content-Type":"application/json"},body:b?JSON.stringify(b):undefined}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||"erro");return j})})}
+function esc(t){var d=document.createElement("div");d.textContent=t==null?"":String(t);return d.innerHTML}
+function carregar(){
+  api("GET").then(function(d){
+    $("login").hidden=true;$("app").hidden=false;try{sessionStorage.setItem("navell_painel",pw)}catch(e){}
+    var h="";
+    d.pedidos.forEach(function(p){
+      var op=d.etapas.slice(1).map(function(e){return'<option value="'+e+'"'+(e===p.etapa?" selected":"")+'>'+NOMES[e]+'</option>'}).join("");
+      h+='<div class="p'+(p.teste?" teste":"")+'" data-o="'+esc(p.pedido)+'" data-e="'+esc(p.etapa)+'"><b>'+esc(p.codigo||"(sem código)")+'</b><span class="tag">'+esc(NOMES[p.etapa])+'</span>'+(p.teste?'<span class="tag">TESTE</span>':'')+
+        '<small>Pedido '+esc(p.pedido)+' · '+esc(p.destino)+' · '+esc((p.itens||[]).join(" | "))+'</small>'+
+        '<div class="row" style="margin-top:8px"><select class="e">'+op+'</select><input class="t" placeholder="Transportadora (ex.: Correios)" value="'+esc(p.transp)+'"><input class="l" placeholder="Link de rastreio da transportadora" value="'+esc(p.link)+'"></div>'+
+        '<div class="row"><input class="n" placeholder="Aviso para o cliente (opcional)" value="'+esc(p.nota)+'"><button class="s">Salvar</button></div></div>';
+    });
+    $("lista").innerHTML=h||'<p style="color:var(--dim)">Nenhum pedido pago ainda.</p>';
+  }).catch(function(e){$("login").hidden=false;$("app").hidden=true;alert(e.message)});
+}
+$("ent").onclick=function(){pw=$("pw").value;carregar()};
+$("lista").addEventListener("click",function(ev){
+  var b=ev.target.closest(".s");if(!b)return;var c=b.closest(".p");
+  b.disabled=true;
+  api("POST",{pedido:c.getAttribute("data-o"),etapa:c.querySelector(".e").value!==c.getAttribute("data-e")?c.querySelector(".e").value:undefined,transp:c.querySelector(".t").value,link:c.querySelector(".l").value,nota:c.querySelector(".n").value})
+   .then(function(){$("msg").textContent="Salvo ✓";carregar()}).catch(function(e){$("msg").textContent=e.message}).then(function(){b.disabled=false});
+});
+if(pw)carregar();
+</script>
+</body>
+</html>

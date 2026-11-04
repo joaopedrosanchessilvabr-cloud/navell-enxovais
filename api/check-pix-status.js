@@ -6,6 +6,7 @@
 
 import { salvarNaPlanilha } from './_planilha.js';
 import { abrir, enviarUtmify } from './_utmify.js';
+import { garantirCodigo } from './_rastreio.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -42,10 +43,12 @@ export default async function handler(req, res) {
       return res.status(simplifyRes.status).json({ error: data?.message || 'Não foi possível consultar o status agora.' });
     }
 
+    let rastreio = null;
     if (['paid', 'approved', 'completed', 'confirmed'].includes(String(data.status || '').toLowerCase())) {
       await salvarNaPlanilha({ acao: 'status', pedido: data.external_id, status: 'Pago' });
       const ctx = abrir(req.headers['x-navell-uc'], req.headers['x-navell-us']);
       if (ctx && String(ctx.o) === String(data.external_id)) await enviarUtmify(ctx, 'paid');
+      rastreio = await garantirCodigo(data.external_id);
     }
 
     return res.status(200).json({
@@ -53,6 +56,7 @@ export default async function handler(req, res) {
       external_id: data.external_id,
       status: data.status,
       amount: data.amount,
+      rastreio,
     });
   } catch (err) {
     console.error('[check-pix-status] Erro ao chamar a SimplifyBR:', err);

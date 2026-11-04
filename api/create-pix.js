@@ -9,6 +9,7 @@ import { createHmac } from 'node:crypto';
 import { salvarNaPlanilha } from './_planilha.js';
 import { resumirItens } from './_catalogo.js';
 import { montarCtx, empacotar, enviarUtmify } from './_utmify.js';
+import { registrarPedido } from './_rastreio.js';
 
 const PIX_DISCOUNT = 0.05;
 const FREE_SHIPPING_MIN = 70;
@@ -102,6 +103,10 @@ export default async function handler(req, res) {
       pedido: data.external_id || external_id, status: 'Pendente', idPix: data.internal_id,
       valor: amount, frete: SHIPPING[shipping].n, itens: resumo, cliente: payer, entrega: address,
     });
+
+    // Guarda o pedido para a página "Rastrear pedido" (o código NV...BR só nasce quando o pagamento for confirmado)
+    await registrarPedido({ order: data.external_id || external_id, itens: resumo, cidade: address.city, uf: String(address.state || '').toUpperCase().slice(0, 2),
+      frete: SHIPPING[shipping].n, total: amount, teste: soTeste });
 
     // Utmify: pedido "aguardando pagamento" (e guarda o contexto assinado para avisar quando pagar)
     const fator = amount / (subtotal || 1);

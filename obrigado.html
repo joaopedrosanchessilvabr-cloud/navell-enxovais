@@ -61,7 +61,9 @@ h1{font:600 30px/1.1 'Oswald',sans-serif;text-transform:uppercase;margin:8px 0 1
   <p class="eyebrow">Pix aprovado</p>
   <h1>Pagamento confirmado!</h1>
   <p class="lead" id="lead">Recebemos o seu pagamento. Obrigado por comprar na Navell Enxovais.</p>
-  <div class="order" id="orderPill" hidden><span>Número do pedido</span><b id="oid"></b></div>
+  <div class="order" id="orderPill" hidden><span>Número do pedido</span><b id="oid"></b></div><br>
+  <div class="order" id="trackPill" hidden style="margin-top:12px"><span>Código de rastreio</span><b id="tid" style="font-size:24px"></b></div>
+  <a class="btn" id="trackBtn" href="rastrear.html" hidden style="max-width:340px;margin:16px auto 0">Acompanhar meu pedido</a>
 </header>
 
 <div class="grid">
@@ -86,14 +88,14 @@ h1{font:600 30px/1.1 'Oswald',sans-serif;text-transform:uppercase;margin:8px 0 1
       <ol class="steps">
         <li><div><strong>Pedido recebido</strong><small>O seu pagamento foi aprovado e o pedido já está registrado.</small></div></li>
         <li><div><strong>Separação e envio</strong><small>Vamos preparar o seu pedido e despachar pela transportadora escolhida.</small></div></li>
-        <li><div><strong>Entraremos em contato</strong><small>Enviaremos as informações de envio e o código de rastreio pelo e-mail e celular informados na compra.</small></div></li>
+        <li><div><strong>Entraremos em contato</strong><small>Acompanhe cada etapa na página Rastrear pedido, com o código de rastreio acima. Qualquer novidade, avisamos pelo e-mail e celular informados na compra.</small></div></li>
       </ol>
     </section>
   </div>
 </div>
 
 <a class="btn" href="index.html">Voltar para a loja</a>
-<p class="fine">Guarde o número do pedido para qualquer dúvida.</p>
+<p class="fine">Guarde o número do pedido e o código de rastreio. Você pode acompanhar a qualquer momento em <b>Rastrear pedido</b>, no menu da loja.</p>
 
 <script>
 var $=function(id){return document.getElementById(id)};
@@ -104,6 +106,17 @@ var o=null;try{o=JSON.parse(localStorage.getItem("navell_last_order")||"null")}c
 if(o&&oid&&o.order!==oid)o=null;   /* resumo só se for o mesmo pedido */   /* só mostra o resumo se for o mesmo pedido */
 if(!oid&&o&&o.order)oid=o.order;
 if(oid){$("oid").textContent=oid;$("orderPill").hidden=false}
+/* Código de rastreio (gerado quando o pagamento é confirmado) */
+(function(){
+  if(!oid)return;
+  function mostra(c){$("tid").textContent=c;$("trackPill").hidden=false;$("trackBtn").href="rastrear.html?c="+encodeURIComponent(c);$("trackBtn").hidden=false}
+  var tentativas=0;
+  (function busca(){
+    fetch("/api/rastrear?q="+encodeURIComponent(oid)).then(function(r){return r.ok?r.json():null}).then(function(d){
+      if(d&&d.codigo)mostra(d.codigo);else if(++tentativas<4)setTimeout(busca,2500);
+    }).catch(function(){if(++tentativas<4)setTimeout(busca,2500)});
+  })();
+})();
 /* Pixel: registra a compra uma única vez por pedido (evita duplicar ao atualizar a página) */
 (function(){
   var val=(o&&o.total!=null)?Number(o.total):(isNaN(tot)?null:tot);

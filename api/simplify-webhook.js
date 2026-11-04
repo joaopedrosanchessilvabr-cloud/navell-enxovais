@@ -9,6 +9,7 @@
 // a lógica de marcar o pedido como pago e avisar a loja.
 
 import { salvarNaPlanilha } from './_planilha.js';
+import { garantirCodigo } from './_rastreio.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -22,6 +23,7 @@ export default async function handler(req, res) {
   const pedido = d.external_id || b.external_id;
   if (pedido && /paid|approved|completed|confirmed/.test(st)) {
     await salvarNaPlanilha({ acao: 'status', pedido, status: 'Pago' });
+    await garantirCodigo(pedido);
   }
   return res.status(200).json({ received: true });
 }
