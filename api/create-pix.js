@@ -57,7 +57,7 @@ export default async function handler(req, res) {
   const subtotal = r0.subtotal;
   const resumo = r0.resumo;
   // Frete grátis no Jadlog em compras a partir de R$ 70 (valor dos itens, antes do desconto Pix).
-  // Pedido de teste (só o item alm-teste): sem frete e sem desconto Pix, total exato de R$ 1,50.
+  // Pedido de teste (só o item alm-teste): sem frete e sem desconto Pix, total exato de R$ 1,03.
   const soTeste = items.length > 0 && items.every((i) => i && i.k === 'alm-teste');
   const shipPrice = soTeste ? 0 : (shipping === 'jadlog' && subtotal >= FREE_SHIPPING_MIN) ? 0 : SHIPPING[shipping].price;
   const amount = soTeste ? subtotal : Math.round((subtotal * (1 - PIX_DISCOUNT) + shipPrice) * 100) / 100;
