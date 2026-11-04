@@ -93,13 +93,14 @@ input::placeholder{color:#b9aea3;font-weight:400}
   <section class="card">
     <h2>Seu pedido</h2>
     <div id="itens"></div>
+    <div class="r" id="rValW" hidden><span>Valor total</span><strong id="rVal"></strong></div>
     <div class="r"><span>Frete</span><strong id="rFrete"></strong></div>
     <div class="r"><span>Destino</span><strong id="rDest"></strong></div>
   </section>
 </div>
 
 <a class="btn ghost" href="index.html" style="margin-top:24px">Voltar para a loja</a>
-<p class="fine">O status é atualizado pela nossa equipe a cada etapa do envio.<br>Dúvidas? Fale com a gente no Instagram <a href="https://instagram.com/navellenxovais" target="_blank" rel="noopener">@navellenxovais</a>.</p>
+<p class="fine">O envio sai em até 5 dias após a confirmação do pagamento.<br>Dúvidas? Fale com a gente no Instagram <a href="https://instagram.com/navellenxovais" target="_blank" rel="noopener">@navellenxovais</a>.</p>
 
 <script>
 var $=function(i){return document.getElementById(i)};
@@ -119,7 +120,8 @@ function show(d){
   $("cPed").textContent="Pedido "+d.pedido;
   var cur=ET[idx];
   $("nowT").textContent=idx===0?"Aguardando pagamento":cur.t;
-  $("nowD").textContent=idx===0?"Assim que o Pix for confirmado, o seu código de rastreio é gerado.":cur.d;
+  var prox=ET[idx+1];
+  $("nowD").textContent=idx===0?"Assim que o Pix for confirmado, o seu código de rastreio é gerado.":cur.d+(prox?" Próxima etapa: "+prox.t.toLowerCase()+".":"");
   $("nota").hidden=!d.nota;$("nota").textContent=d.nota||"";
   var h="";
   ET.forEach(function(e,i){
@@ -133,6 +135,7 @@ function show(d){
   $("tLink").hidden=!d.link;if(d.link)$("tLink").href=d.link;
   $("itens").innerHTML="";
   (d.itens||[]).forEach(function(t){var x=document.createElement("div");x.className="it";x.textContent=t;$("itens").appendChild(x)});
+  $("rValW").hidden=!(d.valor>0);if(d.valor>0)$("rVal").textContent=Number(d.valor).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
   $("rFrete").textContent=d.frete||"—";$("rDest").textContent=d.destino||"—";
   $("res").hidden=false;
 }

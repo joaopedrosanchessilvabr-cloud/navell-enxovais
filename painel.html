@@ -30,7 +30,7 @@ button{background:var(--btn);color:#fff;border:0;font-weight:600;cursor:pointer}
   <div id="msg"></div>
   <details class="p"><summary><b>Cadastrar pedido antigo / de teste</b></summary>
     <div class="row" style="margin-top:8px"><input id="iP" placeholder="Nº do pedido (ex.: 000000019)"><input id="iC" placeholder="Código (ex.: NV990000001BR)"></div>
-    <div class="row"><input id="iI" placeholder="Itens (separe com |)"><input id="iCi" placeholder="Cidade"><input id="iU" placeholder="UF" maxlength="2"></div>
+    <div class="row"><input id="iI" placeholder="Itens (separe com |)"><input id="iCi" placeholder="Cidade"><input id="iU" placeholder="UF" maxlength="2"><input id="iV" placeholder="Valor (ex.: 3.00)"></div>
     <label><input type="checkbox" id="iT" checked style="width:auto"> É um pedido de teste</label>
     <div class="row" style="margin-top:8px"><button id="iB">Cadastrar</button></div>
   </details>
@@ -64,7 +64,7 @@ $("lista").addEventListener("click",function(ev){
    .then(function(){$("msg").textContent="Salvo ✓";carregar()}).catch(function(e){$("msg").textContent=e.message}).then(function(){b.disabled=false});
 });
 $("iB").onclick=function(){
-  api("POST",{importar:true,pedido:$("iP").value,codigo:$("iC").value,itens:$("iI").value,cidade:$("iCi").value,uf:$("iU").value,teste:$("iT").checked})
+  api("POST",{importar:true,pedido:$("iP").value,codigo:$("iC").value,itens:$("iI").value,cidade:$("iCi").value,uf:$("iU").value,valor:$("iV").value.replace(",","."),teste:$("iT").checked})
    .then(function(){$("msg").textContent="Cadastrado ✓";carregar()}).catch(function(e){$("msg").textContent=e.message});
 };
 if(pw)carregar();

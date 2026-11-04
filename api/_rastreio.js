@@ -102,11 +102,27 @@ export async function buscar(q) {
 }
 
 // Resposta pública: sem nome, CPF, e-mail, telefone ou endereço completo.
-export function publico(p) {
+const DIAS_ENVIO = 5; // o envio sai 5 dias depois do pagamento, qualquer que seja o frete
+
+export function publico(p, agora = Date.now()) {
   const ult = {}; p.eventos.forEach((x) => { ult[x.e] = x.t; });
   let idx = 0; ETAPAS.forEach((e, i) => { if (ult[e]) idx = i; });
+  // Etapas automáticas: pagou -> "Em separação"; 5 dias depois -> "Postado" e "Em trânsito".
+  // "Entregue" (e qualquer etapa marcada à mão no painel que esteja à frente) continua valendo.
+  const pagoEm = ult.pago || p.t;
+  if (ult.pago) {
+    if (!ult.separacao) ult.separacao = pagoEm;
+    let auto = ETAPAS.indexOf('separacao');
+    const saida = new Date(new Date(pagoEm).getTime() + DIAS_ENVIO * 86400000);
+    if (agora >= saida.getTime()) {
+      auto = ETAPAS.indexOf('transito');
+      if (!ult.postado) ult.postado = saida.toISOString();
+      if (!ult.transito) ult.transito = saida.toISOString();
+    }
+    if (auto > idx) idx = auto;
+  }
   return {
-    codigo: p.codigo || null, pedido: p.o, criado: p.t, itens: p.itens, destino: p.cidade ? `${p.cidade}/${p.uf}` : '',
+    codigo: p.codigo || null, pedido: p.o, criado: p.t, itens: p.itens, valor: p.total || 0, destino: p.cidade ? `${p.cidade}/${p.uf}` : '',
     frete: p.frete, etapa: ETAPAS[idx], datas: ult, nota: p.nota || '', transp: p.transp || '', link: p.link || '',
   };
 }
@@ -137,7 +153,7 @@ export async function listar(n = 60) {
 }
 
 // Painel: cadastra um pedido antigo (feito antes do rastreio existir) já com um código escolhido.
-export async function importar({ pedido, codigo, itens, cidade, uf, frete, teste }) {
+export async function importar({ pedido, codigo, itens, cidade, uf, frete, valor, teste }) {
   pedido = String(pedido || '').replace(/\D/g, '');
   codigo = normalizar(codigo);
   if (!pedido) return { erro: 'Informe o número do pedido.' };
@@ -151,6 +167,7 @@ export async function importar({ pedido, codigo, itens, cidade, uf, frete, teste
   if (cidade) p.cidade = String(cidade).slice(0, 60);
   if (uf) p.uf = String(uf).toUpperCase().slice(0, 2);
   if (frete) p.frete = String(frete).slice(0, 30);
+  if (Number(valor) > 0) p.total = Number(valor);
   p.teste = !!teste;
   p.codigo = codigo;
   if (!p.eventos.some((x) => x.e === 'pago')) p.eventos.push({ e: 'pago', t });
