@@ -47,7 +47,8 @@ export async function enviarUtmify(ctx, status, quando) {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'x-api-token': token },
       body: JSON.stringify(body), signal: AbortSignal.timeout(6000),
     });
-    if (!r.ok) console.error('[utmify] Resposta inesperada:', r.status, (await r.text().catch(() => '')).slice(0, 300));
+    const txt = (await r.text().catch(() => '')).slice(0, 300);
+    console.log('[utmify]', status, ctx.o, 'HTTP', r.status, txt);
     return r.ok;
   } catch (e) { console.error('[utmify] Falha ao enviar:', e && e.message); return false; }
 }
