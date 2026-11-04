@@ -236,12 +236,12 @@ if(!CART.length){$("empty").hidden=false}else{$("main").hidden=false}
 
 var sub=CART.reduce(function(a,i){return a+unitPrice(i)*i.qty},0);
 var SHIP={sedex:{n:"SEDEX",p:19.90,d:"3 a 7 dias úteis"},jadlog:{n:"Jadlog",p:14.90,d:"5 a 9 dias úteis"},loggi:{n:"Loggi",p:9.90,d:"7 a 11 dias úteis"}};
-var FREE_MIN=70;SHIP.jadlog.p=sub>=FREE_MIN?0:14.90;
+var FREE_MIN=70;SHIP.jadlog.p=sub>=FREE_MIN?0:14.90;var ONLYTEST=CART.length>0&&CART.every(function(i){return i.k==="alm-teste"});if(ONLYTEST){SHIP.sedex.p=SHIP.jadlog.p=SHIP.loggi.p=0}
 function shipTxt(k){return SHIP[k].p===0?"Grátis":brl(SHIP[k].p)}
 var shipKey="loggi";
 var DLV=null;try{var _d=JSON.parse(localStorage.getItem("navell_entrega_v1")||"null");if(_d&&String(_d.cep||"").replace(/\D/g,"").length===8&&_d.street&&_d.number&&_d.nb&&_d.city&&_d.uf&&_d.uf.length===2&&SHIP[_d.ship])DLV=_d}catch(e){}
 var HAS_ADDR=!!DLV;if(HAS_ADDR)shipKey=DLV.ship;
-var prod=Math.round(sub*(1-PIX)*100)/100;
+var prod=ONLYTEST?sub:Math.round(sub*(1-PIX)*100)/100;
 var total=prod+SHIP[shipKey].p;
 if(CART.length&&window.navellTrack)navellTrack("InitiateCheckout",{content_ids:CART.map(function(i){return i.k}),content_type:"product",contents:CART.map(function(i){return{id:i.k,quantity:i.qty}}),num_items:CART.reduce(function(a,i){return a+i.qty},0),value:sub,currency:"BRL"});
 $("cart").innerHTML=CART.map(function(i){
