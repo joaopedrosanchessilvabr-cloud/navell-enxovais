@@ -106,7 +106,7 @@ export default async function handler(req, res) {
 
     // Guarda o pedido para a página "Rastrear pedido" (o código NV...BR só nasce quando o pagamento for confirmado)
     await registrarPedido({ order: data.external_id || external_id, itens: resumo, cidade: address.city, uf: String(address.state || '').toUpperCase().slice(0, 2),
-      frete: SHIPPING[shipping].n, total: amount, teste: soTeste });
+      frete: SHIPPING[shipping].n, fretePreco: shipPrice, sub: subtotal, total: amount, teste: soTeste });
 
     // Utmify: pedido "aguardando pagamento" (e guarda o contexto assinado para avisar quando pagar)
     const fator = amount / (subtotal || 1);

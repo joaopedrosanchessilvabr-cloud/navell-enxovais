@@ -43,10 +43,10 @@ export function codigoDe(n, teste) {
 }
 
 // Chamado quando o Pix é gerado: guarda o que a página "Rastrear pedido" precisa (sem dados pessoais sensíveis).
-export async function registrarPedido({ order, itens, cidade, uf, frete, total, teste }) {
+export async function registrarPedido({ order, itens, cidade, uf, frete, fretePreco, sub, total, teste }) {
   try {
     const t = new Date().toISOString();
-    await gravarPed({ o: String(order), t, itens: itens || [], cidade: cidade || '', uf: uf || '', frete: frete || '', total, teste: !!teste, eventos: [{ e: 'recebido', t }] });
+    await gravarPed({ o: String(order), t, itens: itens || [], cidade: cidade || '', uf: uf || '', frete: frete || '', fretePreco, sub, total, teste: !!teste, eventos: [{ e: 'recebido', t }] });
     return true;
   } catch (e) { console.error('[rastreio] registrarPedido:', e && e.message); return false; }
 }
@@ -122,7 +122,7 @@ export function publico(p, agora = Date.now()) {
     if (auto > idx) idx = auto;
   }
   return {
-    codigo: p.codigo || null, pedido: p.o, criado: p.t, itens: p.itens, valor: p.total || 0, destino: p.cidade ? `${p.cidade}/${p.uf}` : '',
+    codigo: p.codigo || null, pedido: p.o, criado: p.t, itens: p.itens, valor: p.total || 0, sub: p.sub ?? null, fretePreco: p.fretePreco ?? null, destino: p.cidade ? `${p.cidade}/${p.uf}` : '',
     frete: p.frete, etapa: ETAPAS[idx], datas: ult, nota: p.nota || '', transp: p.transp || '', link: p.link || '',
   };
 }
