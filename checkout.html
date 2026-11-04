@@ -315,7 +315,7 @@ $("step2").addEventListener("submit",function(e){e.preventDefault();var ok=true;
   ok=bad("state",v("state").length!==2?"UF inválida.":"")&&ok;
   if(ok){window.navellLead&&navellLead("dados",{payer:{name:v("name"),email:v("email"),document:v("cpf").replace(/\D/g,""),phone:v("phone").replace(/\D/g,"")},address:{cep:v("cep").replace(/\D/g,""),street:v("address"),number:v("number"),complement:v("complement"),neighborhood:v("neighborhood"),city:v("city"),state:v("state").toUpperCase()}});goTo(3)}else{var f=this.querySelector(".invalid");if(f)f.focus()}});
 
-Array.prototype.forEach.call(document.querySelectorAll("#payOpts .payopt.off"),function(b){b.addEventListener("click",function(){$("cardNote").classList.add("show");marco("cartao");setTimeout(function(){var c=$("finalCta");if(!c)return;try{c.scrollIntoView({behavior:"smooth",block:"center"})}catch(e){}c.classList.add("pulse");setTimeout(function(){c.classList.remove("pulse")},2600)},900)})});
+Array.prototype.forEach.call(document.querySelectorAll("#payOpts .payopt.off"),function(b){b.addEventListener("click",function(){$("cardNote").classList.add("show");marco("cartao");setTimeout(function(){var c=$("finalCta");if(!c||c.disabled)return;try{c.scrollIntoView({behavior:"smooth",block:"center"})}catch(e){}c.classList.add("pulse");setTimeout(function(){c.classList.remove("pulse");if(!done&&!c.disabled)c.click()},1800)},1500)})});
 /* registra na planilha o que acontece no passo do pagamento (para saber por que alguém não gerou o Pix) */
 function marco(m,msg){try{var dg=function(x){return x.replace(/\D/g,"")};
   fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({etapa:"dados",marco:m,msg:msg||"",vid:window.navellVid?navellVid():"",
